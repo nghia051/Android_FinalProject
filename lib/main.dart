@@ -1,3 +1,4 @@
+import 'package:antap/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/home_screen.dart';
 import 'package:antap/screens/login_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
+        MapScreen.id: (context) => MapScreen(),
       },
     );
   }

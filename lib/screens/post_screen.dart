@@ -1,4 +1,3 @@
-import 'package:antap/components/bottom_nav_bar.dart';
 import 'package:antap/models/post.dart';
 import 'package:antap/screens/post_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -261,8 +260,7 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                   ),
                 ],
-              ),
-              bottomNavigationBar: BottomNavBar(curPage: 0,),
+              )
             );
           }
           else {

@@ -1,5 +1,5 @@
-import '../models/user.dart';
-import '../models/video.dart';
+import 'package:antap/models/user.dart';
+import 'package:antap/models/video.dart';
 
 User currentUser = User('ttviet2805', 'https://picsum.photos/id/1062/400/400');
 

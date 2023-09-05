@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:antap/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:antap/screens/customize_image_screen.dart';
-import 'package:antap/screens/customize_video_screen.dart';
+import 'package:antap/screens/image_video_post/customize_image_screen.dart';
+import 'package:antap/screens/image_video_post/customize_video_screen.dart';
 
 class CustomizeScreen extends StatefulWidget {
   CustomizeScreen({Key? key, required this.address});

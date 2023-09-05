@@ -1,4 +1,4 @@
-import 'package:tiktok_app/models/user.dart';
+import 'package:antap/models/user.dart';
 
 class Video {
   final String videoUrl;

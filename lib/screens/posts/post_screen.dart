@@ -1,5 +1,5 @@
 import 'package:antap/models/post.dart';
-import 'package:antap/screens/post_detail_screen.dart';
+import 'package:antap/screens/posts/post_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

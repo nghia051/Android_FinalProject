@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../data/data.dart';
-import '../widgets/home_side_bar.dart';
-import '../widgets/video_detail.dart';
-import '../widgets/video_tile.dart';
+import 'package:antap/data/data.dart';
+import 'package:antap/screens/reels/widgets/home_side_bar.dart';
+import 'package:antap/screens/reels/widgets/video_detail.dart';
+import 'package:antap/screens/reels/widgets/video_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

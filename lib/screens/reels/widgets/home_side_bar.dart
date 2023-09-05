@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../models/video.dart';
+import 'package:antap/models/video.dart';
 
 class HomeSideBar extends StatefulWidget {
   const HomeSideBar({super.key, required this.video});

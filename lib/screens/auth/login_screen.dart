@@ -1,9 +1,9 @@
+import 'package:antap/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:antap/components/components.dart';
+import 'package:antap/screens/auth/components/components.dart';
 import 'package:antap/constants.dart';
-import 'package:antap/screens/welcome.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:antap/screens/home_screen.dart';
+import 'package:antap/screens/auth/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.popAndPushNamed(
                                       context, LoginScreen.id);
                                 });
-                                Navigator.pushNamed(context, WelcomeScreen.id);
+                                Navigator.pushNamed(context, MainScreen.id);
                               }
                             } catch (e) {
                               signUpAlert(

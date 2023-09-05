@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:antap/components/components.dart';
-import 'package:antap/screens/home_screen.dart';
-import 'package:antap/screens/login_screen.dart';
+import 'package:antap/screens/auth/components/components.dart';
+import 'package:antap/screens/auth/home_screen.dart';
+import 'package:antap/screens/auth/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:antap/constants.dart';
 import 'package:loading_overlay/loading_overlay.dart';

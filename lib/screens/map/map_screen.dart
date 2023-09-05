@@ -1,4 +1,4 @@
-import 'package:antap/screens/map_section.dart';
+import 'package:antap/screens/map/map_section.dart';
 import 'package:flutter/material.dart';
 
 class MapScreen extends StatefulWidget {

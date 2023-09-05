@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:video_player/video_player.dart';
 
-import '../models/video.dart';
+import 'package:antap/models/video.dart';
 
 class VideoTile extends StatefulWidget {
   const VideoTile(

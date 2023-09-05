@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:antap/components/components.dart';
-import 'package:antap/screens/login_screen.dart';
-import 'package:antap/screens/signup_screen.dart';
+import 'package:antap/screens/auth/components/components.dart';
+import 'package:antap/screens/auth/login_screen.dart';
+import 'package:antap/screens/auth/signup_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

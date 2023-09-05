@@ -1,7 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import '../models/video.dart';
+import 'package:antap/models/video.dart';
 
 class VideoDetail extends StatelessWidget {
   const VideoDetail({super.key, required this.video});

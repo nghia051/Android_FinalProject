@@ -1,3 +1,4 @@
+import 'package:antap/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/home_screen.dart';
 import 'package:antap/screens/login_screen.dart';
@@ -91,6 +92,7 @@ class _MyAppState extends State<MyApp> {
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
+        MapScreen.id: (context) => MapScreen(),
         CustomizeScreen.id:(context) => CustomizeScreen(address: address),
         CustomizeImageScreen.id:(context) => CustomizeImageScreen(),
         CustomizeVideoScreen.id:(context) => CustomizeVideoScreen(),

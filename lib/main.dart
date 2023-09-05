@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: PostScreen.id,
+      initialRoute: PostDetailScreen.id,
       routes: {
         PostScreen.id: (context) => const PostScreen(),
         PostDetailScreen.id: (context) => const PostDetailScreen(),

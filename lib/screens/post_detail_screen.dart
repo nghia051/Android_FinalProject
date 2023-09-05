@@ -27,12 +27,15 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
+  int curImage = 0;
   @override
   Widget build(BuildContext context) {
     Post post = Post(
       listImageUrl: [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
+        "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
+        "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
       ],
       coverUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
@@ -50,14 +53,21 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 350,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20), 
-                    child: Image.network(
-                      post.listImageUrl[0],
-                      fit: BoxFit.cover, 
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      curImage = (curImage + 1) % post.listImageUrl.length;
+                    });
+                  },
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 350,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20), 
+                      child: Image.network(
+                        post.listImageUrl[curImage],
+                        fit: BoxFit.cover, 
+                      ),
                     ),
                   ),
                 ),
@@ -76,6 +86,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
                 Text(
                   post.review.content
+                ),
+                Row(
+                  children: List.generate(5, (star) {
+                    return Icon(
+                      star < post.rate ? Icons.star : Icons.star_border,
+                      color: Colors.yellow,
+                      size: 20
+                    );
+                  })
                 )
               ],
             ),

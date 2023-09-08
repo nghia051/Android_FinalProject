@@ -1,5 +1,7 @@
 import 'package:antap/models/post.dart';
-import 'package:antap/screens/posts/post_detail_screen.dart';
+import 'package:antap/screens/posts/components/post_image_widget.dart';
+import 'package:antap/screens/posts/components/post_info_widget.dart';
+import 'package:antap/screens/posts/components/post_react_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -38,11 +40,13 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
-    List<Post> listInitPost = [
+    List<Post> listPost = [
       Post(
         listImageUrl: [
           "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
+          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
           "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
+          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
           "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
         ],
         coverUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
@@ -51,7 +55,24 @@ class _PostScreenState extends State<PostScreen> {
           content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
         ),
         rate: 5,
-        postDate: DateTime(2023, 7, 15)
+        postDate: DateTime(2023, 7, 15),
+        favorite: 290903,
+        listComment: [
+          Comment(user: "Hoang Viet", content: "Ngon vcl"),
+          Comment(user: "Tran Viet", content: "Cung duoc"),
+          Comment(user: "Nguyen Hoang", content: "Mlem mlem"),
+          Comment(user: "Dinh Tung", content: "Ha ha ha"),
+          Comment(user: "Trung Nghia", content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
+          Comment(user: "Con tho an co", content: "Ngon vcl"),
+          Comment(user: "Jack hht", content: "Cung duoc"),
+          Comment(user: "Fuck boy nghi phu", content: "Mlem mlem"),
+          Comment(user: "Boy Quang Nom", content: "Ha ha ha"),
+          Comment(user: "Voi Dak Lak", content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
+          Comment(user: "Rabbit", content: "Ngon vcl"),
+          Comment(user: "Chinh tri gia", content: "Cung duoc"),
+          Comment(user: "APCS", content: "Mlem mlem"),
+          Comment(user: "HCMUS", content: "Ha ha ha")
+        ]
       ),
       Post(
         listImageUrl: [
@@ -65,209 +86,64 @@ class _PostScreenState extends State<PostScreen> {
           content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
         ),
         rate: 3,
-        postDate: DateTime(2023, 7, 15)
-      ),
-      Post(
-        listImageUrl: [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
-        ],
-        coverUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-        review: Review(
-          title: "Review quan an 1",
-          content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
-        ),
-        rate: 5,
-        postDate: DateTime(2023, 7, 15)
-      ),
-      Post(
-        listImageUrl: [
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg"
-        ],
-        coverUrl: "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-        review: Review(
-          title: "Review quan an 2",
-          content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
-        ),
-        rate: 3,
-        postDate: DateTime(2023, 7, 15)
-      ),
-      Post(
-        listImageUrl: [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
-        ],
-        coverUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-        review: Review(
-          title: "Review quan an 1",
-          content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
-        ),
-        rate: 5,
-        postDate: DateTime(2023, 7, 15)
-      ),
-      Post(
-        listImageUrl: [
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg"
-        ],
-        coverUrl: "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-        review: Review(
-          title: "Review quan an 2",
-          content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
-        ),
-        rate: 3,
-        postDate: DateTime(2023, 7, 15)
-      ),
-      Post(
-        listImageUrl: [
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
-        ],
-        coverUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
-        review: Review(
-          title: "Review quan an 1",
-          content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
-        ),
-        rate: 5,
-        postDate: DateTime(2023, 7, 15)
-      ),
-      Post(
-        listImageUrl: [
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg"
-        ],
-        coverUrl: "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
-        review: Review(
-          title: "Review quan an 2",
-          content: "Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat. Toi nam nay hon 70 tuoi roi ma toi chua thay quan an nao ngon nhu the nay, phai toi toi danh cho may nhat."
-        ),
-        rate: 3,
-        postDate: DateTime(2023, 7, 15)
-      ),
+        postDate: DateTime(2023, 7, 15),
+        favorite: 23082002,
+        listComment: [
+          Comment(user: "Hoang Viet", content: "Ngon vcl"),
+          Comment(user: "Tran Viet", content: "Cung duoc"),
+          Comment(user: "Nguyen Hoang", content: "Mlem mlem"),
+          Comment(user: "Dinh Tung", content: "Ha ha ha"),
+          Comment(user: "Trung Nghia", content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
+        ]
+      )
     ];
-    return FutureBuilder<List<Post>> (
-      future: getAllPostFromFirestore(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: SizedBox(
-              width: 80.0,
-              height: 80.0,
-              child: CircularProgressIndicator(
-                strokeWidth: 6.0, // You can adjust the stroke width as needed
-              ),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          if (snapshot.hasData) {
-            List<Post> listPost = listInitPost;
-            return Scaffold(
-              body: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: List.generate(listPost.length, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context, 
-                                MaterialPageRoute(
-                                  builder: (context) => const PostDetailScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              padding: const EdgeInsets.all(10),
-                              height: 140,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(20), 
-                              ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 100,
-                                    height: double.infinity,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20), 
-                                      child: Image.network(
-                                        listPost[index].coverUrl,
-                                        fit: BoxFit.cover, 
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 20,),
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          listPost[index].review.title,
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          getSubContent(listPost[index].review.content, 150),
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          "Reviewer: ",
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500
-                                          ),
-                                        ),
-                                        Row(
-                                          children: List.generate(5, (star) {
-                                            return Icon(
-                                              star < listPost[index].rate ? Icons.star : Icons.star_border,
-                                              color: Colors.yellow,
-                                              size: 20
-                                            );
-                                          })
-                                        )
-                                      ],    
-                                    )
-                                  )
-                                ],
-                              )
+    return Scaffold(
+      body: ListView(
+        children: [
+          Column(
+            children: List.generate(listPost.length, (index) {
+              return Container(
+                color: Colors.black54,
+                width: double.infinity,
+                margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PostInfoWidget(post: listPost[index]),
+                          const SizedBox(height: 10,),
+                          Text(
+                            listPost[index].review.title,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white
                             ),
-                          );
-                        }),
+                          ),
+                          Text(
+                            listPost[index].review.content,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white
+                            ),
+                          )
+                        ]),
                     ),
-                  ),
-                ],
-              )
-            );
-          }
-          else {
-            return const Text('No data available');
-          }
-        }
-      }
+                    PostImageWidget(post: listPost[index]),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: PostReactWidget(post: listPost[index])
+                    )
+                  ],
+                ),
+              );
+            }),
+          )
+        ]
+      )
     );
   }
 }

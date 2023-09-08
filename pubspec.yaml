@@ -22,7 +22,6 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_storage: ^11.2.6
-  cloud_firestore: ^4.9.1  
   expandable_text: ^2.2.0
   marquee: ^2.2.0
   lottie: ^1.1.9

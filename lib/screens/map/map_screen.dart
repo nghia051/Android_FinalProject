@@ -14,19 +14,8 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Center(
-            child: Text(
-              "Map",
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-          )),
-      body: const MapSection(),
-    ));
+    return const Scaffold(
+      body: MapSection(),
+    );
   }
 }

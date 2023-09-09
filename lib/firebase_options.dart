@@ -44,40 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBkYp3-p7bNlr0Ml_za323uClHaKKnUcFo',
-    appId: '1:381234441271:web:0b18bfe44a132492c523b2',
-    messagingSenderId: '381234441271',
-    projectId: 'antap-b365b',
-    authDomain: 'antap-b365b.firebaseapp.com',
-    storageBucket: 'antap-b365b.appspot.com',
-    measurementId: 'G-39VWM41J30',
+    apiKey: 'AIzaSyAIu3CWvQ9eNujSQ63uxd2lXWgyErrVRM4',
+    appId: '1:16468586993:web:3e3b118b6649713c245450',
+    messagingSenderId: '16468586993',
+    projectId: 'antap-ba5f2',
+    authDomain: 'antap-ba5f2.firebaseapp.com',
+    storageBucket: 'antap-ba5f2.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAUK6zO7_Y_EuegxtSuk4KWbGSatGWH0Nw',
-    appId: '1:381234441271:android:e72d2fc9447f260cc523b2',
-    messagingSenderId: '381234441271',
-    projectId: 'antap-b365b',
-    storageBucket: 'antap-b365b.appspot.com',
+    apiKey: 'AIzaSyBo_4y_75LXXxCo3FGdi8zgwflbw6_BIe0',
+    appId: '1:16468586993:android:fa18372726a0bae0245450',
+    messagingSenderId: '16468586993',
+    projectId: 'antap-ba5f2',
+    storageBucket: 'antap-ba5f2.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDN0622xpTnb2MJ5v6rARV4-mKmzn1zkqg',
-    appId: '1:381234441271:ios:d5619324d03e013bc523b2',
-    messagingSenderId: '381234441271',
-    projectId: 'antap-b365b',
-    storageBucket: 'antap-b365b.appspot.com',
-    iosClientId: '381234441271-4o0iit69qph4ioojckkfvgpk8fg98vs2.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBWnbSSneHATdkWHSaLI_Xlt2UOkypd5Hw',
+    appId: '1:16468586993:ios:86f54bf4afa8ca4a245450',
+    messagingSenderId: '16468586993',
+    projectId: 'antap-ba5f2',
+    storageBucket: 'antap-ba5f2.appspot.com',
+    iosClientId: '16468586993-db22o7k3k0svehhklgq1rcas42fe6m1h.apps.googleusercontent.com',
     iosBundleId: 'com.example.antap',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDN0622xpTnb2MJ5v6rARV4-mKmzn1zkqg',
-    appId: '1:381234441271:ios:bd9ef9dc41980ea4c523b2',
-    messagingSenderId: '381234441271',
-    projectId: 'antap-b365b',
-    storageBucket: 'antap-b365b.appspot.com',
-    iosClientId: '381234441271-1iie41khm8eaeilaedgi9ivslqqkkqq3.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBWnbSSneHATdkWHSaLI_Xlt2UOkypd5Hw',
+    appId: '1:16468586993:ios:53627bb1c86d05a3245450',
+    messagingSenderId: '16468586993',
+    projectId: 'antap-ba5f2',
+    storageBucket: 'antap-ba5f2.appspot.com',
+    iosClientId: '16468586993-punaujqqcc8d0avtvt20jgkaenhkcf3s.apps.googleusercontent.com',
     iosBundleId: 'com.example.antap.RunnerTests',
   );
 }

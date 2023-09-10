@@ -15,6 +15,7 @@ class MapSection extends StatefulWidget {
 }
 
 class _MapSectionState extends State<MapSection> {
+
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 

@@ -17,15 +17,24 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,40 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAIu3CWvQ9eNujSQ63uxd2lXWgyErrVRM4',
-    appId: '1:16468586993:web:3e3b118b6649713c245450',
-    messagingSenderId: '16468586993',
-    projectId: 'antap-ba5f2',
-    authDomain: 'antap-ba5f2.firebaseapp.com',
-    storageBucket: 'antap-ba5f2.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBo_4y_75LXXxCo3FGdi8zgwflbw6_BIe0',
-    appId: '1:16468586993:android:fa18372726a0bae0245450',
+    appId: '1:16468586993:android:4f5dc0f5a2b2db4b245450',
     messagingSenderId: '16468586993',
     projectId: 'antap-ba5f2',
     storageBucket: 'antap-ba5f2.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBWnbSSneHATdkWHSaLI_Xlt2UOkypd5Hw',
-    appId: '1:16468586993:ios:86f54bf4afa8ca4a245450',
-    messagingSenderId: '16468586993',
-    projectId: 'antap-ba5f2',
-    storageBucket: 'antap-ba5f2.appspot.com',
-    iosClientId: '16468586993-db22o7k3k0svehhklgq1rcas42fe6m1h.apps.googleusercontent.com',
-    iosBundleId: 'com.example.antap',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBWnbSSneHATdkWHSaLI_Xlt2UOkypd5Hw',
-    appId: '1:16468586993:ios:53627bb1c86d05a3245450',
-    messagingSenderId: '16468586993',
-    projectId: 'antap-ba5f2',
-    storageBucket: 'antap-ba5f2.appspot.com',
-    iosClientId: '16468586993-punaujqqcc8d0avtvt20jgkaenhkcf3s.apps.googleusercontent.com',
-    iosBundleId: 'com.example.antap.RunnerTests',
   );
 }

@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   static const List<Widget> _pages = [
     HomePage(),
     PostScreen(),
-   // MapScreen(),
+    MapScreen(),
     //CustomizeScreen(address: address)
   ];
 

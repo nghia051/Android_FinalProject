@@ -5,11 +5,13 @@ import 'package:antap/screens/auth/login_screen.dart';
 import 'package:antap/screens/auth/signup_screen.dart';
 import 'package:antap/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:antap/screens/map/test_popup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
+  // runApp(const MaterialApp(home: ExampleApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,10 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           textTheme: const TextTheme(
-            bodyMedium: TextStyle(
-              fontFamily: 'Ubuntu',
-            ),
-          )),
+        bodyMedium: TextStyle(
+          fontFamily: 'Ubuntu',
+        ),
+      )),
       initialRoute: HomeScreen.id,
       routes: {
         HomeScreen.id: (context) => HomeScreen(),

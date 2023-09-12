@@ -15,7 +15,6 @@ class MapSection extends StatefulWidget {
 }
 
 class _MapSectionState extends State<MapSection> {
-
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -23,14 +22,18 @@ class _MapSectionState extends State<MapSection> {
     target: LatLng(10.7605, 106.6818),
     zoom: 17,
   );
+
+  // kGooglePlex
+  LatLng currentPosition = const LatLng(37.42796133580664, -122.085749655962);
   Set<Marker> markers = {};
 
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
+    // _getUserLocation();
     setRestaurantMarker();
     setCurrentLocation();
-    super.initState();
   }
 
   @override
@@ -40,10 +43,12 @@ class _MapSectionState extends State<MapSection> {
         mapType: MapType.normal,
         markers: markers,
         zoomControlsEnabled: false,
-        initialCameraPosition: _hcmusPos,
+        initialCameraPosition: CameraPosition(
+          target: currentPosition,
+          zoom: 17,
+        ),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-          controller.showMarkerInfoWindow(const MarkerId('currentLocation'));
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -53,6 +58,15 @@ class _MapSectionState extends State<MapSection> {
       ),
     );
   }
+
+  // void _getUserLocation() async {
+  //   var position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+
+  //   setState(() {
+  //     currentPosition = LatLng(position.latitude, position.longitude);
+  //   });
+  // }
 
   Future<void> setCurrentLocation() async {
     Position position = await _determinePosition();
@@ -127,8 +141,8 @@ class _MapSectionState extends State<MapSection> {
       return Future.error('Location permissions are permanently denied');
     }
 
-    Position position = await Geolocator.getCurrentPosition();
-
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 }

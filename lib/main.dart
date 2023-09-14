@@ -5,7 +5,7 @@ import 'package:antap/screens/auth/login_screen.dart';
 import 'package:antap/screens/auth/signup_screen.dart';
 import 'package:antap/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:antap/screens/map/test_popup.dart';
+import 'package:antap/screens/map/pop_up/popup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Ubuntu',
         ),
       )),
-      initialRoute: HomeScreen.id,
+      initialRoute: MainScreen.id,
       routes: {
         HomeScreen.id: (context) => HomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),

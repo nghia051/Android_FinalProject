@@ -1,6 +1,8 @@
-import 'package:antap/models/post.dart';
+import 'package:antap/models/image_post.dart';
 import 'package:antap/screens/posts/components/post_comment_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/post.dart';
 
 class PostReactWidget extends StatefulWidget {
   final Post post;
@@ -22,11 +24,11 @@ class _PostReactWidgetState extends State<PostReactWidget> {
             IconButton(
               padding: EdgeInsets.zero,
               icon: Icon(
-                (widget.isReact == 0) ? Icons.favorite_border : Icons.favorite,
-                color: Colors.white,
-                size: 30
-              ),
-
+                  (widget.isReact == 0)
+                      ? Icons.favorite_border
+                      : Icons.favorite,
+                  color: Colors.white,
+                  size: 30),
               onPressed: () {
                 setState(() {
                   widget.isReact = 1 - widget.isReact;
@@ -35,12 +37,8 @@ class _PostReactWidgetState extends State<PostReactWidget> {
             ),
             IconButton(
               padding: EdgeInsets.zero,
-              icon: const Icon(
-                Icons.chat_bubble_outline,
-                color: Colors.white,
-                size: 30
-              ),
-
+              icon: const Icon(Icons.chat_bubble_outline,
+                  color: Colors.white, size: 30),
               onPressed: () {
                 setState(() {
                   showDialog(
@@ -54,14 +52,9 @@ class _PostReactWidgetState extends State<PostReactWidget> {
             )
           ],
         ),
-        Text(
-          "Có ${widget.post.favorite} lượt thích",
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w600
-          )
-        )
+        Text("Có ${widget.post.getFavorite()} lượt thích",
+            style: const TextStyle(
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600))
       ],
     );
   }

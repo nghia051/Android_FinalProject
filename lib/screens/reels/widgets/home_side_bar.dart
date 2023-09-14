@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:antap/models/video.dart';
+import 'package:antap/models/video_post.dart';
 
 class HomeSideBar extends StatefulWidget {
   const HomeSideBar({super.key, required this.video});
 
-  final Video video;
+  final VideoPost video;
 
   @override
   State<HomeSideBar> createState() => _HomeSideBarState();
@@ -47,9 +47,9 @@ class _HomeSideBarState extends State<HomeSideBar>
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           _profileImageButton(widget.video.postedBy.profileImageUrl),
-          _sideBarItem(Icons.favorite, widget.video.likes, style),
-          _sideBarItem(Icons.comment, widget.video.comments, style),
-          _sideBarItem(Icons.share, 'Share', style),
+          _favoriteItem(Icons.favorite, widget.video.favorite, style),
+          _commentItem(Icons.comment, widget.video.getListComment().length, style),
+          // _sideBarItem(Icons.share, 'Share', style),
           AnimatedBuilder(
             animation: _animationController,
             child: Stack(
@@ -83,7 +83,7 @@ class _HomeSideBarState extends State<HomeSideBar>
     );
   }
 
-  _sideBarItem(IconData iconData, String label, TextStyle style) {
+  _commentItem(IconData iconData, int label, TextStyle style) {
     return Column(
       children: [
         Icon(
@@ -95,7 +95,26 @@ class _HomeSideBarState extends State<HomeSideBar>
           height: 5,
         ),
         Text(
-          label,
+          '$label',
+          style: style,
+        ),
+      ],
+    );
+  }
+
+  _favoriteItem(IconData iconData, int label, TextStyle style) {
+    return Column(
+      children: [
+        Icon(
+          iconData,
+          color: Colors.white.withOpacity(0.9),
+          size: 40,
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          '$label',
           style: style,
         ),
       ],

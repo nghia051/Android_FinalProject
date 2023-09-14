@@ -15,7 +15,7 @@ class XenPopupCard extends StatelessWidget {
   /// The padding for body
   ///
   /// [Default] : 20
-  /// 
+  ///
   final double? padding;
 
   /// The top part of the card
@@ -80,18 +80,19 @@ class XenPopupCard extends StatelessWidget {
         color: cardBgColor ?? Colors.white,
         child: Stack(
           children: [
-            // body
-            Padding(
-                padding: EdgeInsets.only(
-                    top: appBar == null ? 20 : 80,
-                    bottom: padding ?? 20,
-                    left: padding ?? 20,
-                    right: padding ?? 20),
-                child: body),
             // appbar
             Align(
                 alignment: Alignment.topCenter,
                 child: appBar ?? const SizedBox()),
+            // body
+            Padding(
+                padding: EdgeInsets.only(
+                  top: appBar == null ? 20 : 50,
+                  bottom: padding ?? 20,
+                  // left: padding ?? 20,
+                  // right: padding ?? 20
+                ),
+                child: body),
             // gutter
             Align(
                 alignment: Alignment.bottomCenter,

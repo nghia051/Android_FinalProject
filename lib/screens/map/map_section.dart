@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:antap/models/restaurant.dart';
+import 'package:antap/src/appbar.dart';
+import 'package:antap/src/card.dart';
+import 'package:antap/src/gutter.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:antap/screens/map/test_popup.dart';
 
 class MapSection extends StatefulWidget {
   const MapSection({super.key});
@@ -18,39 +22,82 @@ class _MapSectionState extends State<MapSection> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
+  // APP BAR
+  //
+  // [XenCardAppBar]
+  XenCardAppBar appBar = const XenCardAppBar(
+    child: Text(
+      "app bar",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+    ),
+    // To remove shadow from appbar
+    shadow: BoxShadow(color: Colors.transparent),
+  );
+
+  // GUTTER
+  //
+  // [XenCardGutter]
+  XenCardGutter gutter = const XenCardGutter(
+    child: Padding(
+      padding: EdgeInsets.all(8.0),
+      child: CustomButton(text: "close"),
+    ),
+  );
+
   static const CameraPosition _hcmusPos = CameraPosition(
     target: LatLng(10.7605, 106.6818),
     zoom: 17,
   );
+
+  Widget? restaurantInfoWindow;
+
+  // kGooglePlex
+  LatLng currentPosition = const LatLng(37.42796133580664, -122.085749655962);
   Set<Marker> markers = {};
 
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
+    // currentPosition = const LatLng(37.42796133580664, -122.085749655962);
+    // _getUserLocation();
     setRestaurantMarker();
     setCurrentLocation();
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        markers: markers,
-        zoomControlsEnabled: false,
-        initialCameraPosition: _hcmusPos,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-          controller.showMarkerInfoWindow(const MarkerId('currentLocation'));
-        },
+    return Stack(children: [
+      Scaffold(
+        body: GoogleMap(
+          mapType: MapType.normal,
+          markers: markers,
+          zoomControlsEnabled: false,
+          initialCameraPosition: CameraPosition(
+            target: currentPosition,
+            zoom: 17,
+          ),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: setCurrentLocation,
+          label: const Text("Now"),
+          icon: const Icon(Icons.location_history),
+        ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: setCurrentLocation,
-        label: const Text("Now"),
-        icon: const Icon(Icons.location_history),
-      ),
-    );
+      if (restaurantInfoWindow != null) restaurantInfoWindow!,
+    ]);
+  }
+
+  void _getUserLocation() async {
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    setState(() {
+      currentPosition = LatLng(position.latitude, position.longitude);
+    });
   }
 
   Future<void> setCurrentLocation() async {
@@ -76,6 +123,23 @@ class _MapSectionState extends State<MapSection> {
     setState(() {});
   }
 
+  void showWidget(Restaurant restaurant) {
+    setState(() {
+      showDialog(
+        context: context,
+        builder: (builder) => XenPopupCard(
+          appBar: appBar,
+          gutter: gutter,
+          body: ListView(
+            children: const [
+              Text("body"),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
   void setRestaurantMarker() {
     List<Restaurant> restaurants = getRestaurantList();
 
@@ -84,6 +148,9 @@ class _MapSectionState extends State<MapSection> {
           markerId: MarkerId(restaurants[i].id),
           infoWindow: InfoWindow(title: restaurants[i].name),
           position: restaurants[i].location,
+          onTap: () {
+            showWidget(restaurants[i]);
+          },
           icon: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueGreen,
           )));
@@ -126,8 +193,8 @@ class _MapSectionState extends State<MapSection> {
       return Future.error('Location permissions are permanently denied');
     }
 
-    Position position = await Geolocator.getCurrentPosition();
-
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 }

@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Expanded(
                     child: Container(
-                      height: MediaQuery.of(context).size.height / 1.75,
+                      height: MediaQuery.of(context).size.height / 2.2,
                       child: HomeSideBar(video: videos[index]),
                     ),
                   ),

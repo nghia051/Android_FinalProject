@@ -1,5 +1,7 @@
-import 'package:antap/models/post.dart';
+import 'package:antap/models/image_post.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/post.dart';
 
 class PostCommentWidget extends StatefulWidget {
   final Post post;
@@ -14,23 +16,18 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   Widget build(BuildContext context) {
     return Dialog(
       elevation: 0, // Tắt độ bóng của dialog
-      backgroundColor: Colors.black, 
+      backgroundColor: Colors.black,
       child: Container(
         height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width, 
+        width: MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Bình luận',
-              style: TextStyle(
-                color: Colors.white
-              )
-            ),
+            const Text('Bình luận', style: TextStyle(color: Colors.white)),
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: widget.post.listComment.length,
+                itemCount: widget.post.getListComment().length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 15),
@@ -42,23 +39,17 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           size: 40,
                           color: Colors.white,
                         ),
-                        const SizedBox(width: 10,),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.post.listComment[index].user,
-                                style: const TextStyle(
-                                  color: Colors.white
-                                )
-                              ),
-                              Text(
-                                widget.post.listComment[index].content,
-                                style: const TextStyle(
-                                  color: Colors.white
-                                )
-                              ),
+                              Text(widget.post.getListComment()[index].user,
+                                  style: const TextStyle(color: Colors.white)),
+                              Text(widget.post.getListComment()[index].content,
+                                  style: const TextStyle(color: Colors.white)),
                             ],
                           ),
                         )
@@ -80,16 +71,17 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     size: 40,
                     color: Colors.white,
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
-                    child: TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Viết bình luận...',
-                        hintStyle: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  )
+                      child: TextField(
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Viết bình luận...',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                  ))
                 ],
               ),
             )

@@ -105,7 +105,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 try {
                                   await _auth.createUserWithEmailAndPassword(
                                       email: _email, password: _password);
-
                                   if (context.mounted) {
                                     signUpAlert(
                                       context: context,

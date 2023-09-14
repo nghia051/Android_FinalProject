@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     HomePage(),
     PostScreen(),
     MapScreen(),
-    //CustomizeScreen(address: address)
+    CustomizeScreen(),
   ];
 
   void _onIconTapped(int index) {

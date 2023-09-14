@@ -1,5 +1,6 @@
 import 'package:antap/screens/image_video_post/customize_screen.dart';
 import 'package:antap/screens/map/map_screen.dart';
+import 'package:antap/screens/map/pop_up/popup_screen.dart';
 import 'package:antap/screens/posts/post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/reels/widgets/custom_bottom_navigation_bar.dart';
@@ -20,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     HomePage(),
     PostScreen(),
     MapScreen(),
+    PopUp(),
     //CustomizeScreen(address: address)
   ];
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:video_player/video_player.dart';
 
-import 'package:antap/models/video.dart';
+import 'package:antap/models/video_post.dart';
 
 class VideoTile extends StatefulWidget {
   const VideoTile(
@@ -11,7 +11,7 @@ class VideoTile extends StatefulWidget {
       required this.snappedPageIndex,
       required this.currentIndex});
 
-  final Video video;
+  final VideoPost video;
   final int snappedPageIndex;
   final int currentIndex;
 

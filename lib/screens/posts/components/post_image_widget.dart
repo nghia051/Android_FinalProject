@@ -1,8 +1,8 @@
-import 'package:antap/models/post.dart';
+import 'package:antap/models/image_post.dart';
 import 'package:flutter/material.dart';
 
 class PostImageWidget extends StatefulWidget {
-  final Post post;
+  final ImagePost post;
   int curImage = 0;
 
   PostImageWidget({required this.post, super.key});
@@ -34,7 +34,9 @@ class _PostImageWidgetState extends State<PostImageWidget> {
               ),
               onPressed: () {
                 setState(() {
-                  widget.curImage = (widget.curImage - 1 + widget.post.listImageUrl.length) % widget.post.listImageUrl.length;
+                  widget.curImage =
+                      (widget.curImage - 1 + widget.post.listImageUrl.length) %
+                          widget.post.listImageUrl.length;
                 });
               },
             ),
@@ -47,13 +49,14 @@ class _PostImageWidgetState extends State<PostImageWidget> {
               ),
               onPressed: () {
                 setState(() {
-                  widget.curImage = (widget.curImage + 1) % widget.post.listImageUrl.length;
+                  widget.curImage =
+                      (widget.curImage + 1) % widget.post.listImageUrl.length;
                 });
               },
             ),
           ],
         ),
-        Positioned( 
+        Positioned(
           top: 10,
           right: 10,
           child: Container(
@@ -63,11 +66,10 @@ class _PostImageWidgetState extends State<PostImageWidget> {
               borderRadius: BorderRadius.circular(10.0), // Độ bo góc
             ),
             child: Text(
-              "${widget.curImage + 1}/${widget.post.listImageUrl.length}",
-              style: const TextStyle(
-                color: Colors.white,
-              )
-            ),
+                "${widget.curImage + 1}/${widget.post.listImageUrl.length}",
+                style: const TextStyle(
+                  color: Colors.white,
+                )),
           ),
         )
       ],

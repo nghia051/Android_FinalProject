@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:antap/models/video.dart';
+import 'package:antap/models/video_post.dart';
 
 class HomeSideBar extends StatefulWidget {
   const HomeSideBar({super.key, required this.video});
 
-  final Video video;
+  final VideoPost video;
 
   @override
   State<HomeSideBar> createState() => _HomeSideBarState();

@@ -2,8 +2,10 @@ import 'package:antap/models/image_post.dart';
 import 'package:antap/screens/posts/components/post_comment_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/post.dart';
+
 class PostReactWidget extends StatefulWidget {
-  final ImagePost post;
+  final Post post;
   int isReact = 0;
   PostReactWidget({required this.post, super.key});
 
@@ -50,7 +52,7 @@ class _PostReactWidgetState extends State<PostReactWidget> {
             )
           ],
         ),
-        Text("Có ${widget.post.favorite} lượt thích",
+        Text("Có ${widget.post.getFavorite()} lượt thích",
             style: const TextStyle(
                 color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600))
       ],

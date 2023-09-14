@@ -1,20 +1,6 @@
 import 'package:antap/models/post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Review {
-  final String title;
-  final String content;
-
-  Review({required this.title, required this.content});
-}
-
-class Comment {
-  final String user;
-  final String content;
-
-  Comment({required this.user, required this.content});
-}
-
 class ImagePost extends Post {
   final String coverUrl;
   final List<String> listImageUrl;
@@ -32,6 +18,26 @@ class ImagePost extends Post {
       required this.review,
       required this.favorite,
       required this.listComment});
+
+  List getListComment() {
+    return listComment;
+  }
+
+  int getFavorite() {
+    return favorite;
+  }
+
+  Review getReview() {
+    return review;
+  }
+
+  DateTime getDate() {
+    return postDate;
+  }
+
+  int getRate() {
+    return rate;
+  }
 
   factory ImagePost.fromFireStore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

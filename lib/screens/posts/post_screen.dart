@@ -5,6 +5,8 @@ import 'package:antap/screens/posts/components/post_react_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/post.dart';
+
 String getSubContent(String text, int lim) {
   if (text.length <= lim) {
     return text;

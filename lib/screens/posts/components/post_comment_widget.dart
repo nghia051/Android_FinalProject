@@ -1,8 +1,10 @@
 import 'package:antap/models/image_post.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/post.dart';
+
 class PostCommentWidget extends StatefulWidget {
-  final ImagePost post;
+  final Post post;
   const PostCommentWidget({required this.post, super.key});
 
   @override
@@ -25,7 +27,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: widget.post.listComment.length,
+                itemCount: widget.post.getListComment().length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 15),
@@ -44,9 +46,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.post.listComment[index].user,
+                              Text(widget.post.getListComment()[index].user,
                                   style: const TextStyle(color: Colors.white)),
-                              Text(widget.post.listComment[index].content,
+                              Text(widget.post.getListComment()[index].content,
                                   style: const TextStyle(color: Colors.white)),
                             ],
                           ),

@@ -27,7 +27,7 @@ class VideoDetail extends StatelessWidget {
             height: 8,
           ),
           ExpandableText(
-            video.caption,
+            video.getReview().content,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 13, color: Colors.white, fontWeight: FontWeight.w400),
             expandText: 'more',

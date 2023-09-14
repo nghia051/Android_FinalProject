@@ -47,7 +47,7 @@ class _HomeSideBarState extends State<HomeSideBar>
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           _profileImageButton(widget.video.postedBy.profileImageUrl),
-          _sideBarItem(Icons.favorite, widget.video.likes, style),
+          _favoriteItem(Icons.favorite, widget.video.favorite, style),
           _sideBarItem(Icons.comment, widget.video.comments, style),
           _sideBarItem(Icons.share, 'Share', style),
           AnimatedBuilder(
@@ -96,6 +96,25 @@ class _HomeSideBarState extends State<HomeSideBar>
         ),
         Text(
           label,
+          style: style,
+        ),
+      ],
+    );
+  }
+
+  _favoriteItem(IconData iconData, int label, TextStyle style) {
+    return Column(
+      children: [
+        Icon(
+          iconData,
+          color: Colors.white.withOpacity(0.9),
+          size: 40,
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          '$label',
           style: style,
         ),
       ],

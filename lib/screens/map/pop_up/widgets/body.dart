@@ -1,4 +1,4 @@
-import 'package:antap/models/image_post.dart';
+import 'package:antap/models/post.dart';
 import 'package:antap/screens/posts/components/post_image_widget.dart';
 import 'package:antap/screens/posts/components/post_info_widget.dart';
 import 'package:antap/screens/posts/components/post_react_widget.dart';
@@ -49,20 +49,20 @@ class _NewPostScreenState extends State<NewPostScreen> {
                                 height: 10,
                               ),
                               Text(
-                                listPost[index].review.title,
+                                listPost[index].getReview().title,
                                 style: const TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white),
                               ),
                               Text(
-                                listPost[index].review.content,
+                                listPost[index].getReview().content,
                                 style: const TextStyle(
                                     fontSize: 14, color: Colors.white),
                               )
                             ]),
                       ),
-                      PostImageWidget(post: listPost[index]),
+                      // PostImageWidget(post: listPost[index]),
                       Padding(
                           padding: const EdgeInsets.all(10),
                           child: PostReactWidget(post: listPost[index]))

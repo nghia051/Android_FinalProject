@@ -1,8 +1,10 @@
 import 'package:antap/models/image_post.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/post.dart';
+
 class PostInfoWidget extends StatefulWidget {
-  final ImagePost post;
+  final Post post;
   const PostInfoWidget({required this.post, super.key});
 
   @override
@@ -30,7 +32,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: Colors.white)),
-            Text(widget.post.postDate.toString(),
+            Text(widget.post.getDate().toString(),
                 style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
@@ -41,7 +43,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
         Row(
             children: List.generate(5, (index) {
           return Icon(
-            (index < widget.post.rate) ? Icons.star : Icons.star_border,
+            (index < widget.post.getRate()) ? Icons.star : Icons.star_border,
             color: Colors.yellow,
           );
         }))

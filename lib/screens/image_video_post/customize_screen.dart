@@ -1,12 +1,19 @@
 import 'dart:io';
-import 'package:antap/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:antap/screens/image_video_post/customize_image_screen.dart';
-import 'package:antap/screens/image_video_post/customize_video_screen.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart' as lot;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:antap/models/restaurant.dart';
+import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class CustomizeScreen extends StatefulWidget {
-  CustomizeScreen({Key? key, required this.address});
-  String address;
+   const CustomizeScreen({Key? key}) : super(key: key);
   static String id = 'customize_screen';
   @override
   State<CustomizeScreen> createState() => _CustomizeScreenState();
@@ -14,9 +21,33 @@ class CustomizeScreen extends StatefulWidget {
 
 class _CustomizeScreenState extends State<CustomizeScreen> {
 
+
+  String address = "";
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+  XFile? image;
+  String? fileName;
+  int rating = 1;
+
+  // Google Map Api
+  late GoogleMapController googleMapController;
+  late CameraPosition? initialCameraPosition;
+  Set<Marker> markers = {};
+
+  // Firebase
+  String? id;
+  LatLng? latLng;
+  String? imageUrl;
+  TextEditingController _resNameController = TextEditingController();
+  Restaurant? restaurant;
+  CollectionReference resData = FirebaseFirestore.instance.collection('restaurants');
+
+
   @override
   void initState() {
     super.initState();
+    _getAndDisplayAddress();
+    id = Uuid().v1();
   }
 
   @override
@@ -24,103 +55,238 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     super.dispose();
   }
 
+  Future<void> _getAndDisplayAddress() async {
+    Position position = await _determinePosition();
+    await GetAddressFromLatLong(position);
+    setState(() {
+      address;
+    });
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+    } 
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> GetAddressFromLatLong(Position position)async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks);
+    Placemark place = placemarks[0];
+    address = '${place.street}, ${place.administrativeArea}, ${place.country}';
+    latLng = LatLng(position.latitude, position.longitude);
+    initialCameraPosition = CameraPosition(target: latLng!, zoom: 14);
+
+    markers.add(Marker(
+      markerId: const MarkerId('currentLocation'),
+      infoWindow: const InfoWindow(title: 'You'),
+      position: LatLng(position.latitude, position.longitude),
+      icon: BitmapDescriptor.defaultMarkerWithHue(
+        BitmapDescriptor.hueRed,
+      ),
+    ));
+
+    setState(()  {
+    });
+  }
+
+  
+  chooseImage() async {
+    image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        fileName = image!.path.split('/').last;
+        _image = File(image!.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       home: Scaffold(
-        body: Center(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.3,
+          flexibleSpace: GestureDetector(
+            onTap: (){
+              chooseImage();
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              child: (_image == null) ? Image.asset(
+                'assets/images/restaurants/restaurant4.jpg',
+                fit: BoxFit.cover,
+              ) : Image.file(_image!, fit: BoxFit.cover),
+            ),
+          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
+        ),
+
+        body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+               Padding(
+                padding: EdgeInsets.only(right: 20), 
                 child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(color: Colors.black, width: 2),
-                  ),
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
+                  height: 80,
+                  child: Row(
                     children: [
-                      const Text(
-                        'Create new restaurant at:',
-                        style: TextStyle(
-                          color: Colors.black, 
-                          fontSize: 16.0, 
-                          fontWeight: FontWeight.bold,
-                        ),
+                      lot.Lottie.asset(
+                        "assets/lotties/animation_lm7kzx3s.json",
+                        width: 80,
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.address ?? "???",
-                        style: const TextStyle(
-                          color: Colors.black, // Màu chữ
-                          fontSize: 16.0, // Kích thước chữ
+                      (address == "") ? lot.Lottie.asset(
+                        "assets/lotties/animation_lm7jfzas.json",
+                        width: MediaQuery.of(context).size.width - 80 - 60,
+                      ) : Text(address),
+                    ],
+                  ),
+                ),
+              ),
+              (address != "") ? Center(
+                child: Container(
+                  decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(75)),
+                  height: 150,
+                  width: 150,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(75),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      heightFactor: 0.3,
+                      widthFactor: 2.5,
+                      child: GoogleMap(
+                        initialCameraPosition: initialCameraPosition!,
+                        markers: markers,
+                        zoomControlsEnabled: false,
+                        mapType: MapType.normal,
+                        onMapCreated: (GoogleMapController controller) {
+                          googleMapController = controller;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ) : SizedBox(
+                  height: 150,
+                  child: lot.Lottie.asset(
+                        "assets/lotties/MapLoading.json",
+                        width: 200,
+                      )
+                ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Container(
+                  height: 80,
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 15),
+                      lot.Lottie.asset(
+                        "assets/lotties/animation_lm7lv8je.json",
+                        width: 50,
+                      ),
+                      const SizedBox(width: 15),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 30 - 50 - 20,
+                        child: TextField(
+                          controller: _resNameController,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2.0,
+                              ),
+                            ),
+                            hintText: 'Restaurant name',
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
               ),
- 
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 300, height: 40,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    backgroundColor: kTextColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.deepOrange.shade400,
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, CustomizeImageScreen.id);
+                  onPressed: () async{
+                    // Upload image to firebase storage
+                    final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+                    try {
+                      await storage.ref('images/$fileName').putFile(_image!);
+                      firebase_storage.Reference ref = storage.ref('images/$fileName');
+                      imageUrl = await ref.getDownloadURL();
+                      print("Day ne: $imageUrl");
+                    } on firebase_core.FirebaseException catch (e) {
+                      print(e);
+                    }
+        
+                    // Upload restaurant to firebase firestore
+                    restaurant = Restaurant(id!, _resNameController.text, latLng!);
+                    await resData.doc('6cNmPHt3fqV1uzd9UslaHq9CGPi1').set({
+                        'id': restaurant!.id,
+                        'imageUrl' : imageUrl,
+                        'name': restaurant!.name,
+                        'latitude': restaurant!.location.latitude,
+                        'longtitude': restaurant!.location.longitude,
+                      },
+                      SetOptions(merge: true),
+                    ).then((value) => print("Upload to firestore successfully"),);
                   },
-                  child: const Row(
-                    children: [
-                      Icon(Icons.image_outlined, size: 30), 
-                      SizedBox(width: 50),
-                      Text(
-                        'New Image Post',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  )
+                  child: Text("Create"),
                 ),
               ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50), 
-                    backgroundColor:  kTextColor,
-                  ),
-                  onPressed: (){
-                    Navigator.pushNamed(context, CustomizeVideoScreen.id);
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(Icons.video_call_outlined, size: 30,), 
-                      SizedBox(width: 50),
-                      Text(
-                        'New Video Post',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  )
-                ),
-              ),
-              
             ],
-          )
+          ),
         ),
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+

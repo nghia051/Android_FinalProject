@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:antap/screens/auth/home_screen.dart';
 import 'package:antap/screens/auth/login_screen.dart';
 import 'package:antap/screens/auth/signup_screen.dart';
-import 'package:antap/main_screen.dart';
+import 'package:antap/screens/image_video_post/customize_screen.dart';
+import 'package:antap/screens/image_video_post/customize_image_screen.dart';
+import 'package:antap/screens/image_video_post/customize_video_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:antap/screens/map/pop_up/popup_screen.dart';
 
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           textTheme: const TextTheme(
-        bodyMedium: TextStyle(
+          bodyMedium: TextStyle(
           fontFamily: 'Ubuntu',
         ),
       )),
@@ -32,6 +34,8 @@ class MyApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         MainScreen.id: (context) => MainScreen(),
+        CustomizeImageScreen.id: (context) => CustomizeImageScreen(),
+        CustomizeVideoScreen.id: (context) => CustomizeVideoScreen(),
       },
     );
   }

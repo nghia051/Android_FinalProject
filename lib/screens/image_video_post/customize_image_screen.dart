@@ -157,21 +157,6 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
                       _image = null;
                     });
                   }
-
-                  if (image == null) return;
-                  String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-
-                  Reference referenceRoot = FirebaseStorage.instance.ref();
-                  Reference referenceDirImage = referenceRoot.child('images');
-
-                  Reference referenceImageToUpload = referenceDirImage.child(uniqueFileName);
-                  try {
-                    await referenceImageToUpload.putFile(File(image!.path));
-                    imageUrl = await referenceImageToUpload.getDownloadURL();
-                  }
-                  catch(e){
-                    
-                  }
                 
                 },
                 child: Container(

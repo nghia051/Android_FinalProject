@@ -7,7 +7,7 @@ import 'package:antap/src/gutter.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:antap/screens/map/test_popup.dart';
+import 'package:antap/screens/map/pop_up/popup_screen.dart';
 
 class MapSection extends StatefulWidget {
   const MapSection({super.key});
@@ -183,7 +183,6 @@ class _MapSectionState extends State<MapSection> {
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-
       if (permission == LocationPermission.denied) {
         return Future.error("Location permission denied");
       }

@@ -19,22 +19,27 @@ class ImagePost extends Post {
       required this.favorite,
       required this.listComment});
 
+  @override
   List getListComment() {
     return listComment;
   }
 
+  @override
   int getFavorite() {
     return favorite;
   }
 
+  @override
   Review getReview() {
     return review;
   }
 
+  @override
   DateTime getDate() {
     return postDate;
   }
 
+  @override
   int getRate() {
     return rate;
   }

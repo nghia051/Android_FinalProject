@@ -8,31 +8,35 @@ class VideoPost extends Post {
   final Review review;
   final String audioName;
   final int favorite;
-  final String comments;
   final DateTime postDate;
   final int rate;
   final List<Comment> listComment;
 
+  @override
   List getListComment() {
     return listComment;
   }
 
+  @override
   int getFavorite() {
     return favorite;
   }
 
+  @override
   Review getReview() {
     return review;
   }
 
+  @override
   DateTime getDate() {
     return postDate;
   }
 
+  @override
   int getRate() {
     return rate;
   }
 
   VideoPost(this.videoUrl, this.postedBy, this.review, this.audioName,
-      this.favorite, this.comments, this.postDate, this.rate, this.listComment);
+      this.favorite, this.postDate, this.rate, this.listComment);
 }

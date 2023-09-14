@@ -48,8 +48,8 @@ class _HomeSideBarState extends State<HomeSideBar>
         children: [
           _profileImageButton(widget.video.postedBy.profileImageUrl),
           _favoriteItem(Icons.favorite, widget.video.favorite, style),
-          _sideBarItem(Icons.comment, widget.video.comments, style),
-          _sideBarItem(Icons.share, 'Share', style),
+          _commentItem(Icons.comment, widget.video.getListComment().length, style),
+          // _sideBarItem(Icons.share, 'Share', style),
           AnimatedBuilder(
             animation: _animationController,
             child: Stack(
@@ -83,7 +83,7 @@ class _HomeSideBarState extends State<HomeSideBar>
     );
   }
 
-  _sideBarItem(IconData iconData, String label, TextStyle style) {
+  _commentItem(IconData iconData, int label, TextStyle style) {
     return Column(
       children: [
         Icon(
@@ -95,7 +95,7 @@ class _HomeSideBarState extends State<HomeSideBar>
           height: 5,
         ),
         Text(
-          label,
+          '$label',
           style: style,
         ),
       ],

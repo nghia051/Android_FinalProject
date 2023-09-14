@@ -1,4 +1,5 @@
 import 'package:antap/models/post.dart';
+import 'package:antap/screens/map/pop_up/widgets/video_app.dart';
 import 'package:antap/screens/posts/components/post_image_widget.dart';
 import 'package:antap/screens/posts/components/post_info_widget.dart';
 import 'package:antap/screens/posts/components/post_react_widget.dart';
@@ -63,6 +64,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                             ]),
                       ),
                       // PostImageWidget(post: listPost[index]),
+                      // VideoApp(),
                       Padding(
                           padding: const EdgeInsets.all(10),
                           child: PostReactWidget(post: listPost[index]))

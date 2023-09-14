@@ -1,6 +1,8 @@
 import 'package:antap/models/user.dart';
 
-class Video {
+import 'new_post.dart';
+
+class Video extends NewPost {
   final String videoUrl;
   final User postedBy;
   final String caption;

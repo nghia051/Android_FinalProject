@@ -110,7 +110,7 @@ class _PostScreenState extends State<PostScreen> {
       Column(
         children: List.generate(listPost.length, (index) {
           return Container(
-            color: Colors.black54,
+            color: Colors.black87,
             width: double.infinity,
             margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
             child: Column(

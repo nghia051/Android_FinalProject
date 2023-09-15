@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:antap/models/video_post.dart';
 
+import '../../posts/components/post_comment_widget.dart';
+
 class HomeSideBar extends StatefulWidget {
   const HomeSideBar({super.key, required this.video});
 
@@ -16,6 +18,8 @@ class HomeSideBar extends StatefulWidget {
 class _HomeSideBarState extends State<HomeSideBar>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+
+  late bool isFavourite = false;
 
   @override
   void initState() {
@@ -48,7 +52,8 @@ class _HomeSideBarState extends State<HomeSideBar>
         children: [
           _profileImageButton(widget.video.postedBy.profileImageUrl),
           _favoriteItem(Icons.favorite, widget.video.favorite, style),
-          _commentItem(Icons.comment, widget.video.getListComment().length, style),
+          _commentItem(
+              Icons.comment, widget.video.getListComment().length, style),
           // _sideBarItem(Icons.share, 'Share', style),
           AnimatedBuilder(
             animation: _animationController,
@@ -86,10 +91,22 @@ class _HomeSideBarState extends State<HomeSideBar>
   _commentItem(IconData iconData, int label, TextStyle style) {
     return Column(
       children: [
-        Icon(
-          iconData,
-          color: Colors.white.withOpacity(0.9),
-          size: 40,
+        IconButton(
+          icon: Icon(
+            iconData,
+            color: Colors.white.withOpacity(0.9),
+            size: 40,
+          ),
+          onPressed: () {
+            setState(() {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return PostCommentWidget(post: widget.video);
+                },
+              );
+            });
+          },
         ),
         SizedBox(
           height: 5,
@@ -105,10 +122,23 @@ class _HomeSideBarState extends State<HomeSideBar>
   _favoriteItem(IconData iconData, int label, TextStyle style) {
     return Column(
       children: [
-        Icon(
-          iconData,
-          color: Colors.white.withOpacity(0.9),
-          size: 40,
+        IconButton(
+          icon: Icon(
+            iconData,
+            color: isFavourite
+                ? Color.fromARGB(255, 255, 4, 0)
+                : Colors.white.withOpacity(0.9),
+            size: 40,
+          ),
+          onPressed: () {
+            setState(() {
+              isFavourite = !isFavourite;
+              if (isFavourite)
+                widget.video.favorite++;
+              else
+                widget.video.favorite--;
+            });
+          },
         ),
         SizedBox(
           height: 5,

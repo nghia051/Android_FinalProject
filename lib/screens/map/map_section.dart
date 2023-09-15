@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:antap/models/restaurant.dart';
+import 'package:antap/screens/map/pop_up/widgets/appbar.dart';
+import 'package:antap/screens/map/pop_up/widgets/body.dart';
+import 'package:antap/screens/map/pop_up/widgets/gutter.dart';
 import 'package:antap/src/appbar.dart';
 import 'package:antap/src/card.dart';
 import 'package:antap/src/gutter.dart';
@@ -22,34 +25,10 @@ class _MapSectionState extends State<MapSection> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  // APP BAR
-  //
-  // [XenCardAppBar]
-  XenCardAppBar appBar = const XenCardAppBar(
-    child: Text(
-      "app bar",
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-    ),
-    // To remove shadow from appbar
-    shadow: BoxShadow(color: Colors.transparent),
-  );
-
-  // GUTTER
-  //
-  // [XenCardGutter]
-  XenCardGutter gutter = const XenCardGutter(
-    child: Padding(
-      padding: EdgeInsets.all(8.0),
-      child: CustomButton(text: "close"),
-    ),
-  );
-
   static const CameraPosition _hcmusPos = CameraPosition(
     target: LatLng(10.7605, 106.6818),
     zoom: 17,
   );
-
-  Widget? restaurantInfoWindow;
 
   // kGooglePlex
   LatLng currentPosition = const LatLng(37.42796133580664, -122.085749655962);
@@ -87,7 +66,6 @@ class _MapSectionState extends State<MapSection> {
           icon: const Icon(Icons.location_history),
         ),
       ),
-      if (restaurantInfoWindow != null) restaurantInfoWindow!,
     ]);
   }
 
@@ -130,11 +108,7 @@ class _MapSectionState extends State<MapSection> {
         builder: (builder) => XenPopupCard(
           appBar: appBar,
           gutter: gutter,
-          body: ListView(
-            children: const [
-              Text("body"),
-            ],
-          ),
+          body: NewPostScreen(),
         ),
       );
     });

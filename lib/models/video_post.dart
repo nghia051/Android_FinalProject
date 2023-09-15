@@ -1,5 +1,7 @@
 import 'package:antap/models/user.dart';
+import 'package:flutter/material.dart';
 
+import '../screens/map/pop_up/widgets/video_app.dart';
 import 'post.dart';
 
 class VideoPost extends Post {
@@ -11,6 +13,12 @@ class VideoPost extends Post {
   final DateTime postDate;
   final int rate;
   final List<Comment> listComment;
+
+  Widget getImageVideo() {
+    return VideoPlayerScreen(
+      video: this,
+    );
+  }
 
   @override
   List getListComment() {

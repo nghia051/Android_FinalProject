@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Review {
   final String title;
   final String content;
@@ -12,26 +14,16 @@ class Comment {
   Comment({required this.user, required this.content});
 }
 
-List<Comment> emptyList = [];
+abstract class Post {
+  Widget getImageVideo();
 
-class Post {
-  List getListComment() {
-    return emptyList;
-  }
+  List getListComment();
 
-  int getFavorite() {
-    return 0;
-  }
+  int getFavorite();
 
-  Review getReview() {
-    return Review(title: '', content: '');
-  }
+  Review getReview();
 
-  DateTime getDate() {
-    return DateTime(2003, 05, 28);
-  }
+  DateTime getDate();
 
-  int getRate() {
-    return 5;
-  }
+  int getRate();
 }

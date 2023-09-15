@@ -63,8 +63,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                               )
                             ]),
                       ),
-                      // PostImageWidget(post: listPost[index]),
-                      // VideoApp(),
+                      listPost[index].getImageVideo(),
                       Padding(
                           padding: const EdgeInsets.all(10),
                           child: PostReactWidget(post: listPost[index]))

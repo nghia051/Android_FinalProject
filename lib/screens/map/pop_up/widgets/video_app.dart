@@ -1,18 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPlayer extends StatefulWidget {
-  const VideoPlayer({super.key});
+import '../../../../models/video_post.dart';
+
+class VideoPlayerScreen extends StatefulWidget {
+  const VideoPlayerScreen({super.key, required this.video});
+
+  final VideoPost video;
 
   @override
-  State<VideoPlayer> createState() => _VideoPlayerState();
+  State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
-class _VideoPlayerState extends State<VideoPlayer> {
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
+  late bool _isVideoPlaying = false;
 
   @override
   void initState() {
@@ -21,11 +27,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-      ),
-    );
+    _controller = VideoPlayerController.asset(widget.video.videoUrl);
 
     // Initialize the controller and store the Future for later use.
     _initializeVideoPlayerFuture = _controller.initialize();
@@ -42,6 +44,14 @@ class _VideoPlayerState extends State<VideoPlayer> {
     super.dispose();
   }
 
+  void _pausePlayVideo() {
+    _isVideoPlaying ? _controller.pause() : _controller.play();
+
+    setState(() {
+      _isVideoPlaying = !_isVideoPlaying;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -53,13 +63,31 @@ class _VideoPlayerState extends State<VideoPlayer> {
           return AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
             // Use the VideoPlayer widget to display the video.
-            // child: VideoPlayer(_controller),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                VideoPlayer(_controller),
+                IconButton(
+                  onPressed: () => {
+                    _pausePlayVideo(),
+                  },
+                  icon: Icon(
+                    Icons.play_arrow,
+                    color: Colors.white.withOpacity(_isVideoPlaying ? 0 : 0.5),
+                    size: 80,
+                  ),
+                ),
+              ],
+            ),
           );
         } else {
           // If the VideoPlayerController is still initializing, show a
           // loading spinner.
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: LoadingAnimationWidget.staggeredDotsWave(
+              color: Colors.pink,
+              size: 50,
+            ),
           );
         }
       },

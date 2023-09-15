@@ -88,7 +88,7 @@ class XenPopupCard extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.only(
                   top: appBar == null ? 20 : 50,
-                  bottom: padding ?? 20,
+                  bottom: padding ?? 50,
                   // left: padding ?? 20,
                   // right: padding ?? 20
                 ),

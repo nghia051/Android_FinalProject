@@ -17,8 +17,8 @@ final List<VideoPost> videos = [
         content: 'Quan an nay kha la ngon, moi nguoi nen thuong thuc no ne.'),
     10,
     [
-      Comment(user: "Hoang Viet", content: "Ngon vcl"),
-      Comment(user: "Tran Viet", content: "Cung duoc"),
+      Comment(user: currentUser, content: "Ngon vcl"),
+      Comment(user: currentUser, content: "Cung duoc"),
     ],
     'audioName',
   ),
@@ -52,24 +52,8 @@ List<Post> listPost = [
       postDate: DateTime(2023, 7, 15),
       favorite: 290903,
       listComment: [
-        Comment(user: "Hoang Viet", content: "Ngon vcl"),
-        Comment(user: "Tran Viet", content: "Cung duoc"),
-        Comment(user: "Nguyen Hoang", content: "Mlem mlem"),
-        Comment(user: "Dinh Tung", content: "Ha ha ha"),
-        Comment(
-            user: "Trung Nghia",
-            content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
-        Comment(user: "Con tho an co", content: "Ngon vcl"),
-        Comment(user: "Jack hht", content: "Cung duoc"),
-        Comment(user: "Fuck boy nghi phu", content: "Mlem mlem"),
-        Comment(user: "Boy Quang Nom", content: "Ha ha ha"),
-        Comment(
-            user: "Voi Dak Lak",
-            content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
-        Comment(user: "Rabbit", content: "Ngon vcl"),
-        Comment(user: "Chinh tri gia", content: "Cung duoc"),
-        Comment(user: "APCS", content: "Mlem mlem"),
-        Comment(user: "HCMUS", content: "Ha ha ha")
+        Comment(user: currentUser, content: "Nghia Viet dan"),
+        Comment(user: currentUser, content: "Nghia Viet non"),
       ]),
   VideoPost(
     'assets/v1.mp4',
@@ -81,8 +65,8 @@ List<Post> listPost = [
         content: 'Quan an nay kha la ngon, moi nguoi nen thuong thuc no ne.'),
     10,
     [
-      Comment(user: "Hoang Viet", content: "Ngon vcl"),
-      Comment(user: "Tran Viet", content: "Cung duoc"),
+      Comment(user: currentUser, content: "Nghia Viet ga"),
+      Comment(user: currentUser, content: "Noob tho"),
     ],
     'audioName',
   ),
@@ -108,24 +92,8 @@ List<ImagePost> listImagePost = [
       postDate: DateTime(2023, 7, 15),
       favorite: 290903,
       listComment: [
-        Comment(user: "Hoang Viet", content: "Ngon vcl"),
-        Comment(user: "Tran Viet", content: "Cung duoc"),
-        Comment(user: "Nguyen Hoang", content: "Mlem mlem"),
-        Comment(user: "Dinh Tung", content: "Ha ha ha"),
-        Comment(
-            user: "Trung Nghia",
-            content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
-        Comment(user: "Con tho an co", content: "Ngon vcl"),
-        Comment(user: "Jack hht", content: "Cung duoc"),
-        Comment(user: "Fuck boy nghi phu", content: "Mlem mlem"),
-        Comment(user: "Boy Quang Nom", content: "Ha ha ha"),
-        Comment(
-            user: "Voi Dak Lak",
-            content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
-        Comment(user: "Rabbit", content: "Ngon vcl"),
-        Comment(user: "Chinh tri gia", content: "Cung duoc"),
-        Comment(user: "APCS", content: "Mlem mlem"),
-        Comment(user: "HCMUS", content: "Ha ha ha")
+        Comment(user: currentUser, content: "Nghia Viet dan"),
+        Comment(user: currentUser, content: "Nghia Viet non"),
       ]),
   ImagePost(
       listImageUrl: [
@@ -144,12 +112,12 @@ List<ImagePost> listImagePost = [
       postDate: DateTime(2023, 7, 15),
       favorite: 23082002,
       listComment: [
-        Comment(user: "Hoang Viet", content: "Ngon vcl"),
-        Comment(user: "Tran Viet", content: "Cung duoc"),
-        Comment(user: "Nguyen Hoang", content: "Mlem mlem"),
-        Comment(user: "Dinh Tung", content: "Ha ha ha"),
+        Comment(user: currentUser, content: "Ngon vcl"),
+        Comment(user: currentUser, content: "Cung duoc"),
+        Comment(user: currentUser, content: "Mlem mlem"),
+        Comment(user: currentUser, content: "Ha ha ha"),
         Comment(
-            user: "Trung Nghia",
+            user: currentUser,
             content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
       ])
 ];

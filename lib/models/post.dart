@@ -9,7 +9,7 @@ class Review {
 }
 
 class Comment {
-  final String user;
+  final User user;
   final String content;
 
   Comment({required this.user, required this.content});

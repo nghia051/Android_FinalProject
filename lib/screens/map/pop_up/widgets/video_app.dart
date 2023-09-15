@@ -63,21 +63,25 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           return AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
             // Use the VideoPlayer widget to display the video.
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                VideoPlayer(_controller),
-                IconButton(
-                  onPressed: () => {
-                    _pausePlayVideo(),
-                  },
-                  icon: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white.withOpacity(_isVideoPlaying ? 0 : 0.5),
-                    size: 80,
+            child: GestureDetector(
+              onTap: () => {_pausePlayVideo()},
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  VideoPlayer(_controller),
+                  IconButton(
+                    onPressed: () => {
+                      _pausePlayVideo(),
+                    },
+                    icon: Icon(
+                      Icons.play_arrow,
+                      color:
+                          Colors.white.withOpacity(_isVideoPlaying ? 0 : 0.5),
+                      size: 80,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else {

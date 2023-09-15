@@ -24,8 +24,9 @@ class CustomerBottomNavigationBar extends StatelessWidget {
           children: [
             _bottomBarNavItem(0, 'Reels', style, Icons.home),
             _bottomBarNavItem(1, 'Posts', style, Icons.store),
-            _bottomBarNavItem(2, 'Location', style, Icons.location_on),
-            _bottomBarNavItem(3, 'Checkin', style, Icons.account_circle),
+            _bottomBarNavItem(2, 'Map', style, Icons.map),
+            _bottomBarNavItem(3, 'Check-in', style, Icons.location_on),
+            _bottomBarNavItem(4, 'Profile', style, Icons.account_circle),
           ],
         ),
       ),

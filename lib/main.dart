@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           textTheme: const TextTheme(
-          bodyMedium: TextStyle(
+        bodyMedium: TextStyle(
           fontFamily: 'Ubuntu',
         ),
       )),

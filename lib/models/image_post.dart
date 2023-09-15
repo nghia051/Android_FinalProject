@@ -1,5 +1,8 @@
 import 'package:antap/models/post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import '../screens/posts/components/post_image_widget.dart';
 
 class ImagePost extends Post {
   final String coverUrl;
@@ -18,6 +21,11 @@ class ImagePost extends Post {
       required this.review,
       required this.favorite,
       required this.listComment});
+
+  @override
+  Widget getImageVideo() {
+    return PostImageWidget(post: this);
+  }
 
   @override
   List getListComment() {

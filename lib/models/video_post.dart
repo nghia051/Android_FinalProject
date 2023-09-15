@@ -7,17 +7,26 @@ import 'post.dart';
 class VideoPost extends Post {
   String videoUrl;
   User postedBy;
-  Review review;
-  String audioName;
-  int favorite;
   DateTime postDate;
   int rate;
+  Review review;
+  int favorite;
   List<Comment> listComment;
+  String audioName;
 
+  VideoPost(this.videoUrl, this.postedBy, this.postDate, this.rate, this.review,
+      this.favorite, this.listComment, this.audioName);
+
+  @override
   Widget getImageVideo() {
     return VideoPlayerScreen(
       video: this,
     );
+  }
+
+  @override
+  User getUser() {
+    return postedBy;
   }
 
   @override
@@ -45,6 +54,8 @@ class VideoPost extends Post {
     return rate;
   }
 
-  VideoPost(this.videoUrl, this.postedBy, this.review, this.audioName,
-      this.favorite, this.postDate, this.rate, this.listComment);
+  @override
+  void updateFavorite(int val) {
+    favorite += val;
+  }
 }

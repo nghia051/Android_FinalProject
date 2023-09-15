@@ -34,10 +34,13 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.account_circle_outlined,
-                          size: 40,
-                          color: Colors.white,
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(widget.post
+                              .getListComment()[index]
+                              .user
+                              .profileImageUrl),
+                          radius: 17,
+                          // size: 40,
                         ),
                         const SizedBox(
                           width: 10,
@@ -46,8 +49,16 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.post.getListComment()[index].user,
-                                  style: const TextStyle(color: Colors.white)),
+                              Text(
+                                widget.post
+                                    .getListComment()[index]
+                                    .user
+                                    .username,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Text(widget.post.getListComment()[index].content,
                                   style: const TextStyle(color: Colors.white)),
                             ],

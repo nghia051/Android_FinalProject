@@ -32,6 +32,10 @@ class _PostReactWidgetState extends State<PostReactWidget> {
               onPressed: () {
                 setState(() {
                   widget.isReact = 1 - widget.isReact;
+                  if (widget.isReact == 1)
+                    widget.post.updateFavorite(1);
+                  else
+                    widget.post.updateFavorite(-1);
                 });
               },
             ),

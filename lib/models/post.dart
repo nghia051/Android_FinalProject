@@ -1,3 +1,4 @@
+import 'package:antap/models/user.dart';
 import 'package:flutter/material.dart';
 
 class Review {
@@ -8,7 +9,7 @@ class Review {
 }
 
 class Comment {
-  final String user;
+  final User user;
   final String content;
 
   Comment({required this.user, required this.content});
@@ -26,4 +27,8 @@ abstract class Post {
   DateTime getDate();
 
   int getRate();
+
+  User getUser();
+
+  void updateFavorite(int val);
 }

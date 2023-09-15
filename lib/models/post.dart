@@ -29,4 +29,6 @@ abstract class Post {
   int getRate();
 
   User getUser();
+
+  void updateFavorite(int val);
 }

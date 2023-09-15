@@ -53,4 +53,9 @@ class VideoPost extends Post {
   int getRate() {
     return rate;
   }
+
+  @override
+  void updateFavorite(int val) {
+    favorite += val;
+  }
 }

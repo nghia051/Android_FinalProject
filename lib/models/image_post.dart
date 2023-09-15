@@ -60,6 +60,11 @@ class ImagePost extends Post {
     return rate;
   }
 
+  @override
+  void updateFavorite(int val) {
+    favorite += val;
+  }
+
   // factory ImagePost.fromFireStore(
   //   DocumentSnapshot<Map<String, dynamic>> snapshot,
   //   SnapshotOptions? options,

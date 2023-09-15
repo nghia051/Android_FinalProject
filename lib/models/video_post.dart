@@ -5,14 +5,14 @@ import '../screens/map/pop_up/widgets/video_app.dart';
 import 'post.dart';
 
 class VideoPost extends Post {
-  final String videoUrl;
-  final User postedBy;
-  final Review review;
-  final String audioName;
-  final int favorite;
-  final DateTime postDate;
-  final int rate;
-  final List<Comment> listComment;
+  String videoUrl;
+  User postedBy;
+  Review review;
+  String audioName;
+  int favorite;
+  DateTime postDate;
+  int rate;
+  List<Comment> listComment;
 
   Widget getImageVideo() {
     return VideoPlayerScreen(

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import '../screens/posts/components/post_image_widget.dart';
 
 class ImagePost extends Post {
-  final String coverUrl;
-  final List<String> listImageUrl;
-  final DateTime postDate;
-  final int rate;
-  final Review review;
-  final int favorite;
-  final List<Comment> listComment;
+  String coverUrl;
+  List<String> listImageUrl;
+  DateTime postDate;
+  int rate;
+  Review review;
+  int favorite;
+  List<Comment> listComment;
 
   ImagePost(
       {required this.coverUrl,

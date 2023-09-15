@@ -4,7 +4,12 @@ import 'package:antap/models/video_post.dart';
 import '../models/post.dart';
 import '../models/image_post.dart';
 
-User currentUser = User('ttviet2805', 'https://picsum.photos/id/1062/400/400');
+User currentUser = User(
+  'ttviet2805@gmail.com',
+  'ttviet2805',
+  'https://picsum.photos/id/1062/400/400',
+  'Food critic is a person who explores restaurants and eateries, and introduces it to others. Food critics also review food and dining experiences across different places and share their opinion with their audience.',
+);
 
 final List<VideoPost> videos = [
   VideoPost(

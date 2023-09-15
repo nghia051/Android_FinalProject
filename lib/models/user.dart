@@ -1,6 +1,9 @@
 class User {
+  String email;
   String username;
   String profileImageUrl;
 
-  User(this.username, this.profileImageUrl);
+  String aboutUser;
+
+  User(this.email, this.username, this.profileImageUrl, this.aboutUser);
 }

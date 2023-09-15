@@ -1,3 +1,4 @@
+import 'package:antap/data/data.dart';
 import 'package:antap/models/image_post.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,8 @@ class PostCommentWidget extends StatefulWidget {
 }
 
 class _PostCommentWidgetState extends State<PostCommentWidget> {
+  TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -75,24 +78,38 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
               margin: const EdgeInsets.only(top: 5),
               padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
               width: double.infinity,
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(
-                    Icons.account_circle_outlined,
-                    size: 40,
-                    color: Colors.white,
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(currentUser.profileImageUrl),
+                    radius: 17,
+                    // size: 40,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
-                      child: TextField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: 'Viết bình luận...',
-                      hintStyle: TextStyle(color: Colors.white),
-                    ),
-                  ))
+                    child: TextField(
+                      controller: _controller,
+                      style: TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        hintText: 'Viết bình luận...',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    ), 
+                    onPressed: () {
+                      setState(() {
+                        widget.post.updateComment(Comment(user: currentUser, content: _controller.text));
+                        _controller.clear();
+                      });
+                    },
+                  )
                 ],
               ),
             )
@@ -100,5 +117,11 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

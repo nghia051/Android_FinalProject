@@ -58,4 +58,9 @@ class VideoPost extends Post {
   void updateFavorite(int val) {
     favorite += val;
   }
+
+  @override
+  void updateComment(Comment comment) {
+    listComment.add(comment);
+  }
 }

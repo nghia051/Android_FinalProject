@@ -31,4 +31,6 @@ abstract class Post {
   User getUser();
 
   void updateFavorite(int val);
+
+  void updateComment(Comment comment);
 }

@@ -64,6 +64,11 @@ class ImagePost extends Post {
   void updateFavorite(int val) {
     favorite += val;
   }
+  
+  @override
+  void updateComment(Comment comment) {
+    listComment.add(comment);
+  }
 
   // factory ImagePost.fromFireStore(
   //   DocumentSnapshot<Map<String, dynamic>> snapshot,

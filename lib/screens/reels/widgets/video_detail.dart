@@ -26,6 +26,17 @@ class VideoDetail extends StatelessWidget {
           SizedBox(
             height: 8,
           ),
+          Text(
+            '${video.review.title}',
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontSize: 17,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          SizedBox(
+            height: 1,
+          ),
           ExpandableText(
             video.getReview().content,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -36,6 +47,20 @@ class VideoDetail extends StatelessWidget {
             collapseOnTextTap: true,
             maxLines: 2,
             linkColor: Colors.grey,
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: List.generate(
+              5,
+              (index) {
+                return Icon(
+                  (index < video.getRate()) ? Icons.star : Icons.star_border,
+                  color: Colors.yellow,
+                );
+              },
+            ),
           ),
           SizedBox(
             height: 8,

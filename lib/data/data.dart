@@ -1,3 +1,4 @@
+import 'package:antap/models/restaurant.dart';
 import 'package:antap/models/user.dart';
 import 'package:antap/models/video_post.dart';
 

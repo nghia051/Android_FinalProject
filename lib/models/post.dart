@@ -1,3 +1,4 @@
+import 'package:antap/models/user.dart';
 import 'package:flutter/material.dart';
 
 class Review {
@@ -26,4 +27,6 @@ abstract class Post {
   DateTime getDate();
 
   int getRate();
+
+  User getUser();
 }

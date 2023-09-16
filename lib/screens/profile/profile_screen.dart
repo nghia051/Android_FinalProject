@@ -5,23 +5,6 @@ import '../../data/data.dart';
 import '../../models/post.dart';
 import '../../models/video_post.dart';
 
-VideoPost tmpVideoPost = VideoPost(
-  '1',
-  'assets/v1.mp4',
-  currentUser,
-  DateTime(2023, 7, 15),
-  3,
-  Review(
-      title: "Review quan an 1",
-      content: 'Quan an nay kha la ngon, moi nguoi nen thuong thuc no ne.'),
-  10,
-  [
-    Comment(user: currentUser, content: "Nghia Viet dan"),
-    Comment(user: currentUser, content: "Noob tho"),
-  ],
-  'audioName',
-);
-
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -29,34 +12,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference videoPost =
         FirebaseFirestore.instance.collection('videoPost');
-
-    dynamic getListMap(List<dynamic> items) {
-      if (items == null) {
-        return null;
-      }
-      List<Map<String, dynamic>> list = [];
-      items.forEach((element) {
-        list.add(element.toJson());
-      });
-      return list;
-    }
-
-    Future<void> addVideoPost() async {
-      return videoPost
-          .add({
-            'id': tmpVideoPost.id, // John Doe
-            'videoUrl': tmpVideoPost.videoUrl,
-            'postedBy': tmpVideoPost.postedBy.toJson(),
-            'postDate': tmpVideoPost.postDate,
-            'rate': tmpVideoPost.rate,
-            'review': tmpVideoPost.review.toJson(),
-            'favorite': tmpVideoPost.favorite,
-            'listComment': getListMap(tmpVideoPost.listComment),
-            'audioName': tmpVideoPost.audioName,
-          })
-          .then((value) => print("VideoPost Added"))
-          .catchError((error) => print("Failed to add video post: $error"));
-    }
 
     return Column(
       children: [
@@ -124,9 +79,7 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           FloatingActionButton.extended(
-                            onPressed: () async {
-                              addVideoPost();
-                            },
+                            onPressed: () {},
                             heroTag: 'logout',
                             elevation: 0,
                             label: const Text(

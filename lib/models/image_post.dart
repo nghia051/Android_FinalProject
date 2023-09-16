@@ -1,3 +1,4 @@
+import 'package:antap/data/data.dart';
 import 'package:antap/models/post.dart';
 import 'package:antap/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import '../screens/posts/components/post_image_widget.dart';
 class ImagePost extends Post {
   String id;
   List<String> listImageUrl;
-  User postedBy;
+  String postedBy;
   DateTime postDate;
   int rate;
   Review review;
@@ -36,7 +37,7 @@ class ImagePost extends Post {
   }
 
   @override
-  User getUser() {
+  String getUser() {
     return postedBy;
   }
 
@@ -75,37 +76,43 @@ class ImagePost extends Post {
     listComment.add(comment);
   }
 
-  // factory ImagePost.fromFireStore(
-  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
-  //   SnapshotOptions? options,
-  // ) {
-  //   final data = snapshot.data();
-  //   return ImagePost(
-  //       coverUrl: data?["coverUrl"],
-  //       listImageUrl: List<String>.from(data?["listImageUrl"]),
-  //       postDate: data?["postDate"],
-  //       rate: data?["rate"],
-  //       review: Review(
-  //           title: data?["review"]["title"],
-  //           content: data?["review"]["content"]),
-  //       favorite: data?["favorite"],
-  //       listComment: (data?["listComment"] as List<dynamic>).map((commentData) {
-  //         return Comment(
-  //           user: commentData["user"],
-  //           content: commentData["content"],
-  //         );
-  //       }).toList());
-  // }
+  
 
-  // Map<String, dynamic> toFireStore() {
-  //   return {
-  //     "coverUrl": coverUrl,
-  //     "listImageUrl": listImageUrl,
-  //     "postDate": postDate,
-  //     "rate": rate,
-  //     "review": {"title": review.title, "content": review.content},
-  //     "favorite": favorite,
-  //     "listComment": listComment
-  //   };
-  // }
+  @override
+  factory ImagePost.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return ImagePost(
+      id: data?["id"],
+      listImageUrl: List<String>.from(data?["listImageUrl"]),
+      postDate: data?["postDate"].toDate(),
+      postedBy: "Hoang Nghia Viet",
+      rate: data?["rate"],
+      review: Review(
+          title: data?["review"]["title"],
+          content: data?["review"]["content"]),
+      favorite: data?["favorite"],
+      listComment: (data?["listComment"] as List<dynamic>).map((commentData) {
+        return Comment(
+          user: "Hoang Nghia Viet",
+          content: commentData["content"],
+        );
+      }).toList());
+  }
+
+  @override
+  Map<String, dynamic> toFirestore() {
+    return {
+      "id": id,
+      "listImageUrl": listImageUrl,
+      "postedBy": postedBy,
+      "postDate": postDate,
+      "rate": rate,
+      "review": {"title": review.title, "content": review.content},
+      "favorite": favorite,
+      "listComment": listComment
+    };
+  }
 }

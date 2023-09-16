@@ -1,5 +1,6 @@
 import 'package:antap/models/image_post.dart';
 import 'package:antap/screens/posts/components/post_comment_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/post.dart';

@@ -8,6 +8,8 @@ import 'package:antap/screens/image_video_post/customize_image_screen.dart';
 import 'package:antap/screens/image_video_post/customize_video_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:antap/screens/map/pop_up/popup_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +23,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -39,5 +46,6 @@ class MyApp extends StatelessWidget {
         CustomizeVideoScreen.id: (context) => CustomizeVideoScreen(),
       },
     );
+  });
   }
 }

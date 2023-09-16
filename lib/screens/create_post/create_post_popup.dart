@@ -1,5 +1,5 @@
 import 'package:antap/screens/create_post/widgets/appbar.dart';
-import 'package:antap/screens/create_post/widgets/body.dart';
+import 'package:antap/screens/create_post/widgets/body copy.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/src/appbar.dart';
 import 'package:antap/src/gutter.dart';

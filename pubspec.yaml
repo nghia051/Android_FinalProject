@@ -1,10 +1,10 @@
 name: antap
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=2.19.4 <4.0.0'
+  sdk: ">=2.19.4 <4.0.0"
 
 dependencies:
   cloud_firestore: ^4.9.1
@@ -19,6 +19,7 @@ dependencies:
   video_player: ^2.7.1
   geolocator: ^10.0.0
   geocoding: ^2.1.0
+  curved_navigation_bar: 
   flutter:
     sdk: flutter
   firebase_storage: ^11.2.6
@@ -38,7 +39,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -48,6 +48,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/uploadFoodImageOnPost.png
     - assets/images/icons/facebook.png
     - assets/images/icons/google.png
     - assets/images/icons/linkedin.png
@@ -75,7 +76,6 @@ flutter:
         - asset: assets/fonts/Ubuntu-Regular.ttf
         - asset: assets/fonts/Ubuntu-Bold.ttf
 
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -87,5 +87,3 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-
-

@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/data.dart';
+import '../../models/post.dart';
+import '../../models/video_post.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference videoPost =
+        FirebaseFirestore.instance.collection('videoPost');
+
     return Column(
       children: [
         const Expanded(flex: 2, child: _TopPortion()),

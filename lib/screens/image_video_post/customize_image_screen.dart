@@ -5,6 +5,9 @@ import 'package:antap/screens/image_video_post/customize_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart' as lot;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:uuid/uuid.dart';
 
 
 class CustomizeImageScreen extends StatefulWidget{
@@ -15,12 +18,16 @@ class CustomizeImageScreen extends StatefulWidget{
 }
 
 class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
+  // Attribute of image post
+  String? id;
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  List<File?> listImageFiles = [];
+  int rating = 1;
+
   final ImagePicker _picker = ImagePicker();
-  File? _image;
   Color? buttonColor = Colors.grey;
-  XFile? image;
+  List<XFile?> listImages = [];
   String imageUrl = "";
 
   @override
@@ -28,15 +35,24 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
     super.initState();
     _titleController.addListener(updateButtonColor);
     _contentController.addListener(updateButtonColor);
+    id = Uuid().v1();
   }
 
   chooseImage() async {
-    image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _image = File(image!.path);
-      });
+    listImages.clear();
+    List<XFile>? selectedImages =  await _picker.pickMultiImage();
+    if (selectedImages.isNotEmpty){
+      listImages.addAll(selectedImages);
     }
+    if (listImages.isNotEmpty){
+      for (int i = 0; i < listImages.length; i++){
+        listImageFiles.add(File(listImages[i]!.path));
+      }
+    }
+    setState(() {
+      listImageFiles;
+    });
+
   }
 
   void updateButtonColor(){
@@ -47,6 +63,27 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
         buttonColor = Colors.grey;
       }
     });
+  }
+
+  _save() async {
+    if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty && rating >= 1){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Post Successfully"),
+            content: Text("You can view it now"),
+          );
+        },
+      );
+      _titleController.clear();
+      _contentController.clear();
+      setState(() {
+        rating = 1;
+        listImageFiles.clear();
+        listImages.clear();
+      });
+    }
   }
 
   @override
@@ -60,6 +97,7 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: 30),
@@ -88,12 +126,56 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(right: 80),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    lot.Lottie.asset(
+                      "assets/lotties/animation_lm7l7pxr.json",
+                      width: 80,
+                    ),
+                    RatingBar.builder(
+                      initialRating: rating.toDouble(),
+                      minRating: 1,
+                      itemSize: 30,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) => setState(() {
+                        this.rating = rating.toInt();
+                        print(this.rating);
+                      })
+                    )
+                  ],
+                ),
+              ),
+              (listImageFiles.isNotEmpty) ? SizedBox(
+                height: 40,
+                width: 100,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.deepOrange.shade400,
+                  ),
+                  onPressed: (){
+                    chooseImage();
+                  },
+                  child: const Text('Add Image'),
+                )
+              ) : SizedBox(),
+              const SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  chooseImage();
+                  if (listImageFiles.isEmpty){
+                    chooseImage();
+                  }
                 },
-                child: (_image == null) ? Container(
+                child: (listImageFiles.isEmpty) ? Container(
                   width: 100.0,
                   height: 100.0,
                   decoration: BoxDecoration(
@@ -109,7 +191,48 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
                             ),
                           )
                   ),
-                ) : Image.file(_image!),
+                )  
+                : Container(
+                  height: (listImageFiles.length >= 4) ? MediaQuery.of(context).size.width * 0.7 : MediaQuery.of(context).size.width * 0.35,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                    ),
+                    itemCount: listImageFiles.length,
+                    itemBuilder: (context, index){
+                      return Stack(
+                        fit: StackFit.expand,
+                        children:[
+                          Image.file(listImageFiles[index]!, fit: BoxFit.cover),
+                          Positioned(
+                            top: 0.2,
+                            right: 0.2,
+                            child: Transform.scale(
+                              scale: 0.7,
+                              child: Container(
+                                color: const Color.fromRGBO(161, 207, 81, 0.686),
+                                child: IconButton(
+                                  onPressed: (){
+                                    listImageFiles.removeAt(index);
+                                    setState(() {
+                                      
+                                    });
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  color: Colors.red[500],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ] 
+                      );
+                    }
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Padding(
@@ -132,31 +255,16 @@ class _CustomizeImageScreenState extends State<CustomizeImageScreen> {
                         width: 2.0,
                       ),
                     ),
-                    hintText: 'Enter comment',
+                    hintText: 'Enter review',
                     fillColor: Colors.white,
                     filled: true,
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               InkWell(
-                onTap: () async {
-                  if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const AlertDialog(
-                          title: Text("Post Successfully"),
-                          content: Text("You can view it now"),
-                        );
-                      },
-                    );
-                    _titleController.clear();
-                    _contentController.clear();
-                    setState(() {
-                      _image = null;
-                    });
-                  }
+                onTap: () {
+                  _save();
                 
                 },
                 child: Container(

@@ -253,8 +253,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   height: 20,
                 ),
                 Container(
-                      child: Padding(
-                    padding: const EdgeInsets.only(right: 20), 
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10), 
                     child: Container(
                       height: 80,
                       child: Row(
@@ -265,17 +265,18 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           ),
                           (address == "") ? lot.Lottie.asset(
                             "assets/lotties/animation_lm7jfzas.json",
-                            width: MediaQuery.of(context).size.width - 80 - 60,
+                            width: MediaQuery.of(context).size.width - 80 -100,
                           ) : Text(address),
                         ],
                       ),
                     ),
-                  ),),
+                  ),
+                ),
                    (address != "") ? Center(
                 child: Container(
-                  decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(75)),
-                  height: 150,
-                  width: 150,
+                  decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(15)),
+                  height: 130,
+                  width: 300,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(
                       Radius.circular(75),
@@ -304,7 +305,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                       )
                 ),
                 SizedBox(
-                  height: 60,
+                  height: 40,
                 ),
                 Center(
                   child: GestureDetector(

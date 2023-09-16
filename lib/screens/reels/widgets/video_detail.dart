@@ -1,3 +1,4 @@
+import 'package:antap/data/data.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
@@ -16,7 +17,7 @@ class VideoDetail extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            '@${video.postedBy.username}',
+            '@${currentUser.username}',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 15,
                   color: Colors.white,

@@ -16,21 +16,18 @@ String getSubContent(String text, int lim) {
   }
 }
 
-// Future<List<ImagePost>> getAllPostFromFirestore() async {
-//   final postRef = FirebaseFirestore.instance.collection("post").withConverter(
-//         fromFirestore: ImagePost.fromFireStore,
-//         toFirestore: (ImagePost post, options) => post.toFireStore(),
-//       );
-//   final querySnapshot = await postRef.get();
+Future<List<ImagePost>> getImagePosts() async {
+  List<ImagePost> imagePosts = [];
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('imagePosts').get();
 
-//   List<ImagePost> listPost = [];
+  querySnapshot.docs.forEach((doc) {
+    ImagePost imagePost = ImagePost.fromFirestore(doc, null);
+    imagePosts.add(imagePost);
+  });
 
-//   for (var document in querySnapshot.docs) {
-//     listPost.add(document.data());
-//   }
-
-//   return listPost;
-// }
+  return imagePosts;
+}
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -43,48 +40,64 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-        body: ListView(children: [
-      Column(
-        children: List.generate(listImagePost.length, (index) {
-          return Container(
-            color: Colors.black87,
-            width: double.infinity,
-            margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PostInfoWidget(post: listPost[index]),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          listImagePost[index].review.title,
-                          style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          listImagePost[index].review.content,
-                          style: const TextStyle(
-                              fontSize: 14, color: Colors.white),
-                        )
-                      ]),
-                ),
-                PostImageWidget(post: listImagePost[index]),
-                Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: PostReactWidget(post: listPost[index]))
-              ],
-            ),
-          );
-        }),
+      body: Center(
+        child: FutureBuilder<List<ImagePost>>(
+          future: getImagePosts(), // Gọi hàm để lấy dữ liệu
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              List<ImagePost> imagePosts = snapshot.data ?? [];
+              return ListView(children: [
+                Column(
+                  children: List.generate(imagePosts.length, (index) {
+                    return Container(
+                      color: Colors.black87,
+                      width: double.infinity,
+                      margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  PostInfoWidget(post: imagePosts[index]),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    imagePosts[index].review.title,
+                                    style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    imagePosts[index].review.content,
+                                    style: const TextStyle(
+                                        fontSize: 14, color: Colors.white),
+                                  )
+                                ]),
+                          ),
+                          PostImageWidget(post: imagePosts[index]),
+                          Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: PostReactWidget(post: imagePosts[index]))
+                        ],
+                      ),
+                    );
+                  }),
+                )
+              ]);
+            }
+          }
+        )
       )
-    ]));
+    );
   }
 }

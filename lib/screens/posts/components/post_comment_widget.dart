@@ -105,7 +105,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     ), 
                     onPressed: () {
                       setState(() {
-                        widget.post.updateComment(Comment(user: currentUser, content: _controller.text));
+                        widget.post.updateComment(Comment(user: "Hoang Nghia Viet", content: _controller.text));
                         _controller.clear();
                       });
                     },

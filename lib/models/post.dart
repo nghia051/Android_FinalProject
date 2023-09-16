@@ -1,4 +1,5 @@
 import 'package:antap/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Review {
@@ -9,13 +10,15 @@ class Review {
 }
 
 class Comment {
-  final User user;
+  final String user;
   final String content;
 
   Comment({required this.user, required this.content});
 }
 
 abstract class Post {
+  Post();
+
   String getID();
 
   Widget getImageVideo();
@@ -30,7 +33,7 @@ abstract class Post {
 
   int getRate();
 
-  User getUser();
+  String getUser();
 
   void updateFavorite(int val);
 

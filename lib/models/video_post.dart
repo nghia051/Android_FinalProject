@@ -7,7 +7,7 @@ import 'post.dart';
 class VideoPost extends Post {
   String id;
   String videoUrl;
-  User postedBy;
+  String postedBy;
   DateTime postDate;
   int rate;
   Review review;
@@ -31,7 +31,7 @@ class VideoPost extends Post {
   }
 
   @override
-  User getUser() {
+  String getUser() {
     return postedBy;
   }
 

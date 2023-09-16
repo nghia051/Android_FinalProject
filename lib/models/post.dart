@@ -16,7 +16,7 @@ class Comment {
 }
 
 abstract class Post {
-  int getID();
+  String getID();
 
   Widget getImageVideo();
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../screens/posts/components/post_image_widget.dart';
 
 class ImagePost extends Post {
-  int id;
+  String id;
   List<String> listImageUrl;
   User postedBy;
   DateTime postDate;
@@ -26,7 +26,7 @@ class ImagePost extends Post {
       required this.listComment});
 
   @override
-  int getID() {
+  String getID() {
     return id;
   }
 

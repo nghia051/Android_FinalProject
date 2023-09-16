@@ -135,11 +135,11 @@ class _MapSectionState extends State<MapSection> {
   List<Restaurant> getRestaurantList() {
     List<Restaurant> restaurants = [];
     restaurants.add(Restaurant(
-        'restaurant1', 'Name 1', const LatLng(10.764354, 106.682098)));
+        'restaurant1', 'Name 1', 'imageUrl', const LatLng(10.764354, 106.682098)));
     restaurants.add(Restaurant(
-        'restaurant2', 'Name 2', const LatLng(10.761160, 106.683385)));
+        'restaurant2', 'Name 2', 'imageUrl', const LatLng(10.761160, 106.683385)));
     restaurants.add(Restaurant(
-        'restaurant3', 'Name 3', const LatLng(10.761814, 106.681829)));
+        'restaurant3', 'Name 3', 'imageUrl', const LatLng(10.761814, 106.681829)));
     return restaurants;
   }
 

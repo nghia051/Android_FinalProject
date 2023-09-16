@@ -28,6 +28,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   XFile? image;
   String? fileName;
   int rating = 1;
+  bool choose = false;
 
   // Google Map Api
   late GoogleMapController googleMapController;
@@ -117,6 +118,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       setState(() {
         fileName = image!.path.split('/').last;
         _image = File(image!.path);
+        choose = true;
       });
     }
   }
@@ -125,29 +127,31 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          toolbarHeight: MediaQuery.of(context).size.height * 0.3,
-          flexibleSpace: GestureDetector(
-            onTap: (){
-              chooseImage();
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-              child: (_image == null) ? Image.asset(
-                'assets/images/restaurants/restaurant4.jpg',
-                fit: BoxFit.cover,
-              ) : Image.file(_image!, fit: BoxFit.cover),
-            ),
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
-        ),
 
         body: SingleChildScrollView(
           child: Column(
             children: [
+               InkWell(
+                onTap: (){
+                  chooseImage();
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                  ),
+                  height:  MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                    child: (_image == null) ? Image.asset(
+                      'assets/images/restaurants/restaurant4.jpg',
+                      fit: BoxFit.cover,
+                    ) : Image.file(_image!, fit: BoxFit.cover),
+                  ),
+                ),
+               ),
                Padding(
-                padding: EdgeInsets.only(right: 20), 
+                padding: const EdgeInsets.only(right: 20), 
                 child: Container(
                   height: 80,
                   child: Row(
@@ -198,7 +202,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 ),
               const SizedBox(height: 10),
               Padding(
-                padding: EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.only(right: 20),
                 child: Container(
                   height: 80,
                   child: Row(
@@ -209,7 +213,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         width: 50,
                       ),
                       const SizedBox(width: 15),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width - 30 - 50 - 20,
                         child: TextField(
                           controller: _resNameController,
@@ -248,28 +252,45 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     backgroundColor: Colors.deepOrange.shade400,
                   ),
                   onPressed: () async{
+
                     // Upload image to firebase storage
-                    final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-                    try {
-                      await storage.ref('images/$fileName').putFile(_image!);
-                      firebase_storage.Reference ref = storage.ref('images/$fileName');
-                      imageUrl = await ref.getDownloadURL();
-                      print("Day ne: $imageUrl");
-                    } on firebase_core.FirebaseException catch (e) {
-                      print(e);
+                    if (choose) {
+                      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+                      try {
+                        await storage.ref('images/$fileName').putFile(_image!);
+                        firebase_storage.Reference ref = storage.ref('images/$fileName');
+                        imageUrl = await ref.getDownloadURL();
+                        print("Day ne: $imageUrl");
+                      } on firebase_core.FirebaseException catch (e) {
+                        print(e);
+                      }
+                    }
+                    else{
+                        imageUrl = 'https://firebasestorage.googleapis.com/v0/b/antap-ba5f2.appspot.com/o/images%2Frestaurant4.jpg?alt=media&token=66900a9a-42f1-428f-9369-63389d313e49';
                     }
         
                     // Upload restaurant to firebase firestore
-                    restaurant = Restaurant(id!, _resNameController.text, latLng!);
+                    restaurant = Restaurant(id!, _resNameController.text, imageUrl!, latLng!);
                     await resData.doc('6cNmPHt3fqV1uzd9UslaHq9CGPi1').set({
                         'id': restaurant!.id,
-                        'imageUrl' : imageUrl,
+                        'imageUrl' : restaurant!.imageUrl,
                         'name': restaurant!.name,
                         'latitude': restaurant!.location.latitude,
                         'longtitude': restaurant!.location.longitude,
                       },
                       SetOptions(merge: true),
                     ).then((value) => print("Upload to firestore successfully"),);
+
+                    // print
+                    await FirebaseFirestore.instance
+                    .collection('restaurants')
+                    .get()
+                    .then((QuerySnapshot querySnapshot) {
+                        querySnapshot.docs.forEach((doc) {
+                            print(doc["id"]);
+                        });
+                        print("lay xun dc roi");
+                    });
                   },
                   child: Text("Create"),
                 ),

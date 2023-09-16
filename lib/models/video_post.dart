@@ -1,4 +1,5 @@
 import 'package:antap/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/map/pop_up/widgets/video_app.dart';
@@ -68,5 +69,31 @@ class VideoPost extends Post {
   @override
   void updateComment(Comment comment) {
     listComment.add(comment);
+  }
+
+  @override
+  factory VideoPost.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return VideoPost(
+      data?["id"],
+      data?["videoUrl"],
+      "Hoang Nghia Viet",
+      data?["postDate"].toDate(),
+      data?["rate"],
+      Review(
+        title: data?["review"]["title"],
+        content: data?["review"]["content"]),
+      data?["favorite"],
+      (data?["listComment"] as List<dynamic>).map((commentData) {
+        return Comment(
+          user: "Hoang Nghia Viet",
+          content: commentData["content"],
+        );
+      }).toList(),
+      data?["audioName"],
+    );
   }
 }

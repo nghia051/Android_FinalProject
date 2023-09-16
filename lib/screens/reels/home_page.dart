@@ -1,9 +1,24 @@
+import 'package:antap/models/video_post.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:antap/data/data.dart';
 import 'package:antap/screens/reels/widgets/home_side_bar.dart';
 import 'package:antap/screens/reels/widgets/video_detail.dart';
 import 'package:antap/screens/reels/widgets/video_tile.dart';
+
+Future<List<VideoPost>> getVideoPosts() async {
+  List<VideoPost> videoPosts = [];
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('videoPosts').get();
+
+  querySnapshot.docs.forEach((doc) {
+    VideoPost videoPost = VideoPost.fromFirestore(doc, null);
+    videoPosts.add(videoPost);
+  });
+
+  return videoPosts;
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -69,47 +84,59 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: PageView.builder(
-        onPageChanged: (int page) => {
-          setState(() {
-            _snappedPageIndex = page;
-          }),
-        },
-        scrollDirection: Axis.vertical,
-        itemCount: videos.length,
-        itemBuilder: (context, index) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              VideoTile(
-                video: videos[index],
-                currentIndex: index,
-                snappedPageIndex: _snappedPageIndex,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 4,
-                      child: VideoDetail(
-                        video: videos[index],
-                      ),
+      body: FutureBuilder<List<VideoPost>>(
+        future: getVideoPosts(), // Gọi hàm để lấy dữ liệu
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            List<VideoPost> videoPosts = snapshot.data ?? [];
+            return PageView.builder(
+              onPageChanged: (int page) => {
+                setState(() {
+                  _snappedPageIndex = page;
+                }),
+              },
+              scrollDirection: Axis.vertical,
+              itemCount: videoPosts.length,
+              itemBuilder: (context, index) {
+                return Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    VideoTile(
+                      video: videoPosts[index],
+                      currentIndex: index,
+                      snappedPageIndex: _snappedPageIndex,
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 2.2,
-                      child: HomeSideBar(video: videos[index]),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 4,
+                            child: VideoDetail(
+                              video: videoPosts[index],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 2.2,
+                            child: HomeSideBar(video: videoPosts[index]),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      ),
+                  ],
+                );
+              },
+            );
+          }
+        }
+      )
     );
   }
 }

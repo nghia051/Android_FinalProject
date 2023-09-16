@@ -38,10 +38,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(widget.post
-                              .getListComment()[index]
-                              .user
-                              .profileImageUrl),
+                          backgroundImage: NetworkImage(currentUser.profileImageUrl),
                           radius: 17,
                           // size: 40,
                         ),
@@ -52,11 +49,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.post
-                                    .getListComment()[index]
-                                    .user
-                                    .username,
+                              Text(currentUser.username,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -105,7 +98,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     ), 
                     onPressed: () {
                       setState(() {
-                        widget.post.updateComment(Comment(user: currentUser, content: _controller.text));
+                        widget.post.updateComment(Comment(user: "Hoang Nghia Viet", content: _controller.text));
                         _controller.clear();
                       });
                     },

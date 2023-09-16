@@ -16,6 +16,8 @@ class Comment {
 }
 
 abstract class Post {
+  int getID();
+
   Widget getImageVideo();
 
   List getListComment();

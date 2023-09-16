@@ -7,6 +7,7 @@ import '../models/image_post.dart';
 
 User currentUser = User(
   'ttviet2805@gmail.com',
+  'noobboy',
   'ttviet2805',
   'https://picsum.photos/id/1062/400/400',
   'Food critic is a person who explores restaurants and eateries, and introduces it to others. Food critics also review food and dining experiences across different places and share their opinion with their audience.',
@@ -14,6 +15,7 @@ User currentUser = User(
 
 final List<VideoPost> videos = [
   VideoPost(
+    1,
     'assets/v1.mp4',
     currentUser,
     DateTime(2023, 7, 15),
@@ -23,8 +25,8 @@ final List<VideoPost> videos = [
         content: 'Quan an nay kha la ngon, moi nguoi nen thuong thuc no ne.'),
     10,
     [
-      Comment(user: currentUser, content: "Ngon vcl"),
-      Comment(user: currentUser, content: "Cung duoc"),
+      Comment(user: currentUser, content: "Nghia Viet dan"),
+      Comment(user: currentUser, content: "Noob tho"),
     ],
     'audioName',
   ),
@@ -40,6 +42,7 @@ final List<VideoPost> videos = [
 
 List<Post> listPost = [
   ImagePost(
+      id: 2,
       listImageUrl: [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
@@ -47,8 +50,6 @@ List<Post> listPost = [
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
       ],
-      coverUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
       postedBy: currentUser,
       review: Review(
           title: "Review quan an 1",
@@ -62,6 +63,7 @@ List<Post> listPost = [
         Comment(user: currentUser, content: "Nghia Viet non"),
       ]),
   VideoPost(
+    1,
     'assets/v1.mp4',
     currentUser,
     DateTime(2023, 7, 15),
@@ -71,7 +73,7 @@ List<Post> listPost = [
         content: 'Quan an nay kha la ngon, moi nguoi nen thuong thuc no ne.'),
     10,
     [
-      Comment(user: currentUser, content: "Nghia Viet ga"),
+      Comment(user: currentUser, content: "Nghia Viet dan"),
       Comment(user: currentUser, content: "Noob tho"),
     ],
     'audioName',
@@ -80,6 +82,7 @@ List<Post> listPost = [
 
 List<ImagePost> listImagePost = [
   ImagePost(
+      id: 2,
       listImageUrl: [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
@@ -87,8 +90,6 @@ List<ImagePost> listImagePost = [
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG"
       ],
-      coverUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
       postedBy: currentUser,
       review: Review(
           title: "Review quan an 1",
@@ -102,13 +103,12 @@ List<ImagePost> listImagePost = [
         Comment(user: currentUser, content: "Nghia Viet non"),
       ]),
   ImagePost(
+      id: 3,
       listImageUrl: [
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg"
       ],
-      coverUrl:
-          "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
       postedBy: currentUser,
       review: Review(
           title: "Review quan an 2",

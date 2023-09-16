@@ -5,6 +5,7 @@ import '../screens/map/pop_up/widgets/video_app.dart';
 import 'post.dart';
 
 class VideoPost extends Post {
+  int id;
   String videoUrl;
   User postedBy;
   DateTime postDate;
@@ -14,8 +15,13 @@ class VideoPost extends Post {
   List<Comment> listComment;
   String audioName;
 
-  VideoPost(this.videoUrl, this.postedBy, this.postDate, this.rate, this.review,
-      this.favorite, this.listComment, this.audioName);
+  VideoPost(this.id, this.videoUrl, this.postedBy, this.postDate, this.rate,
+      this.review, this.favorite, this.listComment, this.audioName);
+
+  @override
+  int getID() {
+    return id;
+  }
 
   @override
   Widget getImageVideo() {

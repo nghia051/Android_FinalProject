@@ -1,13 +1,16 @@
 import 'dart:io';
-
 import 'package:antap/constants.dart';
 import 'package:antap/models/post.dart';
 import 'package:antap/screens/map/pop_up/widgets/video_app.dart';
+import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:antap/data/data.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class CreatePostScreen extends StatefulWidget {
@@ -25,7 +28,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   File? _image;
   Color? buttonColor = Colors.grey;
   XFile? image;
+  String? fileName;
   String imageUrl = "";
+  CollectionReference collectionReference = FirebaseFirestore.instance.collection('imagePost');
+  bool choose =  false;
 
   @override
   void initState(){
@@ -38,10 +44,63 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
+        fileName = image!.path.split('/').last;
         _image = File(image!.path);
+        choose = true;
       });
     }
   }
+
+  Future<void> addImagePost() async {
+    if (choose) {
+      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      try {
+        await storage.ref('imagePosts/$fileName').putFile(_image!);
+        firebase_storage.Reference ref = storage.ref('imagePosts/$fileName');
+        imageUrl = await ref.getDownloadURL();
+        print("Day ne: $imageUrl");
+      } on firebase_core.FirebaseException catch (e) {
+        print(e);
+      }
+    }
+    else{
+      imageUrl = 'https://firebasestorage.googleapis.com/v0/b/antap-ba5f2.appspot.com/o/images%2Frestaurant4.jpg?alt=media&token=66900a9a-42f1-428f-9369-63389d313e49';
+    }
+    String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
+
+    await collectionReference
+        .add({
+      'listImageURL': [imageUrl],
+      'title': _titleController.text,
+      'content': _contentController.text,
+      'postedBy': userId,
+      'postDate': DateTime.now(),
+      'rating' : 5
+    })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+
+    if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Post Successfully"),
+            content: Text("You can view it now"),
+          );
+        },
+      );
+
+      _titleController.clear();
+      _contentController.clear();
+      setState(() {
+        _image = null;
+      });
+    }
+
+  }
+
+
 
   void updateButtonColor(){
     setState(() {
@@ -144,25 +203,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               ),
               const SizedBox(height: 20),
               InkWell(
-                onTap: () async {
-                  if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const AlertDialog(
-                          title: Text("Post Successfully"),
-                          content: Text("You can view it now"),
-                        );
-                      },
-                    );
-                    _titleController.clear();
-                    _contentController.clear();
-                    setState(() {
-                      _image = null;
-                    });
-                  }
-                
-                },
+                onTap: addImagePost,
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), 
                   decoration: BoxDecoration(

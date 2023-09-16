@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../screens/posts/components/post_image_widget.dart';
 
 class ImagePost extends Post {
-  String coverUrl;
+  int id;
   List<String> listImageUrl;
   User postedBy;
   DateTime postDate;
@@ -16,7 +16,7 @@ class ImagePost extends Post {
   List<Comment> listComment;
 
   ImagePost(
-      {required this.coverUrl,
+      {required this.id,
       required this.listImageUrl,
       required this.postedBy,
       required this.postDate,
@@ -24,6 +24,11 @@ class ImagePost extends Post {
       required this.review,
       required this.favorite,
       required this.listComment});
+
+  @override
+  int getID() {
+    return id;
+  }
 
   @override
   Widget getImageVideo() {
@@ -64,7 +69,7 @@ class ImagePost extends Post {
   void updateFavorite(int val) {
     favorite += val;
   }
-  
+
   @override
   void updateComment(Comment comment) {
     listComment.add(comment);

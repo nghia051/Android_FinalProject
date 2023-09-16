@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart' as lot;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:uuid/uuid.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:antap/components/custom_raised_button.dart';
 
 
 class CustomizeScreen extends StatefulWidget {
@@ -111,6 +113,12 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     });
   }
 
+  void _clear() {
+    setState(() {
+      _image = null;
+    });
+  }
+
   
   chooseImage() async {
     image = await _picker.pickImage(source: ImageSource.gallery);
@@ -123,54 +131,147 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
     }
   }
 
+  _save() async {
+          // Upload image to firebase storage
+          if (choose) {
+            final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+            try {
+              await storage.ref('images/$fileName').putFile(_image!);
+              firebase_storage.Reference ref = storage.ref('images/$fileName');
+              imageUrl = await ref.getDownloadURL();
+              print("Day ne: $imageUrl");
+            } on firebase_core.FirebaseException catch (e) {
+              print(e);
+            }
+          }
+          else{
+              imageUrl = 'https://firebasestorage.googleapis.com/v0/b/antap-ba5f2.appspot.com/o/images%2Frestaurant4.jpg?alt=media&token=66900a9a-42f1-428f-9369-63389d313e49';
+          }
 
+          // Upload restaurant to firebase firestore
+          restaurant = Restaurant(id!, _resNameController.text, imageUrl!, latLng!);
+          await resData.doc('6cNmPHt3fqV1uzd9UslaHq9CGPi1').set({
+              'id': restaurant!.id,
+              'imageUrl' : restaurant!.imageUrl,
+              'name': restaurant!.name,
+              'latitude': restaurant!.location.latitude,
+              'longtitude': restaurant!.location.longitude,
+            },
+            SetOptions(merge: true),
+          ).then((value) => print("Upload to firestore successfully"),);
+
+          // print
+          await FirebaseFirestore.instance
+          .collection('restaurants')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+              querySnapshot.docs.forEach((doc) {
+                  print(doc["id"]);
+              });
+              print("lay xun dc roi");
+                    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-               InkWell(
-                onTap: (){
-                  chooseImage();
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-                  ),
-                  height:  MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-                    child: (_image == null) ? Image.asset(
-                      'assets/images/restaurants/restaurant4.jpg',
-                      fit: BoxFit.cover,
-                    ) : Image.file(_image!, fit: BoxFit.cover),
+    return Scaffold(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Post',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 138, 120, 1),
                   ),
                 ),
-               ),
-               Padding(
-                padding: const EdgeInsets.only(right: 20), 
-                child: Container(
-                  height: 80,
-                  child: Row(
-                    children: [
-                      lot.Lottie.asset(
-                        "assets/lotties/animation_lm7kzx3s.json",
-                        width: 80,
+                SizedBox(height: 10),
+                ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    _image != null
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                            Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                ),
+                                height:  MediaQuery.of(context).size.height * 0.3,
+                                width: MediaQuery.of(context).size.width,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                                  child: Image.file(_image!, fit: BoxFit.cover),
+                                )),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+//                                  FlatButton(
+//                                    child: Icon(Icons.crop),
+////                              onPressed: _cropImage,
+//                                  ),
+                                  TextButton(
+                                    child: Icon(Icons.refresh),
+                                    onPressed: _clear,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              chooseImage();
+                              //_pickImage(ImageSource.gallery);
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width - 50,
+                              height: 200,
+                              child: Image.asset(
+                                'assets/images/uploadFoodImageOnPost.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+                Container(
+                  child: TextField(
+                      controller: _resNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter restaurant name'
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                      child: Padding(
+                    padding: const EdgeInsets.only(right: 20), 
+                    child: Container(
+                      height: 80,
+                      child: Row(
+                        children: [
+                          lot.Lottie.asset(
+                            "assets/lotties/animation_lm7kzx3s.json",
+                            width: 80,
+                          ),
+                          (address == "") ? lot.Lottie.asset(
+                            "assets/lotties/animation_lm7jfzas.json",
+                            width: MediaQuery.of(context).size.width - 80 - 60,
+                          ) : Text(address),
+                        ],
                       ),
-                      (address == "") ? lot.Lottie.asset(
-                        "assets/lotties/animation_lm7jfzas.json",
-                        width: MediaQuery.of(context).size.width - 80 - 60,
-                      ) : Text(address),
-                    ],
-                  ),
-                ),
-              ),
-              (address != "") ? Center(
+                    ),
+                  ),),
+                   (address != "") ? Center(
                 child: Container(
                   decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(75)),
                   height: 150,
@@ -202,102 +303,24 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                         width: 200,
                       )
                 ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Container(
-                  height: 80,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 15),
-                      lot.Lottie.asset(
-                        "assets/lotties/animation_lm7lv8je.json",
-                        width: 50,
-                      ),
-                      const SizedBox(width: 15),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 30 - 50 - 20,
-                        child: TextField(
-                          controller: _resNameController,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2.0,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2.0,
-                              ),
-                            ),
-                            hintText: 'Restaurant name',
-                            fillColor: Colors.white,
-                            filled: true,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                SizedBox(
+                  height: 60,
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: 300, height: 40,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      _save();
+                    },
+                    child: CustomRaisedButton(
+                      buttonText: 'Post',
                     ),
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.deepOrange.shade400,
                   ),
-                  onPressed: () async{
-
-                    // Upload image to firebase storage
-                    if (choose) {
-                      final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-                      try {
-                        await storage.ref('images/$fileName').putFile(_image!);
-                        firebase_storage.Reference ref = storage.ref('images/$fileName');
-                        imageUrl = await ref.getDownloadURL();
-                        print("Day ne: $imageUrl");
-                      } on firebase_core.FirebaseException catch (e) {
-                        print(e);
-                      }
-                    }
-                    else{
-                        imageUrl = 'https://firebasestorage.googleapis.com/v0/b/antap-ba5f2.appspot.com/o/images%2Frestaurant4.jpg?alt=media&token=66900a9a-42f1-428f-9369-63389d313e49';
-                    }
-        
-                    // Upload restaurant to firebase firestore
-                    restaurant = Restaurant(id!, _resNameController.text, imageUrl!, latLng!);
-                    await resData.doc('6cNmPHt3fqV1uzd9UslaHq9CGPi1').set({
-                        'id': restaurant!.id,
-                        'imageUrl' : restaurant!.imageUrl,
-                        'name': restaurant!.name,
-                        'latitude': restaurant!.location.latitude,
-                        'longtitude': restaurant!.location.longitude,
-                      },
-                      SetOptions(merge: true),
-                    ).then((value) => print("Upload to firestore successfully"),);
-
-                    // print
-                    await FirebaseFirestore.instance
-                    .collection('restaurants')
-                    .get()
-                    .then((QuerySnapshot querySnapshot) {
-                        querySnapshot.docs.forEach((doc) {
-                            print(doc["id"]);
-                        });
-                        print("lay xun dc roi");
-                    });
-                  },
-                  child: Text("Create"),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 50,
+                ),
+              ],
+            ),
           ),
         ),
       ),

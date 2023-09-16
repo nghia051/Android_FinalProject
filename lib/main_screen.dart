@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
       extendBody: false,
       body: _pages[_selectPageIndex],
       bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.white,
+        color: Colors.black,
         backgroundColor: Colors.transparent,
         buttonBackgroundColor: Colors.black,
         height: 50,
@@ -55,27 +55,27 @@ class _MainScreenState extends State<MainScreen> {
           Icon(
             Icons.home,
             size: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
           Icon(
             Icons.store,
             size: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
           Icon(
             Icons.location_on,
             size: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
           Icon(
             Icons.favorite,
             size: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
           Icon(
             Icons.account_circle,
             size: 26,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ],
       ),

@@ -7,7 +7,7 @@ import 'post.dart';
 class VideoPost extends Post {
   String id;
   String videoUrl;
-  String postedBy;
+  String? postedBy;
   DateTime postDate;
   int rate;
   Review review;
@@ -31,7 +31,7 @@ class VideoPost extends Post {
   }
 
   @override
-  String getUser() {
+  String? getUser() {
     return postedBy;
   }
 
@@ -69,4 +69,15 @@ class VideoPost extends Post {
   void updateComment(Comment comment) {
     listComment.add(comment);
   }
+}
+
+dynamic getListMap(List<dynamic> items) {
+  if (items == null) {
+    return null;
+  }
+  List<Map<String, dynamic>> list = [];
+  items.forEach((element) {
+    list.add(element.toJson());
+  });
+  return list;
 }

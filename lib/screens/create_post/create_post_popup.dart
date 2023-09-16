@@ -49,56 +49,6 @@ class _CreatePostPopUpState extends State<CreatePostPopUp> {
         ),
         child: const Text("open card with gutter and app bar"),
       );
-
-  // card with body only
-  // no appbar and gutter
-  // Widget cardWithBodyOnly() => TextButton(
-  //       onPressed: () => showDialog(
-  //         context: context,
-  //         builder: (builder) => XenCreatePostPopUpCard(
-  //           body: ListView(
-  //             children: const [
-  //               Text("body"),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //       child: const Text("open card with body only"),
-  //     );
-
-  // // card with appbar only
-  // // no gutter
-  // Widget cardWithAppBarOnly() => TextButton(
-  //       onPressed: () => showDialog(
-  //         context: context,
-  //         builder: (builder) => XenCreatePostPopUpCard(
-  //           appBar: appBar,
-  //           body: ListView(
-  //             children: const [
-  //               Text("body"),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //       child: const Text("open card with appbar only"),
-  //     );
-
-  // // card with gutter only
-  // // no appbar
-  // Widget cardWithGutterOnly() => TextButton(
-  //       onPressed: () => showDialog(
-  //         context: context,
-  //         builder: (builder) => XenCreatePostPopUpCard(
-  //           gutter: gutter,
-  //           body: ListView(
-  //             children: const [
-  //               Text("body"),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //       child: const Text("open card with  gutter only"),
-  // );
 }
 
 // custom button

@@ -1,13 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../models/post.dart';
+import '../../../../models/video_post.dart';
 import '../../../../src/appbar.dart';
 import '../../../create_post/create_post_popup.dart';
 import '../../../create_post/widgets/body.dart';
 
+Future<void> addVideoPost() async {
+  final storageRef = FirebaseStorage.instance.ref();
+  final videoRef = storageRef.child("images/mountains.jpg");
+  String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
+  VideoPost tmpVideoPost = VideoPost(
+    '1',
+    'assets/v1.mp4',
+    userId,
+    DateTime(2023, 7, 15),
+    3,
+    Review(
+        title: "Review quan an 1",
+        content: 'Quan an nay kha la ngon, moi nguoi nen thuong thuc no ne.'),
+    10,
+    [
+      Comment(user: "Hoang Nghia Viet", content: "Nghia Viet dan"),
+      Comment(user: "Hoang Nghia Viet", content: "Noob tho"),
+    ],
+    'audioName',
+  );
+  CollectionReference videoPost =
+      FirebaseFirestore.instance.collection('videoPosts');
+  return videoPost
+      .add({
+        'id': tmpVideoPost.id, // John Doe
+        'videoUrl': tmpVideoPost.videoUrl,
+        'postedBy': tmpVideoPost.postedBy,
+        'postDate': tmpVideoPost.postDate,
+        'rate': tmpVideoPost.rate,
+        'review': tmpVideoPost.review.toJson(),
+        'favorite': tmpVideoPost.favorite,
+        'listComment': getListMap(tmpVideoPost.listComment),
+        'audioName': tmpVideoPost.audioName,
+      })
+      .then((value) => print("VideoPost Added"))
+      .catchError((error) => print("Failed to add video post: $error"));
+}
+
 _addVideoNavItem(double height) {
   return GestureDetector(
     onTap: () {
-      // CreatePostScreen();
+      addVideoPost();
     },
     child: Container(
       height: height - 15,

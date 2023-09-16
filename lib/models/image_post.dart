@@ -37,7 +37,7 @@ class ImagePost extends Post {
   }
 
   @override
-  String getUser() {
+  String? getUser() {
     return postedBy;
   }
 
@@ -76,8 +76,6 @@ class ImagePost extends Post {
     listComment.add(comment);
   }
 
-  
-
   @override
   factory ImagePost.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -85,21 +83,21 @@ class ImagePost extends Post {
   ) {
     final data = snapshot.data();
     return ImagePost(
-      id: data?["id"],
-      listImageUrl: List<String>.from(data?["listImageUrl"]),
-      postDate: data?["postDate"].toDate(),
-      postedBy: "Hoang Nghia Viet",
-      rate: data?["rate"],
-      review: Review(
-          title: data?["review"]["title"],
-          content: data?["review"]["content"]),
-      favorite: data?["favorite"],
-      listComment: (data?["listComment"] as List<dynamic>).map((commentData) {
-        return Comment(
-          user: "Hoang Nghia Viet",
-          content: commentData["content"],
-        );
-      }).toList());
+        id: data?["id"],
+        listImageUrl: List<String>.from(data?["listImageUrl"]),
+        postDate: data?["postDate"].toDate(),
+        postedBy: "Hoang Nghia Viet",
+        rate: data?["rate"],
+        review: Review(
+            title: data?["review"]["title"],
+            content: data?["review"]["content"]),
+        favorite: data?["favorite"],
+        listComment: (data?["listComment"] as List<dynamic>).map((commentData) {
+          return Comment(
+            user: "Hoang Nghia Viet",
+            content: commentData["content"],
+          );
+        }).toList());
   }
 
   @override

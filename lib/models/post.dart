@@ -7,11 +7,25 @@ class Review {
   final String content;
 
   Review({required this.title, required this.content});
+
+  Map<String, Object?> toJson() {
+    return {
+      'title': title,
+      'content': content,
+    };
+  }
 }
 
 class Comment {
   final String user;
   final String content;
+
+  Map<String, Object?> toJson() {
+    return {
+      'user': user,
+      'content': content,
+    };
+  }
 
   Comment({required this.user, required this.content});
 }
@@ -33,7 +47,7 @@ abstract class Post {
 
   int getRate();
 
-  String getUser();
+  String? getUser();
 
   void updateFavorite(int val);
 

@@ -6,6 +6,7 @@ import 'package:antap/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/reels/widgets/custom_bottom_navigation_bar.dart';
 import 'package:antap/screens/reels/home_page.dart';
+import 'package:antap/screens/create_post/create_post_popup.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     PostScreen(),
     MapScreen(),
     CustomizeScreen(),
-    PopUp(),
+    CreatePostPopUp(),
     ProfileScreen(),
   ];
 

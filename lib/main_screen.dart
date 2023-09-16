@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:antap/screens/reels/widgets/custom_bottom_navigation_bar.dart';
 import 'package:antap/screens/reels/home_page.dart';
 import 'package:antap/screens/create_post/create_post_popup.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -37,11 +38,47 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _pages[_selectPageIndex],
+      extendBody: false,
+      body: _pages[_selectPageIndex],
+      bottomNavigationBar: CurvedNavigationBar(
+        color: Colors.white,
+        backgroundColor: Colors.transparent,
+        buttonBackgroundColor: Colors.black,
+        height: 50,
+        index: _selectPageIndex,
+        onTap: (index) {
+          setState(() {
+            _selectPageIndex = index;
+          });
+        },
+        items: <Widget>[
+          Icon(
+            Icons.home,
+            size: 26,
+            color: Colors.black,
+          ),
+          Icon(
+            Icons.store,
+            size: 26,
+            color: Colors.black,
+          ),
+          Icon(
+            Icons.location_on,
+            size: 26,
+            color: Colors.black,
+          ),
+          Icon(
+            Icons.favorite,
+            size: 26,
+            color: Colors.black,
+          ),
+          Icon(
+            Icons.account_circle,
+            size: 26,
+            color: Colors.black,
+          ),
+        ],
       ),
-      bottomNavigationBar: CustomerBottomNavigationBar(
-          selectedPageIndex: _selectPageIndex, onIconTap: _onIconTapped),
     );
   }
 }

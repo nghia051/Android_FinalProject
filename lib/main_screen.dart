@@ -26,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     PostScreen(),
     MapScreen(),
     CustomizeScreen(),
-    ProfileScreen(),
+    ProfilePage(),
   ];
 
   void _onIconTapped(int index) {

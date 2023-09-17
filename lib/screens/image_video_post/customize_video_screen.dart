@@ -5,7 +5,8 @@ import 'package:antap/screens/image_video_post/customize_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:lottie/lottie.dart' as lot;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CustomizeVideoScreen extends StatefulWidget{
   const CustomizeVideoScreen({Key? key}) : super(key: key);
@@ -16,10 +17,11 @@ class CustomizeVideoScreen extends StatefulWidget{
 
 class _CustomizeVideoScreenState extends State<CustomizeVideoScreen> {
 
+  int rating = 1;
   final _captionController = TextEditingController();
+  File? _video;
   final ImagePicker _picker = ImagePicker();
   Color? buttonColor;
-  File? _video;
   VideoPlayerController? _videoPlayerController;
 
   @override
@@ -89,7 +91,31 @@ class _CustomizeVideoScreenState extends State<CustomizeVideoScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(right: 80),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    lot.Lottie.asset(
+                      "assets/lotties/animation_lm7l7pxr.json",
+                      width: 80,
+                    ),
+                    RatingBar.builder(
+                      initialRating: rating.toDouble(),
+                      minRating: 1,
+                      itemSize: 30,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) => setState(() {
+                        this.rating = rating.toInt();
+                        print(this.rating);
+                      })
+                    )
+                  ],
+                ),
+              ),
               InkWell(
                 onTap: chooseVideo,
                 child: (_video == null) ? Container(
@@ -108,10 +134,14 @@ class _CustomizeVideoScreenState extends State<CustomizeVideoScreen> {
                       ),
                     ),
                   ),
-                ) : _videoPlayerController!.value.isInitialized ? AspectRatio(
-                      aspectRatio: _videoPlayerController!.value.aspectRatio,
-                      child: VideoPlayer(_videoPlayerController!),
-                    ) : Container(),
+                ) : SizedBox(
+                  width: MediaQuery.of(context).size.width*0.9,
+                  height: MediaQuery.of(context).size.height*0.9,
+                  child: _videoPlayerController!.value.isInitialized ? AspectRatio(
+                        aspectRatio: _videoPlayerController!.value.aspectRatio,
+                        child: VideoPlayer(_videoPlayerController!),
+                      ) : Container(),
+                ),
               ),
               const SizedBox(height: 20),
               InkWell(

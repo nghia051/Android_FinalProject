@@ -69,6 +69,7 @@ flutter:
     - assets/images/icons/google.png
     - assets/images/icons/linkedin.png
     - assets/images/icons/image_upload.png
+    - assets/images/icons/video_upload.png
     - assets/images/restaurants/restaurant1.jpg
     - assets/images/restaurants/restaurant2.jpg
     - assets/images/restaurants/restaurant3.jpg

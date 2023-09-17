@@ -13,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:antap/components/custom_raised_button.dart';
 
+import '../map/map_screen.dart';
+
 
 class CustomizeScreen extends StatefulWidget {
    const CustomizeScreen({Key? key}) : super(key: key);
@@ -149,7 +151,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
           }
 
           // Upload restaurant to firebase firestore
-          restaurant = Restaurant(id!, _resNameController.text, imageUrl!, latLng!);
+          restaurant = Restaurant(id: id!,name:  _resNameController.text,imageUrl:  imageUrl!,location:  latLng!);
           await resData.doc('6cNmPHt3fqV1uzd9UslaHq9CGPi1').set({
               'id': restaurant!.id,
               'imageUrl' : restaurant!.imageUrl,
@@ -170,6 +172,19 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
               });
               print("lay xun dc roi");
                     });
+
+          image = null;
+          _resNameController.clear();
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                title: Text("Check In Successfully"),
+                content: Text("You can view it in the map now"),
+              );
+            },
+          );
+          Navigator.pushNamed(context, MapScreen.id);
   }
 
   @override
@@ -250,7 +265,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 Container(
                   child: Padding(

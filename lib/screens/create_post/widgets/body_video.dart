@@ -130,7 +130,7 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
       _video = null;
     });
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
   }
 
   @override

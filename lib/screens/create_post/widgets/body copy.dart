@@ -29,7 +29,7 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final _titleController = TextEditingController();
-  double _rating = 1;
+  int _rating = 1;
   final _contentController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   List<File?> listImageFiles = [];
@@ -66,6 +66,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   Future<void> _save() async {
+
+
+    if (_titleController.text.isEmpty ||  _contentController.text.isEmpty)
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Wrong Input"),
+            content: Text("Please enter all field"),
+          );
+        },
+      );
+    }
+
+          showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Post Successfully"),
+            content: Text("You can view it now"),
+          );
+        },
+      );
+
     if(listImageFiles.isEmpty) return ;
     final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
     List<String> listURL = [];
@@ -82,7 +107,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
       }
     String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
-
+    
     await collectionReference
         .add({
       'listImageURL': listURL,
@@ -95,23 +120,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
 
-    if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text("Post Successfully"),
-            content: Text("You can view it now"),
-          );
-        },
-      );
 
       _titleController.clear();
       _contentController.clear();
       setState(() {
         listURL.clear();
       });
-    }
 
   }
 
@@ -138,14 +152,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 40.h,
-                ),
                 TextWithFont().textWithRobotoFont(
                     color: Theme.of(context)
                         .textTheme
@@ -157,44 +169,179 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     'Please write a review for this restaurant',
                     fontWeight: FontWeight.w500),
                 SizedBox(
-                  height: 20.h,
+                  height: 5.h,
                 ),
-                RatingBar.builder(
-                  glowColor: Colors.grey.shade500,
-                  initialRating: _rating,
-                  minRating: 1,
-                  direction:Axis.horizontal,
-                  allowHalfRating: true,
-                  unratedColor: Colors.amber.withAlpha(50),
-                  itemCount: 5,
-                  itemSize: 40.0,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    _selectedIcon ?? Icons.star,
-                    color: Color.fromRGBO(245, 201, 99, 1),
-                  ),
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      _rating = rating;
-                    });
-                  },
-                  updateOnDrag: true,
-            ),
+                Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    lot.Lottie.asset(
+                      "assets/lotties/animation_lm7l7pxr.json",
+                      height: 80,
+                    ),
+                    RatingBar.builder(
+                      initialRating: _rating.toDouble(),
+                      minRating: 1,
+                      itemSize: 30,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) => setState(() {
+                        this._rating = rating.toInt();
+                        print(this._rating);
+                      })
+                    )
+                  ],
+                ),
+              ),
                 SizedBox(
-                  height: 40.h,
+                  height: 5.h,
                 ),
+                TextWithFont().textWithRobotoFont(
+                    color: Theme.of(context).textTheme.headline1!.color!,
+                    fontSize: 14.sp,
+                    text: 'Review Title',
+                    fontWeight: FontWeight.w600),
+                     Form(
+                  child: TextFormField(
+                    controller: _titleController,
+                    minLines: 1,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 1,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                      fillColor: authTextFromFieldFillColor.withOpacity(.3),
+                      hintText: 'Enter your review title here',
+                      hintStyle: TextStyle(
+                        color: authTextFromFieldHintTextColor,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.h,
+                ),
+                TextWithFont().textWithRobotoFont(
+                    color: Theme.of(context).textTheme.headline1!.color!,
+                    fontSize: 14.sp,
+                    text: 'Update your image review here',
+                    fontWeight: FontWeight.w600),
+                 (listImageFiles.isNotEmpty) ? SizedBox(
+                height: 40,
+                width: 100,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.deepOrange.shade400,
+                  ),
+                  onPressed: (){
+                    chooseImage();
+                  },
+                  child: const Text('Add Image'),
+                )
+              ) : SizedBox(),
+              const SizedBox(height: 10),
+                InkWell(
+                onTap: () {
+                  if (listImageFiles.isEmpty){
+                    chooseImage();
+                  }
+                },
+                child: (listImageFiles.isEmpty) ? Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black, width: 1.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipOval(
+                            child: Image.asset(
+                              'assets/images/icons/image_upload.png',
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                  ),
+                )  
+                : Container(
+                  height: (listImageFiles.length >= 4) ? MediaQuery.of(context).size.width * 0.7 : MediaQuery.of(context).size.width * 0.35,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                    ),
+                    itemCount: listImageFiles.length,
+                    itemBuilder: (context, index){
+                      return Stack(
+                        fit: StackFit.expand,
+                        children:[
+                          Image.file(listImageFiles[index]!, fit: BoxFit.cover),
+                          Positioned(
+                            top: 0.2,
+                            right: 0.2,
+                            child: Transform.scale(
+                              scale: 0.7,
+                              child: Container(
+                                color: const Color.fromRGBO(161, 207, 81, 0.686),
+                                child: IconButton(
+                                  onPressed: (){
+                                    listImageFiles.removeAt(index);
+                                    setState(() {
+                                      
+                                    });
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  color: Colors.red[500],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ] 
+                      );
+                    }
+                  ),
+                ),
+              ),
                 TextWithFont().textWithRobotoFont(
                     color: Theme.of(context).textTheme.headline1!.color!,
                     fontSize: 14.sp,
                     text: 'Write Your Review',
                     fontWeight: FontWeight.w600),
-                SizedBox(
-                  height: 8.h,
-                ),
+
+           
                 Form(
                   child: TextFormField(
                     controller: _contentController,
-                    minLines: 6,
+                    minLines: 4,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     validator: (value) {
@@ -228,14 +375,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 20.h,
                 ),
                Align(
-                    alignment: Alignment.center,
+                    alignment: Alignment.center,    
                     child: ElevatedButton(
                         onPressed: _save,
                         style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.white,
+                          shadowColor: Colors.pink,
                           side: BorderSide.none,
                           // primary:,
                           minimumSize: Size(120.w, 50),
@@ -244,7 +391,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           ),
                         ),
                         child: TextWithFont().textWithRobotoFont(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                           text: 'Save',

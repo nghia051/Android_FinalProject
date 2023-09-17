@@ -7,3 +7,7 @@ const InputDecoration kTextInputDecoration = InputDecoration(
   hintText: '',
   // ),
 );
+
+const Color authTextFromFieldFillColor = Color.fromRGBO(241, 244, 254, 1);
+const Color authTextFromFieldPorderColor = Color.fromRGBO(214, 218, 225, 1);
+const Color authTextFromFieldHintTextColor = Color.fromRGBO(194, 189, 189, 1);

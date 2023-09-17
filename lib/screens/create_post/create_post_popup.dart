@@ -1,5 +1,5 @@
 import 'package:antap/screens/create_post/widgets/appbar.dart';
-import 'package:antap/screens/create_post/widgets/body copy.dart';
+import 'package:antap/screens/create_post/widgets/body_video.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/src/appbar.dart';
 import 'package:antap/src/gutter.dart';
@@ -44,7 +44,7 @@ class _CreatePostPopUpState extends State<CreatePostPopUp> {
           builder: (builder) => XenPopupCard(
             appBar: appBar,
             gutter: gutter,
-            body: CreatePostScreen(),
+            body: Container(),
           ),
         ),
         child: const Text("open card with gutter and app bar"),

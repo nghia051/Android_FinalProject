@@ -1,6 +1,7 @@
 import 'package:antap/screens/image_video_post/customize_screen.dart';
 import 'package:antap/screens/map/map_screen.dart';
 import 'package:antap/screens/map/pop_up/popup_screen.dart';
+import 'package:antap/screens/map/restaurant_detail/restaurant_detail_screen.dart';
 import 'package:antap/screens/posts/post_screen.dart';
 import 'package:antap/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,14 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectPageIndex = 0;
 
-  static const List<Widget> _pages = [
+  static List<Widget> _pages = [
     HomePage(),
     PostScreen(),
     MapScreen(),
     CustomizeScreen(),
-    CreatePostPopUp(),
+    //CreatePostPopUp(),
+    RestaurantDetailsScreen(imagePath: "imagePath", restaurantName: "haha", restaurantAddress: "haha", category: "haha", distance: "90km", rating: "4"),
+    PopUp(),
     ProfileScreen(),
   ];
 

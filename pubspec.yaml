@@ -33,6 +33,7 @@ dependencies:
   provider: ^6.0.0
   loading_animation_widget: ^1.2.0+4
   flutter_rating_bar: ^4.0.1
+  flutter_feather_icons: ^2.0.0+1
   uuid: ^4.0.0
 dev_dependencies:
   flutter_test:
@@ -50,7 +51,19 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/uploadFoodImageOnPost.png
+    - assets/images/arrow_back.png
+    - assets/images/bookmarks_icon.png
+    - assets/images/direction_icon.png
+    - assets/images/call_icon.png
+    - assets/images/star_icon.png
     - assets/images/icons/facebook.png
+    - assets/images/avocado.png
+    - assets/images/black_berries.png
+    - assets/images/cake_slice.png
+    - assets/images/cake_small.png
+    - assets/images/cake_big.png
+    - assets/images/strawberries.png
+    - assets/images/doughnuts.png
     - assets/images/icons/google.png
     - assets/images/icons/linkedin.png
     - assets/images/icons/image_upload.png

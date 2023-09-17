@@ -56,7 +56,7 @@ class _PostScreenState extends State<PostScreen> {
                 Column(
                   children: List.generate(imagePosts.length, (index) {
                     return Container(
-                      color: Colors.black87,
+                      color: Colors.pink[400],
                       width: double.infinity,
                       margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                       child: Column(
@@ -84,7 +84,17 @@ class _PostScreenState extends State<PostScreen> {
                                   )
                                 ]),
                           ),
-                          PostImageWidget(post: imagePosts[index]),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: const Border(
+                                top: BorderSide(width: 2.0, color: Colors.white), 
+                                bottom: BorderSide(width: 2.0, color: Colors.white), 
+                              ),
+                              color: Colors.pink[400],
+                            ),
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: PostImageWidget(post: imagePosts[index]),
+                          ),
                           Padding(
                               padding: const EdgeInsets.all(10),
                               child: PostReactWidget(post: imagePosts[index]))

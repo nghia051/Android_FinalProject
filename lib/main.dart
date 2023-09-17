@@ -1,4 +1,5 @@
 import 'package:antap/main_screen.dart';
+import 'package:antap/screens/map/restaurant_detail/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/auth/home_screen.dart';
 import 'package:antap/screens/auth/login_screen.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         MainScreen.id: (context) => MainScreen(),
         CustomizeImageScreen.id: (context) => CustomizeImageScreen(),
         CustomizeVideoScreen.id: (context) => CustomizeVideoScreen(),
-        //CreatePostPopUp.id: (context) => CreatePostPop(),
+        RestaurantDetailsScreen.id: (context) =>  RestaurantDetailsScreen(),
       },
     );
   });

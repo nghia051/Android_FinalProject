@@ -17,17 +17,31 @@ import 'package:antap/screens/map/restaurant_detail/widgets/ratings_widget.dart'
 import 'package:antap/screens/map/restaurant_detail/widgets/spaces.dart';
 
 import '../../../data/data.dart';
+import '../../../src/card.dart';
+import '../../create_post/widgets/appbar.dart';
+import '../../create_post/widgets/body copy.dart';
 import '../../posts/components/post_info_widget.dart';
 import '../../posts/components/post_react_widget.dart';
+import '../pop_up/widgets/gutter.dart';
 
-class RestaurantDetailsScreen extends StatelessWidget {
+class ScreenArguments {
   String imagePath = "";
   String restaurantName = "TEST";
   String restaurantAddress = "HCMUS";
   String category = "ANTAP";
+  //static String id = 'detail_screen';
   String distance = "5KM";
   String rating = "5";
-  RestaurantDetailsScreen({super.key, required this.imagePath, required this.restaurantName,required this.restaurantAddress,required this.category,required this.distance,required this.rating});
+
+  ScreenArguments({required this.imagePath, required this.restaurantName,required this.restaurantAddress,required this.category,required this.distance,required this.rating});
+}
+
+
+
+class RestaurantDetailsScreen extends StatelessWidget {
+  static String id = 'detail_screen';
+
+  RestaurantDetailsScreen({super.key});
 
 
   TextStyle addressTextStyle = Styles.customNormalTextStyle(
@@ -69,7 +83,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    final RestaurantDetails args = ModalRoute.of(context).settings.arguments;
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     var heightOfStack = MediaQuery.of(context).size.height / 2.8;
     var aPieceOfTheHeightOfStack = heightOfStack - heightOfStack / 3.5;
     return Scaffold(
@@ -84,8 +98,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                     Stack(
                       children: <Widget>[
                         Positioned(
-                          child: Image.asset(
-                            imagePath,
+                          child: Image.network(
+                            args.imagePath,
                             width: MediaQuery.of(context).size.width,
                             height: heightOfStack,
                             fit: BoxFit.cover,
@@ -102,7 +116,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                             child: Row(
                               children: <Widget>[
                                 InkWell(
-                                  ///onTap: () => AutoRouter.of(context).pop(),
+                                  onTap: () => Navigator.pop(context),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                       left: Sizes.MARGIN_16,
@@ -209,7 +223,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                               Row(
                                 children: <Widget>[
                                   Text(
-                                    restaurantName,
+                                    args.restaurantName,
                                     textAlign: TextAlign.left,
                                     style: Styles.customTitleTextStyle(
                                       color: AppColors.headingText,
@@ -219,7 +233,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                   ),
                                   SizedBox(width: 4.0),
                                   CardTags(
-                                    title: category,
+                                    title: args.category,
                                     decoration: BoxDecoration(
                                       gradient: Gradients.secondaryGradient,
                                       boxShadow: [
@@ -231,7 +245,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                   ),
                                   SizedBox(width: 4.0),
                                   CardTags(
-                                    title: distance,
+                                    title: args.distance,
                                     decoration: BoxDecoration(
                                       color: Color.fromARGB(255, 132, 141, 255),
                                       borderRadius: BorderRadius.all(
@@ -239,12 +253,12 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Spacer(flex: 1),
-                                  Ratings(rating)
+                                  Ratings(args.rating)
                                 ],
                               ),
                               SizedBox(height: 16.0),
                               Text(
-                                restaurantAddress,
+                                args.restaurantAddress,
                                 style: addressTextStyle,
                               ),
                               SizedBox(height: 8.0),

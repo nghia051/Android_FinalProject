@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:antap/models/restaurant.dart';
+import 'package:antap/screens/map/custom_marker_widget.dart';
 import 'package:antap/screens/map/pop_up/widgets/appbar.dart';
 import 'package:antap/screens/map/pop_up/widgets/body.dart';
 import 'package:antap/screens/map/pop_up/widgets/gutter.dart';
@@ -30,22 +32,24 @@ class _MapSectionState extends State<MapSection> {
     zoom: 17,
   );
 
-  // kGooglePlex
-  LatLng currentPosition = const LatLng(37.42796133580664, -122.085749655962);
+  // HCMUS
+  LatLng _initialPosition = LatLng(10.7628, 106.6825);
   Set<Marker> markers = {};
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    // currentPosition = const LatLng(37.42796133580664, -122.085749655962);
-    // _getUserLocation();
-    setRestaurantMarker();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _onBuildCompleted());
+    _setRestaurantMarker();
     setCurrentLocation();
+    _getUserLocation();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Image img = Image.network('https://googleflutter.com/sample_image.jpg');
+    // return CustomMarkerWidget(img: img);
     return Stack(children: [
       Scaffold(
         body: GoogleMap(
@@ -53,7 +57,7 @@ class _MapSectionState extends State<MapSection> {
           markers: markers,
           zoomControlsEnabled: false,
           initialCameraPosition: CameraPosition(
-            target: currentPosition,
+            target: _initialPosition,
             zoom: 17,
           ),
           onMapCreated: (GoogleMapController controller) {
@@ -70,11 +74,9 @@ class _MapSectionState extends State<MapSection> {
   }
 
   void _getUserLocation() async {
-    var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
+    Position position = await _determinePosition();
     setState(() {
-      currentPosition = LatLng(position.latitude, position.longitude);
+      _initialPosition = LatLng(position.latitude, position.longitude);
     });
   }
 
@@ -114,32 +116,34 @@ class _MapSectionState extends State<MapSection> {
     });
   }
 
-  void setRestaurantMarker() {
+  _setRestaurantMarker() async {
     List<Restaurant> restaurants = getRestaurantList();
 
     for (int i = 0; i < restaurants.length; i++) {
+      BitmapDescriptor markerIcon = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(),
+          'assets/images/restaurants/restaurant${i + 1}.jpg');
       markers.add(Marker(
-          markerId: MarkerId(restaurants[i].id),
-          infoWindow: InfoWindow(title: restaurants[i].name),
-          position: restaurants[i].location,
-          onTap: () {
-            showWidget(restaurants[i]);
-          },
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueGreen,
-          )));
+        markerId: MarkerId(restaurants[i].id),
+        infoWindow: InfoWindow(title: restaurants[i].name),
+        position: restaurants[i].location,
+        onTap: () {
+          showWidget(restaurants[i]);
+        },
+        icon: markerIcon,
+      ));
     }
     setState(() {});
   }
 
   List<Restaurant> getRestaurantList() {
     List<Restaurant> restaurants = [];
-    restaurants.add(Restaurant(
-        'restaurant1', 'Name 1', 'imageUrl', const LatLng(10.764354, 106.682098)));
-    restaurants.add(Restaurant(
-        'restaurant2', 'Name 2', 'imageUrl', const LatLng(10.761160, 106.683385)));
-    restaurants.add(Restaurant(
-        'restaurant3', 'Name 3', 'imageUrl', const LatLng(10.761814, 106.681829)));
+    restaurants.add(Restaurant('restaurant1', 'Name 1', 'imageUrl',
+        const LatLng(10.764354, 106.682098)));
+    restaurants.add(Restaurant('restaurant2', 'Name 2', 'imageUrl',
+        const LatLng(10.761160, 106.683385)));
+    restaurants.add(Restaurant('restaurant3', 'Name 3', 'imageUrl',
+        const LatLng(10.761814, 106.681829)));
     return restaurants;
   }
 
@@ -169,5 +173,14 @@ class _MapSectionState extends State<MapSection> {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return position;
+  }
+
+  Future<void> _onBuildCompleted() async {
+    print('It is running');
+  }
+
+  Future<Marker> _generateMarkersFromWidgets(
+      CustomMarkerWidget markerWidget) async {
+    return const Marker(markerId: MarkerId('asdas'));
   }
 }

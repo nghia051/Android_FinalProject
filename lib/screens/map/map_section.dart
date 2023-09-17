@@ -9,9 +9,11 @@ import 'package:antap/screens/map/custom_marker_widget.dart';
 import 'package:antap/screens/map/pop_up/widgets/appbar.dart';
 import 'package:antap/screens/map/pop_up/widgets/body.dart';
 import 'package:antap/screens/map/pop_up/widgets/gutter.dart';
+import 'package:antap/screens/map/restaurant_detail/restaurant_detail_screen.dart';
 import 'package:antap/src/appbar.dart';
 import 'package:antap/src/card.dart';
 import 'package:antap/src/gutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geolocator/geolocator.dart';
@@ -46,6 +48,7 @@ class _MapSectionState extends State<MapSection> {
     _setRestaurantMarker();
     setCurrentLocation();
     _getUserLocation();
+
     super.initState();
   }
 
@@ -108,20 +111,21 @@ class _MapSectionState extends State<MapSection> {
   }
 
   void showWidget(Restaurant restaurant) {
-    setState(() {
-      showDialog(
-        context: context,
-        builder: (builder) => XenPopupCard(
-          appBar: appBar,
-          gutter: gutter,
-          body: NewPostScreen(),
-        ),
-      );
-    });
+    Navigator.pushNamed(context, RestaurantDetailsScreen.id,arguments: ScreenArguments(imagePath: restaurant.imageUrl, restaurantName: restaurant.name, restaurantAddress: "HCMUS", category: 'Dining', distance: "5km", rating: "4"));
+    // setState(() {
+    //   showDialog(
+    //     context: context,
+    //     builder: (builder) => XenPopupCard(
+    //       appBar: appBar,
+    //       gutter: gutter,
+    //       body: NewPostScreen(),
+    //     ),
+    //   );
+    // });
   }
 
   _setRestaurantMarker() async {
-    List<Restaurant> restaurants = getRestaurantList();
+    List<Restaurant> restaurants = await getRestaurantList();
 
     for (int i = 0; i < restaurants.length; i++) {
       // final Uint8List resizedImageMarker =
@@ -256,23 +260,31 @@ class _MapSectionState extends State<MapSection> {
     return byteData!.buffer.asUint8List();
   }
 
-  List<Restaurant> getRestaurantList() {
+  Future<List<Restaurant>> getRestaurantList() async {
     List<Restaurant> restaurants = [];
-    restaurants.add(Restaurant(
-        'restaurant1',
-        'Name 1',
-        'https://googleflutter.com/sample_image.jpg',
-        const LatLng(10.764354, 106.682098)));
-    restaurants.add(Restaurant(
-        'restaurant2',
-        'Name 2',
-        'https://googleflutter.com/sample_image.jpg',
-        const LatLng(10.761160, 106.683385)));
-    restaurants.add(Restaurant(
-        'restaurant3',
-        'Name 3',
-        'https://googleflutter.com/sample_image.jpg',
-        const LatLng(10.761814, 106.681829)));
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('restaurants').get();
+      querySnapshot.docs.forEach((doc) {
+    Restaurant restaurant = Restaurant.fromFirestore(doc, null);
+    restaurants.add(restaurant);
+  });
+    //
+    // /// Firestance
+    // restaurants.add(Restaurant(
+    //     'restaurant1',
+    //     'Name 1',
+    //     'https://googleflutter.com/sample_image.jpg',
+    //     const LatLng(10.764354, 106.682098)));
+    // restaurants.add(Restaurant(
+    //     'restaurant2',
+    //     'Name 2',
+    //     'https://googleflutter.com/sample_image.jpg',
+    //     const LatLng(10.761160, 106.683385)));
+    // restaurants.add(Restaurant(
+    //     'restaurant3',
+    //     'Name 3',
+    //     'https://googleflutter.com/sample_image.jpg',
+    //     const LatLng(10.761814, 106.681829)));
     return restaurants;
   }
 

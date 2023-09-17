@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
     MapScreen(),
     CustomizeScreen(),
     //CreatePostPopUp(),
-    RestaurantDetailsScreen(imagePath: "imagePath", restaurantName: "haha", restaurantAddress: "haha", category: "haha", distance: "90km", rating: "4"),
     PopUp(),
     ProfileScreen(),
   ];

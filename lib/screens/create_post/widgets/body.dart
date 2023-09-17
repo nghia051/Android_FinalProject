@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:antap/constants.dart';
 import 'package:antap/models/post.dart';
+import 'package:antap/screens/create_post/widgets/textWithFont.dart';
 import 'package:antap/screens/map/pop_up/widgets/video_app.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -14,7 +15,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -25,7 +29,7 @@ class CreatePostScreen extends StatefulWidget {
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   final _titleController = TextEditingController();
-  int rating = 1;
+  int _rating = 1;
   final _contentController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   List<File?> listImageFiles = [];
@@ -35,6 +39,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String imageUrl = "";
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('imagePost');
   bool choose =  false;
+  IconData? _selectedIcon;
+
 
   @override
   void initState(){
@@ -60,12 +66,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   Future<void> _save() async {
+
+
+    if (_titleController.text.isEmpty ||  _contentController.text.isEmpty)
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Wrong Input"),
+            content: Text("Please enter all field"),
+          );
+        },
+      );
+    }
+
+          showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            title: Text("Post Successfully"),
+            content: Text("You can view it now"),
+          );
+        },
+      );
+
     if(listImageFiles.isEmpty) return ;
     final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+    print(listImageFiles);
     List<String> listURL = [];
     for(var _image in listImageFiles)
       {
         try {
+          fileName = _image!.path.split('/').last;
           await storage.ref('imagePosts/$fileName').putFile(_image!);
           firebase_storage.Reference ref = storage.ref('imagePosts/$fileName');
           imageUrl = await ref.getDownloadURL();
@@ -76,7 +109,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
       }
     String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
-
+    
     await collectionReference
         .add({
       'listImageURL': listURL,
@@ -88,24 +121,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
-
-    if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text("Post Successfully"),
-            content: Text("You can view it now"),
-          );
-        },
-      );
-
-      _titleController.clear();
+    _titleController.clear();
       _contentController.clear();
       setState(() {
-        listURL.clear();
+            listImages.clear();
+            listImageFiles.clear();
       });
-    }
+      Navigator.pop(context);
+
+
+      
 
   }
 
@@ -133,45 +158,35 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              const Text("Create Post", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: _titleController,
-                  decoration: const InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    hintText: 'Enter title',
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextWithFont().textWithRobotoFont(
+                    color: Theme.of(context)
+                        .textTheme
+                        .displayLarge!
+                        .color!
+                        .withOpacity(.6),
+                    fontSize: 14.sp,
+                    text:
+                    'Please write a review for this restaurant',
+                    fontWeight: FontWeight.w500),
+                SizedBox(
+                  height: 5.h,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 80),
+                Padding(
+                padding: const EdgeInsets.only(right: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     lot.Lottie.asset(
                       "assets/lotties/animation_lm7l7pxr.json",
-                      width: 80,
+                      height: 80,
                     ),
                     RatingBar.builder(
-                      initialRating: rating.toDouble(),
+                      initialRating: _rating.toDouble(),
                       minRating: 1,
                       itemSize: 30,
                       itemBuilder: (context, _) => const Icon(
@@ -179,14 +194,66 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) => setState(() {
-                        this.rating = rating.toInt();
-                        print(this.rating);
+                        this._rating = rating.toInt();
+                        print(this._rating);
                       })
                     )
                   ],
                 ),
               ),
-              (listImageFiles.isNotEmpty) ? SizedBox(
+                SizedBox(
+                  height: 5.h,
+                ),
+                TextWithFont().textWithRobotoFont(
+                    color: Theme.of(context).textTheme.headline1!.color!,
+                    fontSize: 14.sp,
+                    text: 'Review Title',
+                    fontWeight: FontWeight.w600),
+                     Form(
+                  child: TextFormField(
+                    controller: _titleController,
+                    minLines: 1,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 1,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                      fillColor: authTextFromFieldFillColor.withOpacity(.3),
+                      hintText: 'Enter your review title here',
+                      hintStyle: TextStyle(
+                        color: authTextFromFieldHintTextColor,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.h,
+                ),
+                TextWithFont().textWithRobotoFont(
+                    color: Theme.of(context).textTheme.headline1!.color!,
+                    fontSize: 14.sp,
+                    text: 'Update your image review here',
+                    fontWeight: FontWeight.w600),
+                 (listImageFiles.isNotEmpty) ? SizedBox(
                 height: 40,
                 width: 100,
                 child: ElevatedButton(
@@ -204,7 +271,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 )
               ) : SizedBox(),
               const SizedBox(height: 10),
-              InkWell(
+                InkWell(
                 onTap: () {
                   if (listImageFiles.isEmpty){
                     chooseImage();
@@ -269,55 +336,74 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  autofocus: false,
-                  keyboardType: TextInputType.multiline,
-                  controller: _contentController,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
+                TextWithFont().textWithRobotoFont(
+                    color: Theme.of(context).textTheme.headline1!.color!,
+                    fontSize: 14.sp,
+                    text: 'Write Your Review',
+                    fontWeight: FontWeight.w600),
+
+           
+                Form(
+                  child: TextFormField(
+                    controller: _contentController,
+                    minLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      contentPadding:
+                      const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                      fillColor: authTextFromFieldFillColor.withOpacity(.3),
+                      hintText: 'Write your review here',
+                      hintStyle: TextStyle(
+                        color: authTextFromFieldHintTextColor,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ),
-                    hintText: 'Enter review',
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              InkWell(
-                onTap: () {
-                  _save();
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), 
-                  decoration: BoxDecoration(
-                    color: buttonColor, 
-                    borderRadius: BorderRadius.circular(5), 
-                    border: Border.all(color: Colors.black), 
-                  ),
-                  child: const Text(
-                    'POST',
-                    style: TextStyle(
-                      color: Colors.white, // Màu chữ
-                      fontWeight: FontWeight.bold,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 20.h,
+                ),
+               Align(
+                    alignment: Alignment.center,    
+                    child: ElevatedButton(
+                        onPressed: _save,
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.pink,
+                          side: BorderSide.none,
+                          // primary:,
+                          minimumSize: Size(120.w, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: TextWithFont().textWithRobotoFont(
+                          color: Colors.black,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          text: 'Save',
+                        )),
+                  )
+              ],
+            ),
           ),
         ),
       ),

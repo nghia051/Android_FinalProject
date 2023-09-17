@@ -93,10 +93,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     if(listImageFiles.isEmpty) return ;
     final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+    print(listImageFiles);
     List<String> listURL = [];
     for(var _image in listImageFiles)
       {
         try {
+          fileName = _image!.path.split('/').last;
           await storage.ref('imagePosts/$fileName').putFile(_image!);
           firebase_storage.Reference ref = storage.ref('imagePosts/$fileName');
           imageUrl = await ref.getDownloadURL();
@@ -119,13 +121,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
-
-
-      _titleController.clear();
+    _titleController.clear();
       _contentController.clear();
       setState(() {
-        listURL.clear();
+            listImages.clear();
+            listImageFiles.clear();
       });
+      Navigator.pop(context);
+
+
+      
 
   }
 

@@ -34,109 +34,111 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            GestureDetector(
-              onTap: () => {
-                setState(
-                  () {
-                    _isFollowingSelected = true;
-                  },
-                )
-              },
-              child: Text(
-                'Following',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontSize: _isFollowingSelected ? 18 : 15,
-                      color: _isFollowingSelected ? Colors.white : Colors.grey,
-                    ),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              GestureDetector(
+                onTap: () => {
+                  setState(
+                    () {
+                      _isFollowingSelected = true;
+                    },
+                  )
+                },
+                child: Text(
+                  'Following',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontSize: _isFollowingSelected ? 18 : 15,
+                        color:
+                            _isFollowingSelected ? Colors.white : Colors.grey,
+                      ),
+                ),
               ),
-            ),
-            Text(
-              '   |   ',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontSize: 14, color: Colors.grey),
-            ),
-            GestureDetector(
-              onTap: () => {
-                setState(
-                  () {
-                    _isFollowingSelected = false;
-                  },
-                )
-              },
-              child: Text(
-                'For You',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontSize: !_isFollowingSelected ? 18 : 15,
-                      color: !_isFollowingSelected ? Colors.white : Colors.grey,
-                    ),
+              Text(
+                '   |   ',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(fontSize: 14, color: Colors.grey),
               ),
-            ),
-          ],
+              GestureDetector(
+                onTap: () => {
+                  setState(
+                    () {
+                      _isFollowingSelected = false;
+                    },
+                  )
+                },
+                child: Text(
+                  'For You',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontSize: !_isFollowingSelected ? 18 : 15,
+                        color:
+                            !_isFollowingSelected ? Colors.white : Colors.grey,
+                      ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      body: FutureBuilder<List<VideoPost>>(
-        future: getVideoPosts(), // Gọi hàm để lấy dữ liệu
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            List<VideoPost> videoPosts = snapshot.data ?? [];
-            return PageView.builder(
-              onPageChanged: (int page) => {
-                setState(() {
-                  _snappedPageIndex = page;
-                }),
-              },
-              scrollDirection: Axis.vertical,
-              itemCount: videoPosts.length,
-              itemBuilder: (context, index) {
-                return Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    VideoTile(
-                      video: videoPosts[index],
-                      currentIndex: index,
-                      snappedPageIndex: _snappedPageIndex,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+        body: FutureBuilder<List<VideoPost>>(
+            future: getVideoPosts(), // Gọi hàm để lấy dữ liệu
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<VideoPost> videoPosts = snapshot.data ?? [];
+                return PageView.builder(
+                  onPageChanged: (int page) => {
+                    setState(() {
+                      print('Page: $page');
+                      _snappedPageIndex = page;
+                    }),
+                  },
+                  scrollDirection: Axis.vertical,
+                  itemCount: videoPosts.length,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      alignment: Alignment.bottomCenter,
                       children: [
-                        Expanded(
-                          flex: 3,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 4,
-                            child: VideoDetail(
-                              video: videoPosts[index],
-                            ),
-                          ),
+                        VideoTile(
+                          video: videoPosts[index],
+                          currentIndex: index,
+                          snappedPageIndex: _snappedPageIndex,
                         ),
-                        Expanded(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 2.2,
-                            child: HomeSideBar(video: videoPosts[index]),
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                height: MediaQuery.of(context).size.height / 4,
+                                child: VideoDetail(
+                                  video: videoPosts[index],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height / 2.2,
+                                child: HomeSideBar(video: videoPosts[index]),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                  ],
+                    );
+                  },
                 );
-              },
-            );
-          }
-        }
-      )
-    );
+              }
+            }));
   }
 }

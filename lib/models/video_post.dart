@@ -6,7 +6,6 @@ import '../screens/map/pop_up/widgets/video_app.dart';
 import 'post.dart';
 
 class VideoPost extends Post {
-  String id;
   String videoUrl;
   String? postedBy;
   DateTime postDate;
@@ -16,13 +15,8 @@ class VideoPost extends Post {
   List<Comment> listComment;
   String audioName;
 
-  VideoPost(this.id, this.videoUrl, this.postedBy, this.postDate, this.rate,
-      this.review, this.favorite, this.listComment, this.audioName);
-
-  @override
-  String getID() {
-    return id;
-  }
+  VideoPost(this.videoUrl, this.postedBy, this.postDate, this.rate, this.review,
+      this.favorite, this.listComment, this.audioName);
 
   @override
   Widget getImageVideo() {
@@ -78,14 +72,12 @@ class VideoPost extends Post {
   ) {
     final data = snapshot.data();
     return VideoPost(
-      data?["id"],
       data?["videoUrl"],
       "Hoang Nghia Viet",
       data?["postDate"].toDate(),
       data?["rate"],
       Review(
-        title: data?["review"]["title"],
-        content: data?["review"]["content"]),
+          title: data?["review"]["title"], content: data?["review"]["content"]),
       data?["favorite"],
       (data?["listComment"] as List<dynamic>).map((commentData) {
         return Comment(

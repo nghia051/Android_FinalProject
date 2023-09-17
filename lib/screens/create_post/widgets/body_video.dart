@@ -102,8 +102,11 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
           'videoUrl': videoUrl,
           'postedBy': userId,
           'postDate': DateTime.now(),
-          'rating': _rating,
-          'review': {_titleController.text, _contentController.text},
+          'rate': _rating,
+          'review': {
+            'title': _titleController.text,
+            'content': _contentController.text
+          },
           'favorite': 0,
           'listComment': [],
           'audioName': 'Perfect',

@@ -33,8 +33,6 @@ class Comment {
 abstract class Post {
   Post();
 
-  String getID();
-
   Widget getImageVideo();
 
   List getListComment();

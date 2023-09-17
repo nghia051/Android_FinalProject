@@ -26,8 +26,6 @@ class _MainScreenState extends State<MainScreen> {
     PostScreen(),
     MapScreen(),
     CustomizeScreen(),
-    //CreatePostPopUp(),
-    PopUp(),
     ProfileScreen(),
   ];
 

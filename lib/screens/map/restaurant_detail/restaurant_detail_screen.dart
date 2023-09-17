@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:antap/screens/create_post/create_post_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:antap/screens/map/restaurant_detail/values/data.dart';
@@ -11,8 +12,12 @@ import 'package:antap/screens/map/restaurant_detail/widgets/ratings_widget.dart'
 import 'package:antap/screens/map/restaurant_detail/widgets/spaces.dart';
 
 import '../../../data/data.dart';
+import '../../../src/card.dart';
+import '../../create_post/widgets/appbar.dart';
+import '../../create_post/widgets/body copy.dart';
 import '../../posts/components/post_info_widget.dart';
 import '../../posts/components/post_react_widget.dart';
+import '../pop_up/widgets/gutter.dart';
 
 class ScreenArguments {
   String imagePath = "";
@@ -315,7 +320,16 @@ class RestaurantDetailsScreen extends StatelessWidget {
               ),
               PotbellyButton(
                 'Rate Your Experience ',
-
+                onTap: () => {
+                  showDialog(
+                    context: context,
+                    builder: (builder) => XenPopupCard(
+                      appBar: appBar,
+                      gutter: gutter,
+                      body: CreatePostScreen(),
+                    ),
+                  ),
+                },
                 buttonHeight: 65,
                 buttonWidth: MediaQuery.of(context).size.width,
                 decoration: Decorations.customHalfCurvedButtonDecoration(

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../screens/posts/components/post_image_widget.dart';
 
 class ImagePost extends Post {
-  String id;
   List<String> listImageUrl;
   String postedBy;
   DateTime postDate;
@@ -17,19 +16,13 @@ class ImagePost extends Post {
   List<Comment> listComment;
 
   ImagePost(
-      {required this.id,
-      required this.listImageUrl,
+      {required this.listImageUrl,
       required this.postedBy,
       required this.postDate,
       required this.rate,
       required this.review,
       required this.favorite,
       required this.listComment});
-
-  @override
-  String getID() {
-    return id;
-  }
 
   @override
   Widget getImageVideo() {
@@ -83,23 +76,18 @@ class ImagePost extends Post {
   ) {
     final data = snapshot.data();
     return ImagePost(
-        id: "",
         listImageUrl: List<String>.from(data?["listImageURL"]),
         postDate: data?["postDate"].toDate(),
         postedBy: "Hoang Nghia Viet",
         rate: data?["rating"],
-        review: Review(
-            title: data?["title"],
-            content: data?["content"]),
+        review: Review(title: data?["title"], content: data?["content"]),
         favorite: 290903,
-        listComment: myComment
-      );
+        listComment: myComment);
   }
 
   @override
   Map<String, dynamic> toFirestore() {
     return {
-      "id": id,
       "listImageUrl": listImageUrl,
       "postedBy": postedBy,
       "postDate": postDate,

@@ -14,7 +14,6 @@ Future<void> addVideoPost() async {
   final videoRef = storageRef.child("images/mountains.jpg");
   String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
   VideoPost tmpVideoPost = VideoPost(
-    '1',
     'assets/v1.mp4',
     userId,
     DateTime(2023, 7, 15),
@@ -33,7 +32,6 @@ Future<void> addVideoPost() async {
       FirebaseFirestore.instance.collection('videoPosts');
   return videoPost
       .add({
-        'id': tmpVideoPost.id, // John Doe
         'videoUrl': tmpVideoPost.videoUrl,
         'postedBy': tmpVideoPost.postedBy,
         'postDate': tmpVideoPost.postDate,

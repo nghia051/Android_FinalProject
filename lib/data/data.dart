@@ -15,7 +15,6 @@ User currentUser = User(
 
 final List<VideoPost> videos = [
   VideoPost(
-    '1',
     'assets/v1.mp4',
     "Hoang Nghia Viet",
     DateTime(2023, 7, 15),
@@ -42,7 +41,6 @@ final List<VideoPost> videos = [
 
 List<Post> listPost = [
   ImagePost(
-      id: '2',
       listImageUrl: [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
@@ -63,7 +61,6 @@ List<Post> listPost = [
         Comment(user: "Hoang Nghia Viet", content: "Nghia Viet non"),
       ]),
   VideoPost(
-    '1',
     'assets/v1.mp4',
     "Hoang Nghia Viet",
     DateTime(2023, 7, 15),
@@ -82,7 +79,6 @@ List<Post> listPost = [
 
 List<ImagePost> listImagePost = [
   ImagePost(
-      id: '2',
       listImageUrl: [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2018_01_Croissant_IMG_0685.JPG/800px-2018_01_Croissant_IMG_0685.JPG",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
@@ -103,7 +99,6 @@ List<ImagePost> listImagePost = [
         Comment(user: "Hoang Nghia Viet", content: "Nghia Viet non"),
       ]),
   ImagePost(
-      id: '3',
       listImageUrl: [
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
         "https://media.saigontourist.edu.vn/Media/1_STHCHOME/FolderFunc/202307/Images/tiramisu-la-gi-20230727025024-e.jpg",
@@ -133,7 +128,10 @@ List<Comment> myComment = [
   Comment(user: "Hoang Viet", content: "Tuyet voi nhe"),
   Comment(user: "Hoang Viet", content: "Toi da an o day, rat ngon!!!"),
   Comment(user: "Hoang Viet", content: "HNV dep trai"),
-  Comment(user: "Hoang Viet", content: "Hmmm I don't know why many people like this restaurant, it is normal in my opinion"),
+  Comment(
+      user: "Hoang Viet",
+      content:
+          "Hmmm I don't know why many people like this restaurant, it is normal in my opinion"),
   Comment(user: "Hoang Viet", content: "He he haha haha"),
   Comment(user: "Hoang Viet", content: "Cung duoc"),
   Comment(user: "Hoang Viet", content: "Tha amazing!!!!!"),

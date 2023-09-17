@@ -69,24 +69,6 @@ class _CreateImagePostScreenState extends State<CreateImagePostScreen> {
         },
       );
       return;
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            title: Text("Post Successfully"),
-            content: Text("You can view it now"),
-          );
-        },
-      );
-
-      _titleController.clear();
-      _contentController.clear();
-      setState(() {
-        _rating = 1;
-        listImageFiles.clear();
-        listImages.clear();
-      });
     }
 
     if (listImageFiles.isEmpty) return;
@@ -111,21 +93,44 @@ class _CreateImagePostScreenState extends State<CreateImagePostScreen> {
     await collectionReference
         .add({
           'listImageURL': listURL,
-          'title': _titleController.text,
-          'content': _contentController.text,
+          'review': {
+            'title': _titleController.text,
+            'content': _contentController.text
+          },
           'postedBy': userId,
           'postDate': DateTime.now(),
-          'rating': 5
+          'rating': _rating,
+          'favorite': 0,
+          'listComment': [],
         })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+        .then((value) => print("Images Added"))
+        .catchError((error) => print("Failed to add images: $error"));
     _titleController.clear();
     _contentController.clear();
     setState(() {
       listImages.clear();
       listImageFiles.clear();
     });
-    Navigator.pop(context);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          title: Text("Post Successfully"),
+          content: Text("You can view it now"),
+        );
+      },
+    );
+
+    _titleController.clear();
+    _contentController.clear();
+    setState(() {
+      _rating = 1;
+      listImageFiles.clear();
+      listImages.clear();
+    });
+
+    // Navigator.pop(context);
   }
 
   void updateButtonColor() {

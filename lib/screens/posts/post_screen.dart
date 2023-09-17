@@ -19,7 +19,7 @@ String getSubContent(String text, int lim) {
 Future<List<ImagePost>> getImagePosts() async {
   List<ImagePost> imagePosts = [];
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await FirebaseFirestore.instance.collection('imagePosts').get();
+      await FirebaseFirestore.instance.collection('imagePost').get();
 
   querySnapshot.docs.forEach((doc) {
     ImagePost imagePost = ImagePost.fromFirestore(doc, null);

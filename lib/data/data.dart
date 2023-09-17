@@ -127,3 +127,15 @@ List<ImagePost> listImagePost = [
             content: "Abc zyx dsadjsajd uuuu uwu u u ngon ngon"),
       ])
 ];
+
+List<Comment> myComment = [
+  Comment(user: "Hoang Viet", content: "Ngon lam moi nguoi nen thu"),
+  Comment(user: "Hoang Viet", content: "Tuyet voi nhe"),
+  Comment(user: "Hoang Viet", content: "Toi da an o day, rat ngon!!!"),
+  Comment(user: "Hoang Viet", content: "HNV dep trai"),
+  Comment(user: "Hoang Viet", content: "Hmmm I don't know why many people like this restaurant, it is normal in my opinion"),
+  Comment(user: "Hoang Viet", content: "He he haha haha"),
+  Comment(user: "Hoang Viet", content: "Cung duoc"),
+  Comment(user: "Hoang Viet", content: "Tha amazing!!!!!"),
+  Comment(user: "Hoang Viet", content: "wow wow")
+];

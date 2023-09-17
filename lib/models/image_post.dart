@@ -83,21 +83,17 @@ class ImagePost extends Post {
   ) {
     final data = snapshot.data();
     return ImagePost(
-        id: data?["id"],
-        listImageUrl: List<String>.from(data?["listImageUrl"]),
+        id: "",
+        listImageUrl: List<String>.from(data?["listImageURL"]),
         postDate: data?["postDate"].toDate(),
         postedBy: "Hoang Nghia Viet",
-        rate: data?["rate"],
+        rate: data?["rating"],
         review: Review(
-            title: data?["review"]["title"],
-            content: data?["review"]["content"]),
-        favorite: data?["favorite"],
-        listComment: (data?["listComment"] as List<dynamic>).map((commentData) {
-          return Comment(
-            user: "Hoang Nghia Viet",
-            content: commentData["content"],
-          );
-        }).toList());
+            title: data?["title"],
+            content: data?["content"]),
+        favorite: 290903,
+        listComment: myComment
+      );
   }
 
   @override

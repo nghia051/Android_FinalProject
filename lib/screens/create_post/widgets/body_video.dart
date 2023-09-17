@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:antap/constants.dart';
 import 'package:antap/screens/create_post/widgets/textWithFont.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,20 +21,22 @@ class CreateVideoPostScreen extends StatefulWidget {
 }
 
 class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
-    int _rating = 1;
+  int _rating = 1;
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   File? _video;
   final ImagePicker _picker = ImagePicker();
   Color? buttonColor;
   VideoPlayerController? _videoPlayerController;
-  CollectionReference collectionReference = FirebaseFirestore.instance.collection('imagePost');
-  bool choose =  false;
+  CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('videoPosts');
+  String? fileName;
+  String videoUrl = "";
+  bool choose = false;
   IconData? _selectedIcon;
 
-
   @override
-    void initState(){
+  void initState() {
     super.initState();
     _titleController.addListener(updateButtonColor);
     _contentController.addListener(updateButtonColor);
@@ -42,17 +45,18 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
   chooseVideo() async {
     final video = await _picker.pickVideo(source: ImageSource.gallery);
     _video = File(video!.path);
-    _videoPlayerController = VideoPlayerController.file(_video!)..initialize().then((_) {
-      setState(() {
-        
+    _videoPlayerController = VideoPlayerController.file(_video!)
+      ..initialize().then((_) {
+        setState(() {});
+        _videoPlayerController!.play();
       });
-      _videoPlayerController!.play();
-    });
   }
 
-  void updateButtonColor(){
+  void updateButtonColor() {
     setState(() {
-      if (_titleController.text.isNotEmpty && _contentController.text.isNotEmpty && _video != null){
+      if (_titleController.text.isNotEmpty &&
+          _contentController.text.isNotEmpty &&
+          _video != null) {
         buttonColor = kTextColor;
       } else {
         buttonColor = Colors.grey;
@@ -60,9 +64,10 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
     });
   }
 
- Future<void> _save() async {
-        if (_titleController.text.isEmpty ||  _contentController.text.isEmpty || _video == null)
-    {
+  Future<void> _save() async {
+    if (_titleController.text.isEmpty ||
+        _contentController.text.isEmpty ||
+        _video == null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -74,8 +79,39 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
       );
       return;
     }
-    else {
-          showDialog(
+
+    if (_video == null) return;
+
+    final firebase_storage.FirebaseStorage storage =
+        firebase_storage.FirebaseStorage.instance;
+    print(_video);
+    try {
+      fileName = _video!.path.split('/').last;
+      await storage.ref('videoPosts/$fileName').putFile(_video!);
+      firebase_storage.Reference ref = storage.ref('videoPosts/$fileName');
+      videoUrl = await ref.getDownloadURL();
+      print("Day ne: $videoUrl");
+    } on firebase_core.FirebaseException catch (e) {
+      print(e);
+    }
+
+    String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
+
+    await collectionReference
+        .add({
+          'videoUrl': videoUrl,
+          'postedBy': userId,
+          'postDate': DateTime.now(),
+          'rating': _rating,
+          'review': {_titleController.text, _contentController.text},
+          'favorite': 0,
+          'listComment': [],
+          'audioName': 'Perfect',
+        })
+        .then((value) => print("VideoPost Added"))
+        .catchError((error) => print("Failed to add video post: $error"));
+
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return const AlertDialog(
@@ -84,15 +120,14 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
           );
         });
 
-        _titleController.clear();
-      _contentController.clear();
-      setState(() {
-        _rating = 1;
-        _video = null;
-      });
-    }
+    _titleController.clear();
+    _contentController.clear();
+    setState(() {
+      _rating = 1;
+      _video = null;
+    });
 
-
+    Navigator.pop(context);
   }
 
   @override
@@ -119,37 +154,35 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                         .color!
                         .withOpacity(.6),
                     fontSize: 14.sp,
-                    text:
-                    'Post a video review for this restaurant',
+                    text: 'Post a video review for this restaurant',
                     fontWeight: FontWeight.w500),
                 SizedBox(
                   height: 5.h,
                 ),
                 Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    lot.Lottie.asset(
-                      "assets/lotties/animation_lm7l7pxr.json",
-                      height: 80,
-                    ),
-                    RatingBar.builder(
-                      initialRating: _rating.toDouble(),
-                      minRating: 1,
-                      itemSize: 30,
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      lot.Lottie.asset(
+                        "assets/lotties/animation_lm7l7pxr.json",
+                        height: 80,
                       ),
-                      onRatingUpdate: (rating) => setState(() {
-                        this._rating = rating.toInt();
-                        print(this._rating);
-                      })
-                    )
-                  ],
+                      RatingBar.builder(
+                          initialRating: _rating.toDouble(),
+                          minRating: 1,
+                          itemSize: 30,
+                          itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                          onRatingUpdate: (rating) => setState(() {
+                                this._rating = rating.toInt();
+                                print(this._rating);
+                              }))
+                    ],
+                  ),
                 ),
-              ),
                 SizedBox(
                   height: 5.h,
                 ),
@@ -158,7 +191,7 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                     fontSize: 14.sp,
                     text: 'Review Title',
                     fontWeight: FontWeight.w600),
-                     Form(
+                Form(
                   child: TextFormField(
                     controller: _titleController,
                     minLines: 1,
@@ -172,7 +205,7 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                     },
                     decoration: InputDecoration(
                       contentPadding:
-                      const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                          const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       fillColor: authTextFromFieldFillColor.withOpacity(.3),
                       hintText: 'Enter your review title here',
                       hintStyle: TextStyle(
@@ -182,13 +215,13 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                       ),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderSide: const BorderSide(
+                            color: authTextFromFieldPorderColor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderSide: const BorderSide(
+                            color: authTextFromFieldPorderColor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -205,34 +238,43 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                 const SizedBox(height: 10),
                 InkWell(
                   onTap: () {
-                      chooseVideo();
+                    chooseVideo();
                   },
-                  child: (_video == null) ? Center(
-                    child: Container(
-                      width: 80.0, // Điều chỉnh kích thước bên trong container theo ý muốn
-                      height: 80.0, // Điều chỉnh kích thước bên trong container theo ý muốn
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle, // Tạo hình tròn cho container
-                        border: Border.all(color: Colors.black, width: 2.0), // Viền đen
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/icons/video_upload.png',
-                            fit: BoxFit.cover,
+                  child: (_video == null)
+                      ? Center(
+                          child: Container(
+                            width:
+                                80.0, // Điều chỉnh kích thước bên trong container theo ý muốn
+                            height:
+                                80.0, // Điều chỉnh kích thước bên trong container theo ý muốn
+                            decoration: BoxDecoration(
+                              shape: BoxShape
+                                  .circle, // Tạo hình tròn cho container
+                              border: Border.all(
+                                  color: Colors.black, width: 2.0), // Viền đen
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/images/icons/video_upload.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
                           ),
+                        )
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.9,
+                          child: _videoPlayerController!.value.isInitialized
+                              ? AspectRatio(
+                                  aspectRatio:
+                                      _videoPlayerController!.value.aspectRatio,
+                                  child: VideoPlayer(_videoPlayerController!),
+                                )
+                              : Container(),
                         ),
-                      ),
-                    ),
-                  ) : SizedBox(
-                    width: MediaQuery.of(context).size.width*0.9,
-                    height: MediaQuery.of(context).size.height*0.9,
-                    child: _videoPlayerController!.value.isInitialized ? AspectRatio(
-                          aspectRatio: _videoPlayerController!.value.aspectRatio,
-                          child: VideoPlayer(_videoPlayerController!),
-                        ) : Container(),
-                  ),
                 ),
                 SizedBox(
                   height: 20.h,
@@ -242,8 +284,6 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                     fontSize: 14.sp,
                     text: 'Write Your Review',
                     fontWeight: FontWeight.w600),
-
-           
                 Form(
                   child: TextFormField(
                     controller: _contentController,
@@ -258,7 +298,7 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                     },
                     decoration: InputDecoration(
                       contentPadding:
-                      const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                          const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       fillColor: authTextFromFieldFillColor.withOpacity(.3),
                       hintText: 'Write your review here',
                       hintStyle: TextStyle(
@@ -268,13 +308,13 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                       ),
                       filled: true,
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderSide: const BorderSide(
+                            color: authTextFromFieldPorderColor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                        const BorderSide(color: authTextFromFieldPorderColor),
+                        borderSide: const BorderSide(
+                            color: authTextFromFieldPorderColor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -283,26 +323,26 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
                 SizedBox(
                   height: 20.h,
                 ),
-               Align(
-                    alignment: Alignment.center,    
-                    child: ElevatedButton(
-                        onPressed: _save,
-                        style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.pink,
-                          side: BorderSide.none,
-                          // primary:,
-                          minimumSize: Size(120.w, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                      onPressed: _save,
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.pink,
+                        side: BorderSide.none,
+                        // primary:,
+                        minimumSize: Size(120.w, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: TextWithFont().textWithRobotoFont(
-                          color: Colors.black,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          text: 'Save',
-                        )),
-                  )
+                      ),
+                      child: TextWithFont().textWithRobotoFont(
+                        color: Colors.black,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        text: 'Save',
+                      )),
+                )
               ],
             ),
           ),

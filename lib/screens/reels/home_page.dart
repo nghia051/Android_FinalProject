@@ -30,6 +30,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _isFollowingSelected = true;
   int _snappedPageIndex = 0;
+  late Future<List<VideoPost>> _videoPostsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoPostsFuture = getVideoPosts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +94,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: FutureBuilder<List<VideoPost>>(
-            future: getVideoPosts(), // Gọi hàm để lấy dữ liệu
+            future: _videoPostsFuture, // Gọi hàm để lấy dữ liệu
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu

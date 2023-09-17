@@ -19,7 +19,6 @@ import 'package:antap/screens/map/restaurant_detail/widgets/spaces.dart';
 import '../../../data/data.dart';
 import '../../../src/card.dart';
 import '../../create_post/widgets/appbar.dart';
-import '../../create_post/widgets/body copy.dart';
 import '../../posts/components/post_info_widget.dart';
 import '../../posts/components/post_react_widget.dart';
 import '../pop_up/widgets/gutter.dart';
@@ -33,16 +32,19 @@ class ScreenArguments {
   String distance = "5KM";
   String rating = "5";
 
-  ScreenArguments({required this.imagePath, required this.restaurantName,required this.restaurantAddress,required this.category,required this.distance,required this.rating});
+  ScreenArguments(
+      {required this.imagePath,
+      required this.restaurantName,
+      required this.restaurantAddress,
+      required this.category,
+      required this.distance,
+      required this.rating});
 }
-
-
 
 class RestaurantDetailsScreen extends StatelessWidget {
   static String id = 'detail_screen';
 
   RestaurantDetailsScreen({super.key});
-
 
   TextStyle addressTextStyle = Styles.customNormalTextStyle(
     color: AppColors.accentText,
@@ -122,7 +124,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                       left: Sizes.MARGIN_16,
                                       right: Sizes.MARGIN_16,
                                     ),
-                                    child: Image.asset("assets/images/arrow_back.png"),
+                                    child: Image.asset(
+                                        "assets/images/arrow_back.png"),
                                   ),
                                 ),
                                 Spacer(flex: 1),
@@ -134,7 +137,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                 ),
                                 SpaceW20(),
                                 InkWell(
-                                  child: Image.asset("assets/images/bookmarks_icon.png",
+                                  child: Image.asset(
+                                      "assets/images/bookmarks_icon.png",
                                       color: Colors.white),
                                 ),
                               ],
@@ -165,7 +169,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                       child: Row(
                                         children: <Widget>[
                                           SizedBox(width: 4.0),
-                                          Image.asset("assets/images/call_icon.png"),
+                                          Image.asset(
+                                              "assets/images/call_icon.png"),
                                           SizedBox(width: 8.0),
                                           Text(
                                             '+233 549546967',
@@ -195,7 +200,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                       child: Row(
                                         children: <Widget>[
                                           SizedBox(width: 4.0),
-                                          Image.asset("assets/images/direction_icon.png"),
+                                          Image.asset(
+                                              "assets/images/direction_icon.png"),
                                           SizedBox(width: 8.0),
                                           Text(
                                             'Direction',
@@ -278,11 +284,11 @@ class RestaurantDetailsScreen extends StatelessWidget {
                           ),
                           SpaceH24(),
                           HeadingRow(
-                            title: StringConst.MENU_AND_PHOTOS,
-                            number: StringConst.SEE_ALL_32,
-                            onTapOfNumber: () => {}
-                                //AutoRouter.of(context).push(MenuPhotosScreen()),
-                          ),
+                              title: StringConst.MENU_AND_PHOTOS,
+                              number: StringConst.SEE_ALL_32,
+                              onTapOfNumber: () => {}
+                              //AutoRouter.of(context).push(MenuPhotosScreen()),
+                              ),
                           SizedBox(height: 16.0),
                           Container(
                             height: 120,
@@ -309,8 +315,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                           HeadingRow(
                             title: StringConst.REVIEWS_AND_RATINGS,
                             number: StringConst.SEE_ALL_32,
-                           // onTapOfNumber: () => AutoRouter.of(context)
-                           //    .push(ReviewRatingScreen()),
+                            // onTapOfNumber: () => AutoRouter.of(context)
+                            //    .push(ReviewRatingScreen()),
                           ),
                           SizedBox(height: 16.0),
                           Column(
@@ -323,18 +329,16 @@ class RestaurantDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
               PotbellyButton(
                 'Rate Your Experience ',
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (builder) => XenPopupCard(
-                        gutter: gutter,
-                        body: const TabBarApp(),
-                      ),
-                    );
-                  
+                      gutter: gutter,
+                      body: const TabBarApp(),
+                    ),
+                  );
                 },
                 buttonHeight: 65,
                 buttonWidth: MediaQuery.of(context).size.width,
@@ -353,7 +357,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
   List<Widget> createUserListTiles({@required numberOfUsers}) {
     return List.generate(
       listPost.length,
-          (index) {
+      (index) {
         return Container(
           color: Colors.black87,
           width: double.infinity,
@@ -378,8 +382,8 @@ class RestaurantDetailsScreen extends StatelessWidget {
                       ),
                       Text(
                         listPost[index].getReview().content,
-                        style: const TextStyle(
-                            fontSize: 14, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.white),
                       )
                     ]),
               ),

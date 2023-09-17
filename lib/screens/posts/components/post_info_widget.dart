@@ -27,7 +27,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
         // const Icon(
         //   Icons.account_circle_outlined,
         //   size: 40,
-        //   color: Colors.white,
+        //   color: Colors.black,
         // ),
         const SizedBox(
           width: 10,
@@ -39,7 +39,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
                 style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white)),
+                    color: Colors.black)),
             Text(widget.post.getDate().toString(),
                 style: const TextStyle(
                     fontSize: 12,

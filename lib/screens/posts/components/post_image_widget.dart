@@ -30,7 +30,7 @@ class _PostImageWidgetState extends State<PostImageWidget> {
               icon: const Icon(
                 Icons.arrow_left,
                 size: 50,
-                color: Colors.white,
+                color: Colors.black,
               ),
               onPressed: () {
                 setState(() {
@@ -45,7 +45,7 @@ class _PostImageWidgetState extends State<PostImageWidget> {
               icon: const Icon(
                 Icons.arrow_right,
                 size: 50,
-                color: Colors.white,
+                color: Colors.black,
               ),
               onPressed: () {
                 setState(() {

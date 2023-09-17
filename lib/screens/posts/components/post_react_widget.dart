@@ -28,7 +28,7 @@ class _PostReactWidgetState extends State<PostReactWidget> {
                   (widget.isReact == 0)
                       ? Icons.favorite_border
                       : Icons.favorite,
-                  color: Colors.white,
+                  color: Colors.black,
                   size: 30),
               onPressed: () {
                 setState(() {
@@ -43,7 +43,7 @@ class _PostReactWidgetState extends State<PostReactWidget> {
             IconButton(
               padding: EdgeInsets.zero,
               icon: const Icon(Icons.chat_bubble_outline,
-                  color: Colors.white, size: 30),
+                  color: Colors.black, size: 30),
               onPressed: () {
                 setState(() {
                   showDialog(
@@ -59,7 +59,7 @@ class _PostReactWidgetState extends State<PostReactWidget> {
         ),
         Text("Có ${widget.post.getFavorite()} lượt thích",
             style: const TextStyle(
-                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600))
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600))
       ],
     );
   }

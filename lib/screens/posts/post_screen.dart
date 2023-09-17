@@ -56,9 +56,9 @@ class _PostScreenState extends State<PostScreen> {
                 Column(
                   children: List.generate(imagePosts.length, (index) {
                     return Container(
-                      color: Colors.pink[400],
+                      color: Colors.white,
                       width: double.infinity,
-                      margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                       child: Column(
                         children: [
                           Padding(
@@ -75,24 +75,24 @@ class _PostScreenState extends State<PostScreen> {
                                     style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.white),
+                                        color: Colors.black),
                                   ),
                                   Text(
                                     imagePosts[index].review.content,
                                     style: const TextStyle(
-                                        fontSize: 14, color: Colors.white),
+                                        fontSize: 14, color: Colors.black),
                                   )
                                 ]),
                           ),
                           Container(
-                            decoration: BoxDecoration(
-                              border: const Border(
-                                top: BorderSide(width: 2.0, color: Colors.white), 
-                                bottom: BorderSide(width: 2.0, color: Colors.white), 
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                top: BorderSide(width: 2.0, color: Color.fromARGB(255, 208, 205, 205)), 
+                                bottom: BorderSide(width: 2.0, color: Color.fromARGB(255, 208, 205, 205)), 
                               ),
-                              color: Colors.pink[400],
+                              color: Colors.white,
                             ),
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: PostImageWidget(post: imagePosts[index]),
                           ),
                           Padding(

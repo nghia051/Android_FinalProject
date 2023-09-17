@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Restaurant {
-  
   String id = 'id';
   String name = 'name';
   String imageUrl = 'imageUrl';

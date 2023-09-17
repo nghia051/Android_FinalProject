@@ -74,6 +74,7 @@ flutter:
     - assets/images/restaurants/restaurant3.jpg
     - assets/images/restaurants/restaurant4.jpg
     - assets/lotties/
+    - assets/images/icons/current_location.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

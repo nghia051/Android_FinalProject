@@ -7,6 +7,7 @@ import 'package:antap/screens/auth/signup_screen.dart';
 import 'package:antap/screens/image_video_post/customize_screen.dart';
 import 'package:antap/screens/image_video_post/customize_image_screen.dart';
 import 'package:antap/screens/image_video_post/customize_video_screen.dart';
+import 'package:antap/screens/create_post/create_post_popup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:antap/screens/map/pop_up/popup_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

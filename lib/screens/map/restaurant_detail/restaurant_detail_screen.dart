@@ -1,5 +1,10 @@
 import 'dart:ui';
 import 'package:antap/screens/create_post/create_post_popup.dart';
+import 'package:antap/screens/create_post/create_post_tabbar.dart';
+import 'package:antap/screens/create_post/widgets/appbar.dart';
+import 'package:antap/screens/create_post/widgets/body_video.dart';
+import 'package:antap/screens/map/pop_up/widgets/gutter.dart';
+import 'package:antap/src/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:antap/screens/map/restaurant_detail/values/data.dart';
@@ -318,17 +323,18 @@ class RestaurantDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              
               PotbellyButton(
                 'Rate Your Experience ',
-                onTap: () => {
+                onTap: () {
                   showDialog(
                     context: context,
                     builder: (builder) => XenPopupCard(
-                      appBar: appBar,
-                      gutter: gutter,
-                      body: CreatePostScreen(),
-                    ),
-                  ),
+                        gutter: gutter,
+                        body: const TabBarApp(),
+                      ),
+                    );
+                  
                 },
                 buttonHeight: 65,
                 buttonWidth: MediaQuery.of(context).size.width,

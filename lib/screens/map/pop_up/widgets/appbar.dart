@@ -7,7 +7,7 @@ import '../../../../models/post.dart';
 import '../../../../models/video_post.dart';
 import '../../../../src/appbar.dart';
 import '../../../create_post/create_post_popup.dart';
-import '../../../create_post/widgets/body.dart';
+import '../../../create_post/widgets/body_image.dart';
 
 Future<void> addVideoPost() async {
   final storageRef = FirebaseStorage.instance.ref();

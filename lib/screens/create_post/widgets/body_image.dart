@@ -1,35 +1,27 @@
 import 'dart:io';
 import 'package:antap/constants.dart';
-import 'package:antap/models/post.dart';
 import 'package:antap/screens/create_post/widgets/textWithFont.dart';
-import 'package:antap/screens/map/pop_up/widgets/video_app.dart';
-import 'package:uuid/uuid.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:antap/data/data.dart';
-
 import 'package:lottie/lottie.dart' as lot;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({super.key});
+class CreateImagePostScreen extends StatefulWidget {
+  const CreateImagePostScreen({super.key});
   static String id = "new_post_screen";
   @override
-  State<CreatePostScreen> createState() => _CreatePostScreenState();
+  State<CreateImagePostScreen> createState() => _CreateImagePostScreenState();
 }
 
-class _CreatePostScreenState extends State<CreatePostScreen> {
-  final _titleController = TextEditingController();
+class _CreateImagePostScreenState extends State<CreateImagePostScreen> {
   int _rating = 1;
+  final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   List<File?> listImageFiles = [];
@@ -79,8 +71,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           );
         },
       );
+      return;
     }
-
+    else {
           showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -90,6 +83,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           );
         },
       );
+
+        _titleController.clear();
+      _contentController.clear();
+      setState(() {
+        _rating = 1;
+        listImageFiles.clear();
+        listImages.clear();
+      });
+    }
+
 
     if(listImageFiles.isEmpty) return ;
     final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
@@ -251,25 +254,27 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 TextWithFont().textWithRobotoFont(
                     color: Theme.of(context).textTheme.headline1!.color!,
                     fontSize: 14.sp,
-                    text: 'Update your image review here',
+                    text: 'Update your image here',
                     fontWeight: FontWeight.w600),
-                 (listImageFiles.isNotEmpty) ? SizedBox(
-                height: 40,
-                width: 100,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                 (listImageFiles.isNotEmpty) ? Center(
+                   child: SizedBox(
+                                 height: 40,
+                                 width: 120,
+                                 child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      ),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.deepOrange.shade400,
                     ),
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.deepOrange.shade400,
-                  ),
-                  onPressed: (){
-                    chooseImage();
-                  },
-                  child: const Text('Add Image'),
-                )
-              ) : SizedBox(),
+                    onPressed: (){
+                      chooseImage();
+                    },
+                    child: const Text('Add Image'),
+                                 )
+                               ),
+                 ) : SizedBox(),
               const SizedBox(height: 10),
                 InkWell(
                 onTap: () {
@@ -277,62 +282,64 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     chooseImage();
                   }
                 },
-                child: (listImageFiles.isEmpty) ? Container(
-                  width: 100.0,
-                  height: 100.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, width: 1.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/icons/image_upload.png',
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                  ),
-                )  
-                : Container(
-                  height: (listImageFiles.length >= 4) ? MediaQuery.of(context).size.width * 0.7 : MediaQuery.of(context).size.width * 0.35,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 2,
-                      mainAxisSpacing: 2,
+                child: Center(
+                  child: (listImageFiles.isEmpty) ? Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 1.0),
                     ),
-                    itemCount: listImageFiles.length,
-                    itemBuilder: (context, index){
-                      return Stack(
-                        fit: StackFit.expand,
-                        children:[
-                          Image.file(listImageFiles[index]!, fit: BoxFit.cover),
-                          Positioned(
-                            top: 0.2,
-                            right: 0.2,
-                            child: Transform.scale(
-                              scale: 0.7,
-                              child: Container(
-                                color: const Color.fromRGBO(161, 207, 81, 0.686),
-                                child: IconButton(
-                                  onPressed: (){
-                                    listImageFiles.removeAt(index);
-                                    setState(() {
-                                      
-                                    });
-                                  },
-                                  icon: const Icon(Icons.delete),
-                                  color: Colors.red[500],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/icons/image_upload.png',
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                    ),
+                  )  
+                  : Container(
+                    height: (listImageFiles.length >= 4) ? MediaQuery.of(context).size.width * 0.6 : MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                      ),
+                      itemCount: listImageFiles.length,
+                      itemBuilder: (context, index){
+                        return Stack(
+                          fit: StackFit.expand,
+                          children:[
+                            Image.file(listImageFiles[index]!, fit: BoxFit.cover),
+                            Positioned(
+                              top: 0.2,
+                              right: 0.2,
+                              child: Transform.scale(
+                                scale: 0.7,
+                                child: Container(
+                                  color: const Color.fromRGBO(161, 207, 81, 0.686),
+                                  child: IconButton(
+                                    onPressed: (){
+                                      listImageFiles.removeAt(index);
+                                      setState(() {
+                                        
+                                      });
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                    color: Colors.red[500],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ] 
-                      );
-                    }
+                          ] 
+                        );
+                      }
+                    ),
                   ),
                 ),
               ),

@@ -1,43 +1,26 @@
 {
   "project_info": {
-    "project_number": "16468586993",
-    "project_id": "antap-ba5f2",
-    "storage_bucket": "antap-ba5f2.appspot.com"
+    "project_number": "59492107434",
+    "project_id": "antap2-71f28",
+    "storage_bucket": "antap2-71f28.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:16468586993:android:4f5dc0f5a2b2db4b245450",
+        "mobilesdk_app_id": "1:59492107434:android:18122a08e242cc906f3cd3",
         "android_client_info": {
           "package_name": "com.example.antap"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "16468586993-bmspe7q8ai99fbdntp1otqhv41nn5vb3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBo_4y_75LXXxCo3FGdi8zgwflbw6_BIe0"
+          "current_key": "AIzaSyDzP8XMQ5YlJ48eYCbTO3Pj9pIXbL7VL-A"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "16468586993-bmspe7q8ai99fbdntp1otqhv41nn5vb3.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "16468586993-db22o7k3k0svehhklgq1rcas42fe6m1h.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.antap"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

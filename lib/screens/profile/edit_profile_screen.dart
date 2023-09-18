@@ -1,8 +1,13 @@
 import 'dart:io';
 
+import 'package:antap/models/user.dart';
 import 'package:antap/screens/profile/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +26,9 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   //User _user = User();
   File? _profileImageFile;
-
+  
+  CollectionReference userData =
+      FirebaseFirestore.instance.collection('users');
   Future<void> _pickImage() async {
     final selected = await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
@@ -143,37 +150,35 @@ class _EditProfileState extends State<EditProfile> {
               GestureDetector(
                 child: CustomRaisedButton(buttonText: 'Save'),
                 onTap: () async {
-                  // await uploadProfilePic(_profileImageFile, _user);
-                  //
-                  // _user.displayName = _editDisplayNameController.text;
-                  // _user.bio = _editBioController.text;
-                  // FirebaseUser currentUser =
-                  // await FirebaseAuth.instance.currentUser();
-                  //
-                  // CollectionReference userRef =
-                  // Firestore.instance.collection('users');
-                  //
-                  // AuthNotifier authNotifier =
-                  // Provider.of<AuthNotifier>(context, listen: false);
-                  //
-                  // await userRef
-                  //     .document(currentUser.uid)
-                  //     .setData({
-                  //   'bio': _user.bio,
-                  //   'displayName': _user.displayName,
-                  // }, merge: true)
-                  //     .catchError((e) => print(e))
-                  //.whenComplete(() => getUserDetails(authNotifier));
+                  String? fileName;
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return ProfilePage();
-                        //return NavigationBarPage(selectedIndex: 2);
-                      },
-                    ),
-                  );
+                  final firebase_storage.FirebaseStorage storage =
+                      firebase_storage.FirebaseStorage.instance;
+                              fileName = _profileImageFile!.path.split('/').last;
+                  String? imageUrl;
+                  try {
+                    await storage.ref('images/$fileName').putFile(_profileImageFile!);
+                    firebase_storage.Reference ref = storage.ref('images/$fileName');
+                    imageUrl = await ref.getDownloadURL();
+                    print("Day ne: $imageUrl");
+                  } on firebase_core.FirebaseException catch (e) {
+                    print(e);
+                  }
+
+                  String? id = await FirebaseAuth.instance.currentUser?.uid.toString();
+                  print(id);
+
+                  await userData.doc(id!).update({'profileImageUrl': imageUrl,'username': _editDisplayNameController.text, 'aboutUser': _editBioController.text })
+                      .then((value) => print("User Updated"))
+                      .catchError((error) => print("Failed to update user: $error"));;
+
+                  await getUserDetail();
+
+                  setState(() async {
+                        _editBioController.clear();
+                        _editDisplayNameController.clear();
+                        _profileImageFile = null;
+                      });
                 },
               ),
             ],

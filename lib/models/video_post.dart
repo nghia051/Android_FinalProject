@@ -14,9 +14,15 @@ class VideoPost extends Post {
   int favorite;
   List<Comment> listComment;
   String audioName;
+  String resID;
 
   VideoPost(this.videoUrl, this.postedBy, this.postDate, this.rate, this.review,
-      this.favorite, this.listComment, this.audioName);
+      this.favorite, this.listComment, this.audioName, this.resID);
+
+  @override
+  String getResID() {
+    return resID;
+  }
 
   @override
   Widget getImageVideo() {
@@ -73,7 +79,7 @@ class VideoPost extends Post {
     final data = snapshot.data();
     return VideoPost(
       data?["videoUrl"],
-      "Hoang Nghia Viet",
+      data?["postedBy"],
       data?["postDate"].toDate(),
       data?["rate"],
       Review(
@@ -86,6 +92,7 @@ class VideoPost extends Post {
         );
       }).toList(),
       data?["audioName"],
+      data?["resID"],
     );
   }
 }

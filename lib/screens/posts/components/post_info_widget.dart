@@ -20,7 +20,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: NetworkImage(currentUser.profileImageUrl),
+          backgroundImage: NetworkImage(currentUser!.profileImageUrl),
           radius: 17,
           // size: 40,
         ),
@@ -35,7 +35,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(currentUser.username,
+            Text(currentUser!.username,
                 style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

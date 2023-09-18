@@ -38,7 +38,8 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(currentUser.profileImageUrl),
+                          backgroundImage:
+                              NetworkImage(currentUser!.profileImageUrl),
                           radius: 17,
                           // size: 40,
                         ),
@@ -49,7 +50,8 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(currentUser.username,
+                              Text(
+                                currentUser!.username,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -74,7 +76,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(currentUser.profileImageUrl),
+                    backgroundImage: NetworkImage(currentUser!.profileImageUrl),
                     radius: 17,
                     // size: 40,
                   ),
@@ -82,23 +84,24 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     width: 10,
                   ),
                   Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      style: TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        hintText: 'Viết bình luận...',
-                        hintStyle: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ),
+                      child: TextField(
+                    controller: _controller,
+                    style: TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      hintText: 'Viết bình luận...',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                  )),
                   IconButton(
                     icon: const Icon(
                       Icons.send,
                       color: Colors.white,
-                    ), 
+                    ),
                     onPressed: () {
                       setState(() {
-                        widget.post.updateComment(Comment(user: "Hoang Nghia Viet", content: _controller.text));
+                        widget.post.updateComment(Comment(
+                            user: "Hoang Nghia Viet",
+                            content: _controller.text));
                         _controller.clear();
                       });
                     },

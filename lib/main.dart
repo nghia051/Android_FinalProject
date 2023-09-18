@@ -12,7 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:antap/screens/map/pop_up/popup_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -26,29 +25,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          textTheme: const TextTheme(
-        bodyMedium: TextStyle(
-          fontFamily: 'Ubuntu',
-        ),
-      )),
-      initialRoute: MainScreen.id,
-      routes: {
-        HomeScreen.id: (context) => HomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        SignUpScreen.id: (context) => SignUpScreen(),
-        MainScreen.id: (context) => MainScreen(),
-        CustomizeImageScreen.id: (context) => CustomizeImageScreen(),
-        CustomizeVideoScreen.id: (context) => CustomizeVideoScreen(),
-        RestaurantDetailsScreen.id: (context) =>  RestaurantDetailsScreen(),
-      },
-    );
-  });
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+                textTheme: const TextTheme(
+              bodyMedium: TextStyle(
+                fontFamily: 'Ubuntu',
+              ),
+            )),
+            initialRoute: HomeScreen.id,
+            routes: {
+              HomeScreen.id: (context) => HomeScreen(),
+              LoginScreen.id: (context) => LoginScreen(),
+              SignUpScreen.id: (context) => SignUpScreen(),
+              MainScreen.id: (context) => MainScreen(),
+              CustomizeImageScreen.id: (context) => CustomizeImageScreen(),
+              CustomizeVideoScreen.id: (context) => CustomizeVideoScreen(),
+              RestaurantDetailsScreen.id: (context) =>
+                  RestaurantDetailsScreen(),
+            },
+          );
+        });
   }
 }

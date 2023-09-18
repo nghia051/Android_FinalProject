@@ -12,8 +12,6 @@ class PostInfoWidget extends StatefulWidget {
   State<PostInfoWidget> createState() => _PostInfoWidgetState();
 }
 
-String tmp = '123';
-
 class _PostInfoWidgetState extends State<PostInfoWidget> {
   @override
   Widget build(BuildContext context) {

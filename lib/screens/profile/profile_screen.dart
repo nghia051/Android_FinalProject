@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/custom_raised_button.dart';
 import '../../data/data.dart';
+import '../auth/login_screen.dart';
 import 'edit_profile_screen.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -99,7 +101,20 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CustomRaisedButton(buttonText: 'Edit Profile'),
             ),
             SizedBox(
-              height: 20,
+              height: 300,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    await FirebaseAuth.instance.signOut();
+
+                    Navigator.popAndPushNamed(context, LoginScreen.id);
+                  },
+                  child: CustomRaisedButton(buttonText: 'Logout'),
+                ),
+              ],
             ),
           ],
         ),

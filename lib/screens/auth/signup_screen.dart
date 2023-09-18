@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 try {
                                   await _auth.createUserWithEmailAndPassword(
                                       email: _email, password: _password);
-                                  await collectionReference
+                                  DocumentReference docRef= await FirebaseFirestore.instance.collection('users')
                                       .add({
                                         'email': _email,
                                         'password': _password,
@@ -116,10 +116,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         'profileImageUrl':
                                             "https://picsum.photos/id/1062/400/400",
                                         'aboutUser': "About user",
-                                      })
-                                      .then((value) => print("User Added"))
+                                      });
+
+                                  await collectionReference
+                                      .doc(docRef.id)
+                                        .set({
+                                        'id': docRef.id
+                                        },
+                                        SetOptions(merge: true),
+                                         )
+                                      .then((value) => print("User Modified"))
                                       .catchError((error) => print(
-                                          "Failed to add images: $error"));
+                                          "Failed to modified user: $error"));
                                   if (context.mounted) {
                                     signUpAlert(
                                       context: context,

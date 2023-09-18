@@ -135,7 +135,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: _editBioController..text = "About me",
+                  controller: _editBioController..text = "${currentUser!.aboutUser}",
                   onChanged: (String value) {
                     //_user.bio = value;
                   },
@@ -151,7 +151,10 @@ class _EditProfileState extends State<EditProfile> {
                 child: CustomRaisedButton(buttonText: 'Save'),
                 onTap: () async {
                   String? fileName;
-
+                  if(_profileImageFile == null)
+                    {
+                      return;
+                    }
                   final firebase_storage.FirebaseStorage storage =
                       firebase_storage.FirebaseStorage.instance;
                               fileName = _profileImageFile!.path.split('/').last;
@@ -164,19 +167,27 @@ class _EditProfileState extends State<EditProfile> {
                   } on firebase_core.FirebaseException catch (e) {
                     print(e);
                   }
+                  String? id;
+                  QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+                      .instance
+                      .collection('users')
+                      .where('email', isEqualTo: currentUser!.email)
+                      .get();
+                  querySnapshot.docs.forEach((doc) {
+                    final data = doc.data();
+                    id = data?["id"];
+                  });
 
-                  String? id = await FirebaseAuth.instance.currentUser?.uid.toString();
-                  print(id);
-
-                  await userData.doc(id!).update({'profileImageUrl': imageUrl,'username': _editDisplayNameController.text, 'aboutUser': _editBioController.text })
+                  print(_editDisplayNameController.text);
+                  await userData.doc(id).update({'profileImageUrl': imageUrl,'username': _editDisplayNameController.text, 'aboutUser': _editBioController.text })
                       .then((value) => print("User Updated"))
                       .catchError((error) => print("Failed to update user: $error"));;
 
                   await getUserDetail();
 
                   setState(() async {
-                        _editBioController.clear();
-                        _editDisplayNameController.clear();
+                        _editBioController.text = currentUser!.username;
+                        _editDisplayNameController.text = currentUser!.aboutUser;
                         _profileImageFile = null;
                       });
                 },

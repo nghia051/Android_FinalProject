@@ -44,6 +44,6 @@ Future<void> getUserDetail() async {
         password: data?["password"],
         username: data?["username"],
         profileImageUrl: data?["profileImageUrl"],
-        aboutUser: "aboutUser");
+        aboutUser: data?["aboutUser"]);
   });
 }

@@ -115,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         'username': _email,
                                         'profileImageUrl':
                                             "https://picsum.photos/id/1062/400/400",
-                                        'aboutUser': "",
+                                        'aboutUser': "About user",
                                       })
                                       .then((value) => print("User Added"))
                                       .catchError((error) => print(

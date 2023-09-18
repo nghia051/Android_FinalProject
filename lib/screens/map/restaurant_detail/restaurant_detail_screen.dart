@@ -1,10 +1,14 @@
 import 'dart:ui';
+import 'package:antap/models/image_post.dart';
+import 'package:antap/models/post.dart';
+import 'package:antap/models/video_post.dart';
 import 'package:antap/screens/create_post/create_post_popup.dart';
 import 'package:antap/screens/create_post/create_post_tabbar.dart';
 import 'package:antap/screens/create_post/widgets/appbar.dart';
 import 'package:antap/screens/create_post/widgets/body_video.dart';
 import 'package:antap/screens/map/pop_up/widgets/gutter.dart';
 import 'package:antap/src/card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:antap/screens/map/restaurant_detail/values/data.dart';
@@ -90,6 +94,37 @@ class RestaurantDetailsScreen extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     var heightOfStack = MediaQuery.of(context).size.height / 2.8;
     var aPieceOfTheHeightOfStack = heightOfStack - heightOfStack / 3.5;
+
+    Future<List<Post>> getPostByRestaurant() async {
+      List<Post> listPosts = [];
+      QuerySnapshot<Map<String, dynamic>> imageQuerySnapshot =
+          await FirebaseFirestore.instance.collection('imagePosts')
+            .where("resID", isEqualTo: args.resID)
+            .get();
+
+      imageQuerySnapshot.docs.forEach((doc) {
+        ImagePost imagePost = ImagePost.fromFirestore(doc, null);
+        listPosts.add(imagePost);
+      });
+
+      QuerySnapshot<Map<String, dynamic>> videoQuerySnapshot =
+          await FirebaseFirestore.instance.collection('videoPosts')
+            .where("resID", isEqualTo: args.resID)
+            .get();
+
+      videoQuerySnapshot.docs.forEach((doc) {
+        VideoPost videoPost = VideoPost.fromFirestore(doc, null);
+        listPosts.add(videoPost);
+      });
+
+      listPosts.sort((a, b) => b.getDate().compareTo(a.getDate()));
+
+      print("List posts: $listPosts");
+      print("Restaurant id: ${args.resID}");
+
+      return listPosts;
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -321,9 +356,23 @@ class RestaurantDetailsScreen extends StatelessWidget {
                             //    .push(ReviewRatingScreen()),
                           ),
                           SizedBox(height: 16.0),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: createUserListTiles(),
+                          Center(
+                            child: FutureBuilder<List<Post>>(
+                                future: getPostByRestaurant(), // Gọi hàm để lấy dữ liệu
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    List<Post> listPosts = snapshot.data ?? [];
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: createUserListTiles(listPosts: listPosts),
+                                    );
+                                  }
+                                }
+                            )
                           )
                         ],
                       ),
@@ -356,12 +405,12 @@ class RestaurantDetailsScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> createUserListTiles({@required numberOfUsers}) {
+  List<Widget> createUserListTiles({required listPosts}) {
     return List.generate(
-      listPost.length,
+      listPosts.length,
       (index) {
         return Container(
-          color: Colors.black87,
+          color: Colors.white,
           width: double.infinity,
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: Column(
@@ -371,28 +420,28 @@ class RestaurantDetailsScreen extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      PostInfoWidget(post: listPost[index]),
+                      PostInfoWidget(post: listPosts[index]),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        listPost[index].getReview().title,
+                        listPosts[index].getReview().title,
                         style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white),
+                            color: Colors.black),
                       ),
                       Text(
-                        listPost[index].getReview().content,
+                        listPosts[index].getReview().content,
                         style:
-                            const TextStyle(fontSize: 14, color: Colors.white),
+                            const TextStyle(fontSize: 14, color: Colors.black),
                       )
                     ]),
               ),
-              listPost[index].getImageVideo(),
+              listPosts[index].getImageVideo(),
               Padding(
                   padding: const EdgeInsets.all(10),
-                  child: PostReactWidget(post: listPost[index]))
+                  child: PostReactWidget(post: listPosts[index]))
             ],
           ),
         );

@@ -27,7 +27,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     // Create and store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
-    _controller = VideoPlayerController.asset(widget.video.videoUrl);
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse(
+        widget.video.videoUrl,
+      ),
+    );
+    ;
 
     // Initialize the controller and store the Future for later use.
     _initializeVideoPlayerFuture = _controller.initialize();

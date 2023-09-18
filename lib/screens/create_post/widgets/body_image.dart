@@ -30,7 +30,7 @@ class _CreateImagePostScreenState extends State<CreateImagePostScreen> {
   String? fileName;
   String imageUrl = "";
   CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('imagePost');
+      FirebaseFirestore.instance.collection('imagePosts');
   bool choose = false;
   IconData? _selectedIcon;
 

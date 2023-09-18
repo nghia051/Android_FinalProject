@@ -98,9 +98,10 @@ class RestaurantDetailsScreen extends StatelessWidget {
     Future<List<Post>> getPostByRestaurant() async {
       List<Post> listPosts = [];
       QuerySnapshot<Map<String, dynamic>> imageQuerySnapshot =
-          await FirebaseFirestore.instance.collection('imagePosts')
-            .where("resID", isEqualTo: args.resID)
-            .get();
+          await FirebaseFirestore.instance
+              .collection('imagePosts')
+              .where("resID", isEqualTo: args.resID)
+              .get();
 
       imageQuerySnapshot.docs.forEach((doc) {
         ImagePost imagePost = ImagePost.fromFirestore(doc, null);
@@ -108,9 +109,10 @@ class RestaurantDetailsScreen extends StatelessWidget {
       });
 
       QuerySnapshot<Map<String, dynamic>> videoQuerySnapshot =
-          await FirebaseFirestore.instance.collection('videoPosts')
-            .where("resID", isEqualTo: args.resID)
-            .get();
+          await FirebaseFirestore.instance
+              .collection('videoPosts')
+              .where("resID", isEqualTo: args.resID)
+              .get();
 
       videoQuerySnapshot.docs.forEach((doc) {
         VideoPost videoPost = VideoPost.fromFirestore(doc, null);
@@ -313,7 +315,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                                     TextSpan(
                                         text: "daily time ",
                                         style: addressTextStyle),
-                                    TextSpan(text: "9:30 am to 11:30 am "),
+                                    TextSpan(text: "9:30 am to 8:30 pm "),
                                   ],
                                 ),
                               )
@@ -322,7 +324,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                           SpaceH24(),
                           HeadingRow(
                               title: StringConst.MENU_AND_PHOTOS,
-                              number: StringConst.SEE_ALL_32,
+                              number: 'See all',
                               onTapOfNumber: () => {}
                               //AutoRouter.of(context).push(MenuPhotosScreen()),
                               ),
@@ -351,29 +353,32 @@ class RestaurantDetailsScreen extends StatelessWidget {
                           SpaceH24(),
                           HeadingRow(
                             title: StringConst.REVIEWS_AND_RATINGS,
-                            number: StringConst.SEE_ALL_32,
+                            number: 'See all',
                             // onTapOfNumber: () => AutoRouter.of(context)
                             //    .push(ReviewRatingScreen()),
                           ),
                           SizedBox(height: 16.0),
                           Center(
-                            child: FutureBuilder<List<Post>>(
-                                future: getPostByRestaurant(), // Gọi hàm để lấy dữ liệu
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    List<Post> listPosts = snapshot.data ?? [];
-                                    return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: createUserListTiles(listPosts: listPosts),
-                                    );
-                                  }
-                                }
-                            )
-                          )
+                              child: FutureBuilder<List<Post>>(
+                                  future:
+                                      getPostByRestaurant(), // Gọi hàm để lấy dữ liệu
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator(); // Hiển thị khi đang tải dữ liệu
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      List<Post> listPosts =
+                                          snapshot.data ?? [];
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: createUserListTiles(
+                                            listPosts: listPosts),
+                                      );
+                                    }
+                                  }))
                         ],
                       ),
                     )

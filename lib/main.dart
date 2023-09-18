@@ -1,4 +1,5 @@
 import 'package:antap/main_screen.dart';
+import 'package:antap/screens/map/map_screen.dart';
 import 'package:antap/screens/map/restaurant_detail/restaurant_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/auth/home_screen.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
               LoginScreen.id: (context) => LoginScreen(),
               SignUpScreen.id: (context) => SignUpScreen(),
               MainScreen.id: (context) => MainScreen(),
+              MapScreen.id: (context) => MapScreen(),
               CustomizeImageScreen.id: (context) => CustomizeImageScreen(),
               CustomizeVideoScreen.id: (context) => CustomizeVideoScreen(),
               RestaurantDetailsScreen.id: (context) =>

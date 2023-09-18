@@ -47,7 +47,7 @@ abstract class Post {
 
   int getRate();
 
-  String? getUser();
+  String getUser();
 
   void updateFavorite(int val);
 

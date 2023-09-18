@@ -37,7 +37,7 @@ class ImagePost extends Post {
   }
 
   @override
-  String? getUser() {
+  String getUser() {
     return postedBy;
   }
 

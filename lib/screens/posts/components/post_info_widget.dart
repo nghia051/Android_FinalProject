@@ -35,7 +35,7 @@ class _PostInfoWidgetState extends State<PostInfoWidget> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(currentUser!.username,
+            Text(widget.post.getUser(),
                 style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

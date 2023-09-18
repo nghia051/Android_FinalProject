@@ -1,3 +1,4 @@
+import 'package:antap/data/data.dart';
 import 'package:antap/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +78,29 @@ class VideoPost extends Post {
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
+    // User user = User(
+    //       email: "viethoangnghia@gmail.com",
+    //       username: "viethoangnghia@gmail.com",
+    //       password: "29092003",
+    //       profileImageUrl: "https://picsum.photos/id/1062/400/400",
+    //       aboutUser: "about user"
+    //     );
+    // FirebaseFirestore.instance
+    //     .collection("users")
+    //     .where("email", isEqualTo: data?["postedBy"])
+    //     .get()
+    //     .then((querySnapshot) {
+    //   if (querySnapshot.docs.isNotEmpty) {
+    //     final userData = querySnapshot.docs[0].data();
+    //     user = User(
+    //       email: userData["email"],
+    //       username: userData["username"],
+    //       password: userData["password"],
+    //       profileImageUrl: userData["profileImageUrl"],
+    //       aboutUser: userData["aboutUser"]
+    //     );
+    //   }
+    // });
     return VideoPost(
       data?["videoUrl"],
       data?["postedBy"],

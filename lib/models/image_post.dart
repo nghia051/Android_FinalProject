@@ -82,6 +82,42 @@ class ImagePost extends Post {
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
+    // print("");
+    // print("dmm");
+    // FirebaseFirestore.instance
+    //     .collection("users")
+    //     .where("email", isEqualTo: data?["postedBy"])
+    //     .get()
+    //     .then((querySnapshot) {
+    //   if (querySnapshot.docs.isNotEmpty) {
+    //     final userData = querySnapshot.docs[0].data();
+    //     print("user checkkkk: ${userData["email"]}");
+    //     final user = User(
+    //       email: userData["email"],
+    //       username: userData["username"],
+    //       password: userData["password"],
+    //       profileImageUrl: userData["profileImageUrl"],
+    //       aboutUser: userData["aboutUser"]
+    //     );
+    //     return ImagePost(
+    //       listImageUrl: List<String>.from(data?["listImageURL"]),
+    //       postDate: data?["postDate"].toDate(),
+    //       postedBy: user,
+    //       rate: data?["rating"],
+    //       review: Review(
+    //           title: data?["review"]["title"], content: data?["review"]["content"]),
+    //       favorite: data?["favorite"],
+    //       listComment: (data?["listComment"] as List<dynamic>).map((commentData) {
+    //         return Comment(
+    //           user: commentData["user"],
+    //           content: commentData["content"],
+    //         );
+    //       }).toList(),
+    //       resID: data?["resID"],
+    //     );
+    //   }
+    // });
+    // print("Can not query ${data?["postedBy"]} user from firebase");
     return ImagePost(
       listImageUrl: List<String>.from(data?["listImageURL"]),
       postDate: data?["postDate"].toDate(),

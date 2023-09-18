@@ -17,7 +17,7 @@ class Restaurant {
   ) {
     final data = snapshot.data();
     return Restaurant(
-        id: "",
+        id: data?["id"],
         name: data?["name"],
         imageUrl: data?["imageUrl"],
         location: LatLng(data?["latitude"], data?["longtitude"])

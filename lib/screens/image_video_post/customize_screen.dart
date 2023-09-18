@@ -135,8 +135,8 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
       final firebase_storage.FirebaseStorage storage =
           firebase_storage.FirebaseStorage.instance;
       try {
-        await storage.ref('images/$fileName').putFile(_image!);
-        firebase_storage.Reference ref = storage.ref('images/$fileName');
+        await storage.ref('images/restaurants/$fileName').putFile(_image!);
+        firebase_storage.Reference ref = storage.ref('images/restaurants/$fileName');
         imageUrl = await ref.getDownloadURL();
         print("Day ne: $imageUrl");
       } on firebase_core.FirebaseException catch (e) {
@@ -153,7 +153,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         name: _resNameController.text,
         imageUrl: imageUrl!,
         location: latLng!);
-    await resData.doc('6cNmPHt3fqV1uzd9UslaHq9CGPi1').set(
+    await resData.add(
       {
         'id': restaurant!.id,
         'imageUrl': restaurant!.imageUrl,
@@ -161,7 +161,6 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         'latitude': restaurant!.location.latitude,
         'longtitude': restaurant!.location.longitude,
       },
-      SetOptions(merge: true),
     ).then(
       (value) => print("Upload to firestore successfully"),
     );

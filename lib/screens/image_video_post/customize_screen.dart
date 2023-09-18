@@ -200,9 +200,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
                   'Post',
@@ -269,35 +269,32 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                 Container(
                   child: TextField(
                     controller: _resNameController,
-                    decoration:
-                        InputDecoration(labelText: 'Enter restaurant name'),
+                    decoration: const InputDecoration(
+                        labelText: 'Enter restaurant name'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Container(
-                      height: 80,
-                      child: Row(
-                        children: [
-                          lot.Lottie.asset(
-                            "assets/lotties/animation_lm7kzx3s.json",
-                            width: 80,
-                          ),
-                          (address == "")
-                              ? lot.Lottie.asset(
-                                  "assets/lotties/animation_lm7jfzas.json",
-                                  width: MediaQuery.of(context).size.width -
-                                      80 -
-                                      100,
-                                )
-                              : Text(address),
-                        ],
+                  height: 80,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      lot.Lottie.asset(
+                        "assets/lotties/animation_lm7kzx3s.json",
+                        width: 60,
                       ),
-                    ),
+                      (address == "")
+                          ? lot.Lottie.asset(
+                              "assets/lotties/animation_lm7jfzas.json",
+                              width:
+                                  MediaQuery.of(context).size.width - 80 - 100,
+                            )
+                          : Expanded(
+                              child:
+                                  Text(address, textAlign: TextAlign.center)),
+                    ],
                   ),
                 ),
                 (address != "")
@@ -335,7 +332,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                           "assets/lotties/MapLoading.json",
                           width: 200,
                         )),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Center(
@@ -348,7 +345,7 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
               ],

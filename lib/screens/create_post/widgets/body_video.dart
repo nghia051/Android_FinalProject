@@ -96,7 +96,7 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
       print(e);
     }
 
-    String? userId = await FirebaseAuth.instance.currentUser?.uid.toString();
+    String? userId = await FirebaseAuth.instance.currentUser?.email.toString();
 
     await collectionReference
         .add({

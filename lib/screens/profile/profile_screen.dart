@@ -1,3 +1,4 @@
+import 'package:antap/screens/auth/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () async {
                     await FirebaseAuth.instance.signOut();
 
-                    Navigator.popAndPushNamed(context, LoginScreen.id);
+                    Navigator.popAndPushNamed(context, HomeScreen.id);
                   },
                   child: CustomRaisedButton(buttonText: 'Logout'),
                 ),

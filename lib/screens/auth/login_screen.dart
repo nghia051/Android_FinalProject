@@ -1,4 +1,5 @@
 import 'package:antap/main_screen.dart';
+import 'package:antap/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:antap/screens/auth/components/components.dart';
 import 'package:antap/constants.dart';
@@ -87,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.popAndPushNamed(
                                       context, LoginScreen.id);
                                 });
+                                getUserDetail();
                                 Navigator.pushNamed(context, MainScreen.id);
                               }
                             } catch (e) {

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/custom_raised_button.dart';
 import 'edit_profile_screen.dart';
+import 'package:antap/models/user.dart' as USERNOW;
 
 class ProfilePage extends StatefulWidget {
   static String id = "profile_screen";
@@ -15,10 +17,26 @@ class _ProfilePageState extends State<ProfilePage> {
   signOutUser() {
   }
 
-  @override
-  void initState() {
+  USERNOW.User? user ;
+  Future<void> getUserDetail() async {
+    String? email = await FirebaseAuth.instance.currentUser?.email.toString();
 
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+    querySnapshot.docs.forEach((doc) {
+      user = new USERNOW.User(email: doc["email"], password: doc["password"], username: doc["username"], profileImageUrl: doc["profileImageUrl"], aboutUser: "aboutUser");
+    });
+
+  }
+
+  @override
+  void initState()  {
     //getUserDetails(authNotifier);
+    getUserDetail();
+
     super.initState();
   }
 
@@ -49,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ? CircleAvatar(
               radius: 40.0,
               backgroundImage:
-              NetworkImage("profilePic"),
+              NetworkImage(user!.profileImageUrl),
               backgroundColor: Colors.transparent,
             )
                 : Container(
@@ -68,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             1 != null
                 ? Text(
-              "authNotifier.userDetails.displayName",
+              user!.username,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 30,

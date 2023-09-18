@@ -1,17 +1,30 @@
 import 'package:antap/models/restaurant.dart';
-import 'package:antap/models/user.dart';
+import 'package:antap/models/user.dart' as USERNOW;
 import 'package:antap/models/video_post.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/post.dart';
 import '../models/image_post.dart';
 
-User currentUser = User(
-  'ttviet2805@gmail.com',
-  'noobboy',
-  'ttviet2805',
-  'https://picsum.photos/id/1062/400/400',
-  'Food critic is a person who explores restaurants and eateries, and introduces it to others. Food critics also review food and dining experiences across different places and share their opinion with their audience.',
-);
+USERNOW.User? currentUser;
+
+Future<void> getUserDetail() async{
+  String? email = await FirebaseAuth.instance.currentUser?.email.toString();
+  print("HHAHA");
+  print(email);
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance
+      .collection('users')
+      .where('email', isEqualTo: email)
+      .get();
+  print(querySnapshot.docs.length);
+  querySnapshot.docs.forEach((doc) {
+    final data = doc.data();
+    currentUser = new USERNOW.User(email: data?["email"], password: data?["password"], username: data?["username"], profileImageUrl: data?["profileImageUrl"], aboutUser: "aboutUser");
+  });
+  print(currentUser);
+}
 
 final List<VideoPost> videos = [
   VideoPost(

@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Ubuntu',
         ),
       )),
-      initialRoute: MainScreen.id,
+      initialRoute: HomeScreen.id,
       routes: {
         HomeScreen.id: (context) => HomeScreen(),
         LoginScreen.id: (context) => LoginScreen(),

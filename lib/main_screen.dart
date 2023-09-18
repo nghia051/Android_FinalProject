@@ -1,3 +1,4 @@
+import 'package:antap/data/data.dart';
 import 'package:antap/screens/image_video_post/customize_screen.dart';
 import 'package:antap/screens/map/map_screen.dart';
 import 'package:antap/screens/map/pop_up/popup_screen.dart';
@@ -29,6 +30,12 @@ class _MainScreenState extends State<MainScreen> {
     ProfilePage(),
   ];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUserDetail();
+    super.initState();
+  }
   void _onIconTapped(int index) {
     setState(() {
       _selectPageIndex = index;

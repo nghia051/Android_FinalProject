@@ -3,11 +3,10 @@ class User {
   String password;
   String username;
   String profileImageUrl;
-
   String aboutUser;
 
-  User(this.email, this.password, this.username, this.profileImageUrl,
-      this.aboutUser);
+  User({ required this.email, required this.password, required this.username, required this.profileImageUrl,
+      required this.aboutUser});
 
   Map<String, Object?> toJson() {
     return {

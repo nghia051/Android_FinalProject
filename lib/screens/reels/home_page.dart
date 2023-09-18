@@ -95,7 +95,8 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        body: FutureBuilder<List<VideoPost>>(
+        body: Center(
+          child: FutureBuilder<List<VideoPost>>(
             future: _videoPostsFuture, // Gọi hàm để lấy dữ liệu
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -148,6 +149,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               }
-            }));
+            }))
+        );
   }
 }

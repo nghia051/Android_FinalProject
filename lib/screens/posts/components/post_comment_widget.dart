@@ -51,7 +51,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                currentUser!.username,
+                                widget.post.getUser(),
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

@@ -17,6 +17,8 @@ Future<List<VideoPost>> getVideoPosts() async {
     videoPosts.add(videoPost);
   });
 
+  videoPosts.sort((a, b) => b.postDate.compareTo(a.postDate));
+
   return videoPosts;
 }
 

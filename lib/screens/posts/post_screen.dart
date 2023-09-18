@@ -26,6 +26,8 @@ Future<List<ImagePost>> getImagePosts() async {
     imagePosts.add(imagePost);
   });
 
+  imagePosts.sort((a, b) => b.postDate.compareTo(a.postDate));
+
   return imagePosts;
 }
 

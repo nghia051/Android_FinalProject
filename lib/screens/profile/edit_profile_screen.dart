@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/custom_raised_button.dart';
+import '../../data/data.dart';
 
 TextEditingController _editBioController = TextEditingController();
 TextEditingController _editDisplayNameController = TextEditingController();
@@ -36,7 +37,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -61,47 +61,47 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(height: 20),
               _profileImageFile != null
                   ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: FileImage(_profileImageFile!),
-                    radius: 60,
-                  ),
-                  TextButton(
-                    child: Icon(Icons.refresh),
-                    onPressed: _clear,
-                  ),
-                ],
-              )
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: FileImage(_profileImageFile!),
+                          radius: 60,
+                        ),
+                        TextButton(
+                          child: Icon(Icons.refresh),
+                          onPressed: _clear,
+                        ),
+                      ],
+                    )
                   : GestureDetector(
-                onTap: () {
-                  _pickImage();
-                },
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        decoration: new BoxDecoration(
-                          color: Colors.grey.withOpacity(0.3),
-                          shape: BoxShape.circle,
+                      onTap: () {
+                        _pickImage();
+                      },
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              decoration: new BoxDecoration(
+                                color: Colors.grey.withOpacity(0.3),
+                                shape: BoxShape.circle,
+                              ),
+                              width: 100,
+                              child: Icon(
+                                Icons.person,
+                                size: 80,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'Select Profile Image',
+                              style: TextStyle(fontSize: 11),
+                            ),
+                          ],
                         ),
-                        width: 100,
-                        child: Icon(
-                          Icons.person,
-                          size: 80,
-                        ),
                       ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        'Select Profile Image',
-                        style: TextStyle(fontSize: 11),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
               SizedBox(
                 height: 20,
               ),
@@ -109,9 +109,11 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   controller: _editDisplayNameController
-                    ..text = "authNotifier.userDetails.displayName",
+                    ..text = "${currentUser!.username}",
                   onSaved: (String? value) {
-                    //_user.displayName = value;
+                    String? nullableString = value;
+                    String regularString = nullableString ?? "";
+                    currentUser!.username = regularString;
                   },
                   decoration: InputDecoration(
                     labelText: 'Name',
@@ -126,8 +128,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: TextFormField(
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: _editBioController
-                    ..text = "authNotifier.userDetails.bio",
+                  controller: _editBioController..text = "About me",
                   onChanged: (String value) {
                     //_user.bio = value;
                   },
@@ -162,7 +163,7 @@ class _EditProfileState extends State<EditProfile> {
                   //   'displayName': _user.displayName,
                   // }, merge: true)
                   //     .catchError((e) => print(e))
-                      //.whenComplete(() => getUserDetails(authNotifier));
+                  //.whenComplete(() => getUserDetails(authNotifier));
 
                   Navigator.push(
                     context,

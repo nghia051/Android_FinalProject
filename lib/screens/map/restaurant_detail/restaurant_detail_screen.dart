@@ -24,6 +24,7 @@ import '../../posts/components/post_react_widget.dart';
 import '../pop_up/widgets/gutter.dart';
 
 class ScreenArguments {
+  String resID = "";
   String imagePath = "";
   String restaurantName = "TEST";
   String restaurantAddress = "HCMUS";
@@ -33,7 +34,8 @@ class ScreenArguments {
   String rating = "5";
 
   ScreenArguments(
-      {required this.imagePath,
+      {required this.resID,
+      required this.imagePath,
       required this.restaurantName,
       required this.restaurantAddress,
       required this.category,
@@ -336,7 +338,7 @@ class RestaurantDetailsScreen extends StatelessWidget {
                     context: context,
                     builder: (builder) => XenPopupCard(
                       gutter: gutter,
-                      body: const TabBarApp(),
+                      body: TabBarApp(resID: args.resID),
                     ),
                   );
                 },

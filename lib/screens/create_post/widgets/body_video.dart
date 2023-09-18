@@ -14,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 
 class CreateVideoPostScreen extends StatefulWidget {
-  const CreateVideoPostScreen({super.key});
+  String resID;
+  CreateVideoPostScreen({required this.resID, super.key});
   static String id = "new_post_screen";
   @override
   State<CreateVideoPostScreen> createState() => _CreateVideoPostScreenState();
@@ -110,6 +111,7 @@ class _CreateVideoPostScreenState extends State<CreateVideoPostScreen> {
           'favorite': 0,
           'listComment': [],
           'audioName': 'Perfect',
+          'resID': widget.resID,
         })
         .then((value) => print("VideoPost Added"))
         .catchError((error) => print("Failed to add video post: $error"));

@@ -13,7 +13,8 @@ import 'dart:async';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateImagePostScreen extends StatefulWidget {
-  const CreateImagePostScreen({super.key});
+  String resID;
+  CreateImagePostScreen({required this.resID, super.key});
   static String id = "new_post_screen";
   @override
   State<CreateImagePostScreen> createState() => _CreateImagePostScreenState();
@@ -102,6 +103,7 @@ class _CreateImagePostScreenState extends State<CreateImagePostScreen> {
           'rating': _rating,
           'favorite': 0,
           'listComment': [],
+          'resID': widget.resID,
         })
         .then((value) => print("Images Added"))
         .catchError((error) => print("Failed to add images: $error"));

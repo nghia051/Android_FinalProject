@@ -14,6 +14,7 @@ class ImagePost extends Post {
   Review review;
   int favorite;
   List<Comment> listComment;
+  String resID;
 
   ImagePost(
       {required this.listImageUrl,
@@ -22,7 +23,13 @@ class ImagePost extends Post {
       required this.rate,
       required this.review,
       required this.favorite,
-      required this.listComment});
+      required this.listComment,
+      required this.resID});
+
+  @override
+  String getResID() {
+    return resID;
+  }
 
   @override
   Widget getImageVideo() {
@@ -89,6 +96,7 @@ class ImagePost extends Post {
           content: commentData["content"],
         );
       }).toList(),
+      resID: data?["resID"],
     );
   }
 
@@ -101,7 +109,8 @@ class ImagePost extends Post {
       "rate": rate,
       "review": {"title": review.title, "content": review.content},
       "favorite": favorite,
-      "listComment": listComment
+      "listComment": listComment,
+      "resID": resID,
     };
   }
 }

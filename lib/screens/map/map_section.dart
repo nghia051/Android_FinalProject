@@ -111,7 +111,15 @@ class _MapSectionState extends State<MapSection> {
   }
 
   void showWidget(Restaurant restaurant) {
-    Navigator.pushNamed(context, RestaurantDetailsScreen.id,arguments: ScreenArguments(imagePath: restaurant.imageUrl, restaurantName: restaurant.name, restaurantAddress: "HCMUS", category: 'Dining', distance: "5km", rating: "4"));
+    Navigator.pushNamed(context, RestaurantDetailsScreen.id,
+        arguments: ScreenArguments(
+            resID: restaurant.id,
+            imagePath: restaurant.imageUrl,
+            restaurantName: restaurant.name,
+            restaurantAddress: "HCMUS",
+            category: 'Dining',
+            distance: "5km",
+            rating: "4"));
     // setState(() {
     //   showDialog(
     //     context: context,
@@ -263,11 +271,11 @@ class _MapSectionState extends State<MapSection> {
   Future<List<Restaurant>> getRestaurantList() async {
     List<Restaurant> restaurants = [];
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await FirebaseFirestore.instance.collection('restaurants').get();
-      querySnapshot.docs.forEach((doc) {
-    Restaurant restaurant = Restaurant.fromFirestore(doc, null);
-    restaurants.add(restaurant);
-  });
+        await FirebaseFirestore.instance.collection('restaurants').get();
+    querySnapshot.docs.forEach((doc) {
+      Restaurant restaurant = Restaurant.fromFirestore(doc, null);
+      restaurants.add(restaurant);
+    });
     //
     // /// Firestance
     // restaurants.add(Restaurant(

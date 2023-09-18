@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:antap/screens/auth/components/components.dart';
@@ -16,6 +17,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
   final _auth = FirebaseAuth.instance;
   late String _email;
   late String _password;
@@ -105,6 +108,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 try {
                                   await _auth.createUserWithEmailAndPassword(
                                       email: _email, password: _password);
+                                  await collectionReference
+                                      .add({
+                                        'email': _email,
+                                        'password': _password,
+                                        'username': _email,
+                                        'profileImageUrl':
+                                            "https://picsum.photos/id/1062/400/400",
+                                        'aboutUser': "",
+                                      })
+                                      .then((value) => print("User Added"))
+                                      .catchError((error) => print(
+                                          "Failed to add images: $error"));
                                   if (context.mounted) {
                                     signUpAlert(
                                       context: context,

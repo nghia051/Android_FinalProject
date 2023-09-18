@@ -10,6 +10,9 @@ import 'package:antap/screens/reels/home_page.dart';
 import 'package:antap/screens/create_post/create_post_popup.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
+import 'data/data.dart';
+import 'models/user.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
   static String id = "main_screen";
@@ -28,6 +31,13 @@ class _MainScreenState extends State<MainScreen> {
     CustomizeScreen(),
     ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUserDetail();
+    super.initState();
+  }
 
   void _onIconTapped(int index) {
     setState(() {

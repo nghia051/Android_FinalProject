@@ -51,7 +51,7 @@ class _HomeSideBarState extends State<HomeSideBar>
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _profileImageButton(currentUser.profileImageUrl),
+          _profileImageButton(currentUser!.profileImageUrl),
           _favoriteItem(Icons.favorite, widget.video.favorite, style),
           _commentItem(
               Icons.comment, widget.video.getListComment().length, style),
@@ -72,8 +72,7 @@ class _HomeSideBarState extends State<HomeSideBar>
                 ),
                 CircleAvatar(
                   radius: 12,
-                  backgroundImage:
-                      NetworkImage(currentUser.profileImageUrl),
+                  backgroundImage: NetworkImage(currentUser!.profileImageUrl),
                 ),
               ],
             ),

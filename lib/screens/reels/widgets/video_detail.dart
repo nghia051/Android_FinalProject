@@ -17,7 +17,7 @@ class VideoDetail extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            '@${currentUser.username}',
+            '@${currentUser!.username}',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 15,
                   color: Colors.white,

@@ -82,7 +82,7 @@ AnTap is a food review application. The purpose of the application is to facilit
 ### View image posts
 
 <div align="center">
-    <img src="images/home.png" width = 700>
+    <img src="images/image_post.png" width = 250>
 </div>
 
 - Users can like or comment on the post
@@ -94,18 +94,22 @@ AnTap is a food review application. The purpose of the application is to facilit
 ### Map
 
 <div align="center">
-    <img src="images/favoritesScreen.png" width = 700>
+    <img src="images/map.png" width = 250>
 </div>
 
 - In this section, a user can view a map with restaurant locations (from database) and the current location of the user.
 - Can click on a restaurant in the map to see posts belonging to that restaurant and post your experience about that restaurant.
+
+<div align="center">
+    <img src="images/restaurant.png" width = 250>
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Check in
 
 <div align="center">
-    <img src="images/history.png" width = 700>
+    <img src="images/checkin.png" width = 250>
 </div>
 
 - A user can check in and create a restaurant (pin location of the restaurant on the map). The location of restaurant is the current location of user.

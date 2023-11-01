@@ -75,6 +75,8 @@ AnTap is a food review application. The purpose of the application is to facilit
 - Users can like or comment on the video
 - Also possible to see comments of other users and the number of likes
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### View image posts
 
 <div align="center">

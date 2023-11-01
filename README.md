@@ -59,10 +59,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<div align="center">
-    <img src="images/mainScreen.png" alt="main-screen" width = 700>
-</div>
-
 AnTap is a food review application. The purpose of the application is to facilitate easier access to restaurants across the entire country for everyone. Within this app, each user can browse through restaurant review posts, which include both video and text-based content. Additionally, users can gain a comprehensive overview of all the displayed restaurants, along with their respective locations on a map. Furthermore, individuals have the capability to create and design new restaurants right at their current location. This application can be seen as a miniature social network where people can interact efficiently by posting and sharing video and text reviews of restaurants as they please.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

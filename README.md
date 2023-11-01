@@ -49,6 +49,7 @@
       <a href="#about-the-project">About The Project</a>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#technologies-used">Technologies used</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -113,13 +114,13 @@ AnTap is a food review application. The purpose of the application is to facilit
 
 ## Technologies used
 
-- The application is built using Flutter Framework.
+- The application is built using Flutter Framework
 - Firebase Integration for Enhanced Authentication:
   - Firebase authentication is integrated to provide a secure and seamless user experience. It includes: User Login, Sign-Up Process, Forgot Password Feature
 - Firestore Database Utilization:
   - Firestore, a NoSQL cloud database by Firebase, is used to store and manage various types of data, including: User Information, Restaurant Locations, Image Posts, Video Posts
 - Google Maps API Integration:
-  - Google Maps API is utilized to seamlessly present a map with restaurant locations. Users can easily explore nearby restaurants and plan their visits using the map feature.
+  - Google Maps API is utilized to seamlessly present a map with restaurant locations. Users can easily explore nearby restaurants and plan their visits using the map feature
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -25,9 +25,9 @@
   <a>
     <img src="images/antap.png" alt="Logo" width = 300>
   </a>
-
+  <p align="center">HCMUS</p>
+  <p align="center">CS426 - Mobile Device Application Development</p>
   <p align="center">
-    Developed by: </br>
     Dang Trung Nghia
     </br>
     Bui Nguyen Hoang
